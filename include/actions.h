@@ -10,7 +10,7 @@ void                actions_select_action();
 /* Start a new game */
 void                actions_new_game();
 
-/* Load a new game */
+/* Load a previous saved game */
 void                actions_load_game();
 
 /* Save the game and return to the menu */

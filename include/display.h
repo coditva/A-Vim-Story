@@ -1,16 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-/* Define what each menu option is */
-enum MENU {
-    new_game,
-    load_game,
-    save_game,
-    show_help,
-    settings,
-    quit_game,
-    size
-};
+#include "menu.h"
 
 
 /* Initialize screen and create the main window */
@@ -30,6 +21,6 @@ void                display_quit_msg();
 
 
 /* Show the menu and return the selected item according to the MENU enum */
-int                 display_get_action();
+enum MENU           display_get_action();
 
 #endif /* DISPLAY_H */
