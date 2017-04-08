@@ -76,6 +76,7 @@ void actions_save_game()
 void actions_show_help()
 {
     display_show_help();
+    actions_select_action();
 }
 
 /*

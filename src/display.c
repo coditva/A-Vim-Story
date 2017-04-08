@@ -2,6 +2,7 @@
 #include <curses.h>
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 #include "display.h"
 #include "menu.h"
 
@@ -54,6 +55,7 @@ void display_welcome_msg()
 {
     assert(main_window != NULL);
 
+    /* Display the ASCII art */
     wattron(main_window, A_BOLD);
     for (int i = 0; _welcome_msg[i] != NULL; ++i) {
         wmove(main_window, 1 + i, (COLS - strlen(_welcome_msg[i])) / 2);
@@ -69,6 +71,48 @@ void display_welcome_msg()
  */
 void display_show_help()
 {
+    WINDOW *help_window = NULL;
+    char *help_instr[] = {
+        "1. Point one goes here. this is the best place to plave the point one.",
+        "   you have to place point one here. This is actually a way to show",
+        "   that this is how a multiline point should be.",
+        "2. Here we have the point two",
+        "3. We have the two point three here",
+        "4. This is just point four. Hurray!",
+        NULL
+    };
+
+
+    help_window = newwin(LINES, COLS, 0, 0);
+    if (help_window == NULL) {
+        fprintf(stderr, "%d - %s\n", getpid(), "Unable to attach help window");
+        exit(EXIT_FAILURE);
+    }
+
+    /* The actual help content */
+    char *help_msg;
+    wattron(help_window, A_BOLD);
+    help_msg = "Help and instructions";
+    mvwprintw(help_window, 2, (COLS - strlen(help_msg)) / 2, "%s", help_msg);
+    wattroff(help_window, A_BOLD);
+
+    for (int i = 0; help_instr[i] != NULL; ++i) {
+        mvwprintw(help_window, 5 + i, 2, "%s\n", help_instr[i]);
+    }
+
+    wrefresh(help_window);
+
+    /* Capture keyboard and dont leave until 'q' is pressed */
+    keypad(help_window, true);
+    while ((getch()) != 'q') {;}
+    keypad(help_window, false);
+
+    delwin(help_window);
+    help_window = NULL;
+
+    /* Clear the help window from the screen */
+    touchwin(main_window);
+    wrefresh(main_window);
 }
 
 /*

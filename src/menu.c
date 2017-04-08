@@ -60,13 +60,14 @@ enum MENU display_menu_get_choice()
     /* Create window */
     menu_window = newwin(height, width, y_start, x_start);
     menu_help_window = newwin(1, COLS - 1, LINES - 1, 0);
-    box(menu_window, ' ', ' ');
     if (menu_window == NULL || menu_help_window == NULL) {
         fprintf(stderr, "%d - %s\n", getpid(), "Unable to create menu window");
         exit(EXIT_FAILURE);
     }
+    box(menu_window, '|', '-');
 
     /* calculate menu size */
+    menu_size = 0;
     for (int i = 0; menu_items[i].key != size; ++i) menu_size++;
 
     menu_init(menu_window);
@@ -183,7 +184,7 @@ int menu_take_input()
 
     keypad(menu_window, true);
     key = wgetch(menu_window);
-    while (key != ERR && key != 'q') {
+    while (key != ERR) {
         switch (key) {
             case 'j':
             case KEY_DOWN:
@@ -202,5 +203,7 @@ int menu_take_input()
 
         key = wgetch(menu_window);
     }
+    keypad(menu_window, false);
+
     return selected_item;
 }
