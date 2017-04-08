@@ -7,6 +7,8 @@
 
 WINDOW *main_window;
 int menu_selected;
+
+/* ASCII art for welcome message. Says: A Vim Story */
 char *_welcome_msg[] = {
 "            __      ___              _____ _                   ",
 "     /\\     \\ \\    / (_)            / ____| |                  ",
@@ -38,6 +40,8 @@ void display_init()
  */
 void display_destroy()
 {
+    assert(main_window != NULL);
+
     delwin(main_window);
     main_window = NULL;
     endwin();
