@@ -30,11 +30,11 @@ set(CMAKE_C_FLAGS " \
 
 # Setup list of source files
 set(PROJECT_SOURCES
-    src/main.c
-    src/actions.c
-    src/project.c
     src/display.c
-    src/menu.c
+    src/input.c
+    src/main.c
+    src/score.c
+    src/sound.c
 )
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
