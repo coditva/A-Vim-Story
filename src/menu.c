@@ -47,7 +47,9 @@ void                menu_show_help_msg(enum MENU);
 int                 menu_take_input();
 
 
-/* Display the menu and return choice */
+/**
+ * Display the menu and return choice
+ */
 enum MENU menu_get_choice()
 {
     enum MENU choice;
@@ -86,7 +88,9 @@ enum MENU menu_get_choice()
     return choice;
 }
 
-/* Initialize the window with the options */
+/**
+ * Initialize the window with the options
+ */
 void menu_init()
 {
     assert(menu_window != NULL);
@@ -99,7 +103,9 @@ void menu_init()
     wrefresh(menu_window);
 }
 
-/* Highlight the next option */
+/**
+ * Highlight the next option
+ */
 void menu_select_next()
 {
     int prev_item;
@@ -131,7 +137,9 @@ void menu_select_next()
     menu_show_help_msg(selected_item);
 }
 
-/* Highlight the previous option */
+/**
+ * Highlight the previous option
+ */
 void menu_select_previous()
 {
     int prev_item;

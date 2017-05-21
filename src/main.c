@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+/**
+ * Initialize the main process as well as the submodules
+ */
 void init()
 {
     display_init();
@@ -33,6 +36,9 @@ void init()
     sound_init();
 }
 
+/**
+ * Destroy the main process as well as the submodules
+ */
 void destroy()
 {
     display_destroy();
