@@ -2,6 +2,7 @@
 #define DISPLAY_H
 
 void                display_init();
+void                display_destroy();
 void                display_welcome_msg();
 void                display_help();
 

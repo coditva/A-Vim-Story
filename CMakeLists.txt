@@ -35,6 +35,7 @@ set(PROJECT_SOURCES
     src/main.c
     src/score.c
     src/sound.c
+    src/menu.c
 )
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
