@@ -2,19 +2,67 @@
 #include <ncurses.h>
 #include <assert.h>
 #include <string.h>
+
 #include "display.h"
+#include "datatypes.h"
 
 WINDOW *main_window;
+WINDOW *map_window;
+
+/* local functions */
+WINDOW * get_main_window();
+WINDOW * get_map_window();
+void set_main_window();
+void set_map_window();
+
+
+/**
+ * Return the main window
+ * @return WINDOW* return the main window
+ */
+WINDOW * get_main_window()
+{
+    return main_window;
+}
+
+/**
+ * Return the map window
+ * @return WINDOW* return the map window
+ */
+WINDOW * get_map_window()
+{
+    return map_window;
+}
+
+/**
+ * Initializes the main window
+ */
+void set_main_window()
+{
+    main_window = initscr();
+    if (main_window == NULL) {
+        fprintf(stderr, "%d - Could not initialize display\n", getpid());
+    }
+}
+
+/**
+ * Initializes the map window
+ */
+void set_map_window()
+{
+    map_window = newwin(LINES, COLS, 0, 0);
+    if (map_window == NULL) {
+        fprintf(stderr, "%d - Could not initialize map window\n", getpid());
+    }
+}
 
 /**
  * Initialize display variables and create main window
  */
 void display_init()
 {
-    main_window = initscr();
-    if (main_window == NULL) {
-        fprintf(stderr, "%d - Could not initialize display\n", getpid());
-    }
+    set_main_window();
+    set_map_window();
 
     cbreak();
     noecho();
@@ -23,7 +71,7 @@ void display_init()
 }
 
 /**
- * destroy display and display variables
+ * Destroy display and display variables
  */
 void display_destroy()
 {
@@ -64,4 +112,33 @@ void display_welcome_msg()
     wattroff(welcome_window, A_BOLD);
 
     wrefresh(welcome_window);
+}
+
+/**
+ * Displays the map
+ * @param map the map datatype
+ * @param pos the position of the cursor datatype
+ */
+void display_map(const MAP map, const POSITION pos)
+{
+    char buf[100];
+    WINDOW *map_window;
+
+    map_window = get_map_window();
+
+    /* load the map from start */
+    assert(map.filepointer != NULL);
+    fseek(map.filepointer, sizeof(MAP_INIT), SEEK_SET);
+    for (int i = 0; i < map.sizey; ++i) {
+        fgets(buf, map.sizex + 2, map.filepointer);
+        mvwprintw(map_window, i, 0, buf);
+    }
+
+    /* display the cursor */
+    wmove(map_window, pos.x, pos.y);
+    curs_set(2);
+
+    /* display the map */
+    wrefresh(map_window);
+    sleep(5);
 }
