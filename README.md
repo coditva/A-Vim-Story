@@ -28,6 +28,14 @@ cmake ..
 make
 ```
 
+## Documentation
+For documentation, a configuration file for Doxygen is provided. Assuming you
+ have doxygen installed, issue these commands:
+```bash
+cd doc
+doxygen config
+```
+
 ## Author
 [Utkarsh Maheshwari](https://github.com/UtkarshMe) under the guidance of
 [Dr. Ramprasad S. Joshi](http://www.bits-pilani.ac.in/goa/rsj/profile)
