@@ -9,18 +9,12 @@
 WINDOW *main_window;
 WINDOW *map_window;
 
-/* local functions */
-WINDOW * get_main_window();
-WINDOW * get_map_window();
-void set_main_window();
-void set_map_window();
-
 
 /**
  * Return the main window
  * @return WINDOW* return the main window
  */
-WINDOW * get_main_window()
+WINDOW * display_get_main_window()
 {
     return main_window;
 }
@@ -29,7 +23,7 @@ WINDOW * get_main_window()
  * Return the map window
  * @return WINDOW* return the map window
  */
-WINDOW * get_map_window()
+WINDOW * display_get_map_window()
 {
     return map_window;
 }
@@ -37,7 +31,7 @@ WINDOW * get_map_window()
 /**
  * Initializes the main window
  */
-void set_main_window()
+void display_set_main_window()
 {
     main_window = initscr();
     if (main_window == NULL) {
@@ -48,7 +42,7 @@ void set_main_window()
 /**
  * Initializes the map window
  */
-void set_map_window()
+void display_set_map_window()
 {
     map_window = newwin(LINES, COLS, 0, 0);
     if (map_window == NULL) {
@@ -61,11 +55,9 @@ void set_map_window()
  */
 void display_init()
 {
-    set_main_window();
-    set_map_window();
+    display_set_main_window();
+    display_set_map_window();
 
-    cbreak();
-    noecho();
     curs_set(0);
     clear();
 }
@@ -124,7 +116,7 @@ void display_map(const MAP map, const POSITION pos)
     char buf[100];
     WINDOW *map_window;
 
-    map_window = get_map_window();
+    map_window = display_get_map_window();
 
     /* load the map from start */
     assert(map.filepointer != NULL);
@@ -135,10 +127,9 @@ void display_map(const MAP map, const POSITION pos)
     }
 
     /* display the cursor */
-    wmove(map_window, pos.x, pos.y);
+    wmove(map_window, pos.y, pos.x);
     curs_set(2);
 
     /* display the map */
     wrefresh(map_window);
-    sleep(5);
 }

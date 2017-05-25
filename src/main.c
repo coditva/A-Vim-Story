@@ -12,6 +12,7 @@
 
 /* local functions */
 void start_new_game();
+void game_loop(MAP map, POSITION pos);
 
 
 int main(int argc, char *argv[])
@@ -46,7 +47,6 @@ int main(int argc, char *argv[])
 
 void start_new_game()
 {
-    int game = 1;
     MAP map;
     POSITION pos;
 
@@ -55,18 +55,52 @@ void start_new_game()
     map.level = 1;
     open_map(&map, &pos);
 
+    game_loop(map, pos);
+
+}
+
+/**
+ * Run the game loop. This is where the magic happens!
+ * @param MAP the map, fully initialized
+ * @param POSITION the position on the map
+ */
+void game_loop(MAP map, POSITION pos)
+{
+    int game = 1;
+    WINDOW *win;
+
+    win = display_get_map_window();
+
     while (game) {
 
         /* display the updated map */
         display_map(map, pos);
 
         /* get input */
+        switch (input_get_key(win)) {
+            case 'j':
+                pos.y++;
+                break;
+            case 'k':
+                pos.y--;
+                break;
+            case 'h':
+                pos.x--;
+                break;
+            case 'l':
+                pos.x++;
+                break;
+            case 'q':
+                game = 0;
+                break;
+            default:
+                continue;
+        }
 
         /* check if move feasable */
 
         /* update position */
 
-        game = 0; // remove this after loop is complete
     }
 }
 
