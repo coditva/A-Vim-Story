@@ -15,13 +15,13 @@ struct option
 
 /* Define options */
 struct option menu_items[] = {
-    {new_game, "New game", "Start a new game"},
-    {load_game, "Load game", "Load a new game"},
-    {save_game, "Save game", "Save this game"},
-    {settings, "Settings", "Tweak to your liking"},
-    {help, "Help", "How to play"},
-    {quit, "Quit", "Leave the game"},
-    {size, NULL, NULL}
+    {NEW_GAME, "New game", "Start a new game"},
+    {LOAD_GAME, "Load game", "Load a new game"},
+    {SAVE_GAME, "Save game", "Save this game"},
+    {SETTINGS, "Settings", "Tweak to your liking"},
+    {HELP, "Help", "How to play"},
+    {QUIT, "Quit", "Leave the game"},
+    {SIZE, NULL, NULL}
 };
 
 /* Menu size */
@@ -70,7 +70,7 @@ enum MENU menu_get_choice()
 
     /* calculate menu size */
     menu_size = 0;
-    for (int i = 0; menu_items[i].key != size; ++i) menu_size++;
+    for (int i = 0; menu_items[i].key != SIZE; ++i) menu_size++;
 
     menu_init(menu_window);
 

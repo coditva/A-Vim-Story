@@ -10,20 +10,45 @@
 #include "menu.h"
 #include "datatypes.h"
 
+/* local functions */
+void start_new_game();
+
+
 int main(int argc, char *argv[])
 {
-    int game = 0;
-    MAP map;
-    POSITION pos;
+    enum MENU choice;
 
     /* initialize components */
     init();
 
     /* display the welcome message */
     display_welcome_msg();
-    menu_get_choice();
 
-    game = 1;
+    /* display menu and get the choice */
+    choice = menu_get_choice();
+
+    switch (choice) {
+        case NEW_GAME:
+            start_new_game();
+        case LOAD_GAME:
+        case SAVE_GAME:
+        case SETTINGS:
+        case HELP:
+        case QUIT:
+        case SIZE:
+        default:
+            break;
+    }
+
+    destroy();
+    return 0;
+}
+
+void start_new_game()
+{
+    int game = 1;
+    MAP map;
+    POSITION pos;
 
     /* load map and position */
     map.filename = "../data/maps/1.map";
@@ -31,6 +56,7 @@ int main(int argc, char *argv[])
     open_map(&map, &pos);
 
     while (game) {
+
         /* display the updated map */
         display_map(map, pos);
 
@@ -42,9 +68,6 @@ int main(int argc, char *argv[])
 
         game = 0; // remove this after loop is complete
     }
-
-    destroy();
-    return 0;
 }
 
 /**

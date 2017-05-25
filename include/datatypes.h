@@ -6,13 +6,13 @@
  */
 enum MENU
 {
-    new_game,
-    load_game,
-    save_game,
-    settings,
-    help,
-    quit,
-    size
+    NEW_GAME,
+    LOAD_GAME,
+    SAVE_GAME,
+    SETTINGS,
+    HELP,
+    QUIT,
+    SIZE
 };
 
 /**
