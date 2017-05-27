@@ -25,6 +25,7 @@ typedef struct MAP_STRUCT
     FILE *filepointer;
     int sizex;
     int sizey;
+    char *map_data;
 } MAP;
 
 /**

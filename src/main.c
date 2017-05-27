@@ -125,6 +125,16 @@ void open_map(MAP *map, POSITION *pos)
     map -> sizey = map_init.sizey;
     pos -> x = map_init.startx;
     pos -> y = map_init.starty;
+
+    /* load the map from start */
+    map -> map_data = (char *) malloc((map -> sizex + 2) * map -> sizey);
+    fseek(map -> filepointer, sizeof(MAP_INIT), SEEK_SET);
+    fgets(map -> map_data, (map -> sizex + 2) * map -> sizey,
+            map -> filepointer);
+
+    /* close the file */
+    fclose(map -> filepointer);
+    map -> filepointer = NULL;
 }
 
 /**

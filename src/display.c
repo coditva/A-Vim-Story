@@ -113,17 +113,15 @@ void display_welcome_msg()
  */
 void display_map(const MAP map, const POSITION pos)
 {
-    char buf[100];
     WINDOW *map_window;
 
     map_window = display_get_map_window();
 
-    /* load the map from start */
-    assert(map.filepointer != NULL);
-    fseek(map.filepointer, sizeof(MAP_INIT), SEEK_SET);
     for (int i = 0; i < map.sizey; ++i) {
-        fgets(buf, map.sizex + 2, map.filepointer);
-        mvwprintw(map_window, i, 0, buf);
+        for (int j = 0; j < map.sizex; ++j) {
+            mvwprintw(map_window, i, j, "%c",
+                    *(map.map_data + i * map.sizex + j));
+        }
     }
 
     /* display the cursor */
