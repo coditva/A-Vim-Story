@@ -1,6 +1,8 @@
 #ifndef DATATYPES_H
 #define DATATYPES_H
 
+#define MAX_MAP_SIZE 500
+
 /**
  * Enumeration for menu items
  */

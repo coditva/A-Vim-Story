@@ -5,6 +5,7 @@
 
 #include "display.h"
 #include "datatypes.h"
+#include "util.h"
 
 WINDOW *main_window;
 WINDOW *map_window;
@@ -47,7 +48,7 @@ void display_set_main_window()
  */
 void display_set_map_window()
 {
-    map_window = newwin(LINES, COLS, 0, 0);
+    map_window = newpad(MAX_MAP_SIZE, MAX_MAP_SIZE);
     if (map_window == NULL) {
         fprintf(stderr, "%d - Could not initialize map window\n", getpid());
     }
@@ -68,6 +69,9 @@ void display_init()
     /* initialize color pairs */
     init_pair(1, COLOR_BLUE, COLOR_BLUE);
     init_pair(2, COLOR_RED, COLOR_RED);
+    init_pair(3, COLOR_MAGENTA, COLOR_MAGENTA);
+    init_pair(4, COLOR_BLACK, COLOR_YELLOW);
+    init_pair(5, COLOR_CYAN, COLOR_CYAN);
 }
 
 /**
@@ -142,7 +146,10 @@ void display_map(const MAP map, const POSITION pos)
     curs_set(2);
 
     /* display the map */
-    wrefresh(map_window);
+    prefresh(map_window,
+            min(max(0, pos.y - LINES / 2), map.sizey - LINES),
+            min(max(0, pos.x - COLS / 2), map.sizex - COLS),
+            0, 0, LINES - 1, COLS - 1);
 }
 
 /**
@@ -158,6 +165,12 @@ int display_get_color_pair(char ch)
             return 1;
         case '+':
             return 2;
+        case '`':
+            return 3;
+        case '$':
+            return 4;
+        case '#':
+            return 5;
         default:
             return 0;
     }

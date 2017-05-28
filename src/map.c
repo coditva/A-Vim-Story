@@ -58,6 +58,7 @@ int map_move_valid(POSITION pos, MAP map)
     switch (requested_char) {
         case '~':
         case '+':
+        case '`':
             return 0;
         case ' ':
         default:

@@ -52,7 +52,7 @@ void start_new_game()
     POSITION pos;
 
     /* load default score, map, position */
-    map.filename = "../data/maps/1.map";
+    map.filename = "../data/maps/2.map";
     map.level = 1;
     map_open(&map, &pos);
 

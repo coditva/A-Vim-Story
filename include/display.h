@@ -7,7 +7,7 @@
 void                display_init();
 void                display_destroy();
 void                display_welcome_msg();
-void                display_map(const MAP, const POSITION);
+void                display_map(MAP, POSITION);
 void                display_help();
 
 WINDOW *            display_get_map_window();
