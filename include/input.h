@@ -1,7 +1,9 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "datatypes.h"
+
 void                input_init();
-int                 input_get_key(WINDOW *);
+POSITION            input_get_new_pos(WINDOW *, POSITION);
 
 #endif /* end of include guard: INPUT_H */

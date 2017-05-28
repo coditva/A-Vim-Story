@@ -9,6 +9,7 @@
 #include "score.h"
 #include "menu.h"
 #include "datatypes.h"
+#include "map.h"
 
 /* local functions */
 void start_new_game();
@@ -50,13 +51,12 @@ void start_new_game()
     MAP map;
     POSITION pos;
 
-    /* load map and position */
+    /* load default score, map, position */
     map.filename = "../data/maps/1.map";
     map.level = 1;
-    open_map(&map, &pos);
+    map_open(&map, &pos);
 
     game_loop(map, pos);
-
 }
 
 /**
@@ -68,7 +68,9 @@ void game_loop(MAP map, POSITION pos)
 {
     int game = 1;
     WINDOW *win;
+    POSITION new_pos;
 
+    /* need to get the map window use with the input */
     win = display_get_map_window();
 
     while (game) {
@@ -76,65 +78,20 @@ void game_loop(MAP map, POSITION pos)
         /* display the updated map */
         display_map(map, pos);
 
-        /* get input */
-        switch (input_get_key(win)) {
-            case 'j':
-                pos.y++;
-                break;
-            case 'k':
-                pos.y--;
-                break;
-            case 'h':
-                pos.x--;
-                break;
-            case 'l':
-                pos.x++;
-                break;
-            case 'q':
-                game = 0;
-                break;
-            default:
-                continue;
+        /* get position */
+        new_pos = input_get_new_pos(win, pos);
+
+        /* check if user requested quiting */
+        if (new_pos.x == 0 && new_pos.y == 0) {
+            game = 0;
         }
 
-        /* check if move feasable */
-
-        /* update position */
-
+        /* check if move feasable and update position */
+        if (map_move_valid(new_pos, map)) {
+            pos.x = new_pos.x;
+            pos.y = new_pos.y;
+        }
     }
-}
-
-/**
- * Open and load map
- */
-void open_map(MAP *map, POSITION *pos)
-{
-    MAP_INIT map_init;
-
-    /* open file for reading */
-    map -> filepointer = fopen("../data/maps/1.map", "rb");
-    if (map -> filepointer == NULL) {
-        fprintf(stderr, "%d - %s\n", getpid(), "Unable to open map file");
-        exit(EXIT_FAILURE);
-    }
-
-    /* load initial variables */
-    fread(&map_init, sizeof(MAP_INIT), 1, map -> filepointer); 
-
-    map -> sizex = map_init.sizex;
-    map -> sizey = map_init.sizey;
-    pos -> x = map_init.startx;
-    pos -> y = map_init.starty;
-
-    /* load the map from start */
-    map -> map_data = (char *) malloc((map -> sizex + 2) * map -> sizey);
-    fseek(map -> filepointer, sizeof(MAP_INIT), SEEK_SET);
-    fgets(map -> map_data, (map -> sizex + 2) * map -> sizey,
-            map -> filepointer);
-
-    /* close the file */
-    fclose(map -> filepointer);
-    map -> filepointer = NULL;
 }
 
 /**
