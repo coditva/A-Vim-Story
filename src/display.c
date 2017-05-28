@@ -9,6 +9,9 @@
 WINDOW *main_window;
 WINDOW *map_window;
 
+/* local functions */
+int display_get_color_pair(char);
+
 
 /**
  * Return the main window
@@ -59,7 +62,12 @@ void display_init()
     display_set_map_window();
 
     curs_set(0);
+    start_color();
     clear();
+
+    /* initialize color pairs */
+    init_pair(1, COLOR_BLUE, COLOR_BLUE);
+    init_pair(2, COLOR_RED, COLOR_RED);
 }
 
 /**
@@ -119,8 +127,13 @@ void display_map(const MAP map, const POSITION pos)
 
     for (int i = 0; i < map.sizey; ++i) {
         for (int j = 0; j < map.sizex; ++j) {
-            mvwprintw(map_window, i, j, "%c",
-                    *(map.map_data + i * map.sizex + j));
+
+            char ch = *(map.map_data + i * map.sizex + j);
+            int pair = display_get_color_pair(ch);
+
+            wattron(map_window, COLOR_PAIR(pair));
+            mvwprintw(map_window, i, j, "%c", ch);
+            wattroff(map_window, COLOR_PAIR(pair));
         }
     }
 
@@ -130,4 +143,22 @@ void display_map(const MAP map, const POSITION pos)
 
     /* display the map */
     wrefresh(map_window);
+}
+
+/**
+ * Get the color pair from the list initialized int display_init() according
+ * to the character to be displayed
+ * @param char Character to be displayed
+ * @return int pair number
+ */
+int display_get_color_pair(char ch)
+{
+    switch (ch) {
+        case '~':
+            return 1;
+        case '+':
+            return 2;
+        default:
+            return 0;
+    }
 }
