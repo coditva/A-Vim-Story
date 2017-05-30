@@ -22,6 +22,7 @@ by Vim key mappings and shortcuts.
 Inspired by [Vim Adventures](https://vim-adventures.com/) and open sourced.
 
 ## Compiling
+Assuming you have libncurses, CMake and Make installed,
 ```bash
 mkdir build && cd build
 cmake ..
