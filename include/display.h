@@ -12,7 +12,9 @@ void                display_help();
 
 WINDOW *            display_get_map_window();
 WINDOW *            display_get_main_window();
+WINDOW *            display_get_status_window();
 void                display_set_main_window();
 void                display_set_map_window();
+void                display_set_status_window();
 
 #endif /* end of include guard: DISPLAY_H */

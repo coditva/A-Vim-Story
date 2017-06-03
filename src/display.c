@@ -9,6 +9,7 @@
 
 WINDOW *main_window;
 WINDOW *map_window;
+WINDOW *status_window;
 
 /* local functions */
 int display_get_color_pair(char);
@@ -30,6 +31,15 @@ WINDOW * display_get_main_window()
 WINDOW * display_get_map_window()
 {
     return map_window;
+}
+
+/**
+ * Return the status window
+ * @return WINDOW* return the status window
+ */
+WINDOW * display_get_status_window()
+{
+    return status_window;
 }
 
 /**
@@ -55,23 +65,36 @@ void display_set_map_window()
 }
 
 /**
+ * Initializes the status window
+ */
+void display_set_status_window()
+{
+    status_window = newwin(1, COLS, LINES - 1, 0);
+    if (status_window == NULL) {
+        fprintf(stderr, "%d - Could not initialize status window\n", getpid());
+    }
+}
+
+/**
  * Initialize display variables and create main window
  */
 void display_init()
 {
     display_set_main_window();
     display_set_map_window();
+    display_set_status_window();
 
     curs_set(0);
     start_color();
     clear();
 
     /* initialize color pairs */
-    init_pair(1, COLOR_BLUE, COLOR_BLUE);
-    init_pair(2, COLOR_RED, COLOR_RED);
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);
+    init_pair(2, COLOR_BLUE, COLOR_BLUE);
     init_pair(3, COLOR_MAGENTA, COLOR_MAGENTA);
     init_pair(4, COLOR_BLACK, COLOR_YELLOW);
     init_pair(5, COLOR_CYAN, COLOR_CYAN);
+    init_pair(6, COLOR_BLACK, COLOR_WHITE);
 }
 
 /**
@@ -128,6 +151,7 @@ void display_map(const MAP map, const POSITION pos)
     WINDOW *map_window;
 
     map_window = display_get_map_window();
+    wbkgd(map_window, COLOR_PAIR(display_get_color_pair('~')));
 
     for (int i = 0; i < map.sizey; ++i) {
         for (int j = 0; j < map.sizex; ++j) {
@@ -145,11 +169,16 @@ void display_map(const MAP map, const POSITION pos)
     wmove(map_window, pos.y, pos.x);
     curs_set(2);
 
+    /* set the status bar msg */
+    wbkgd(status_window, COLOR_PAIR(6));
+    mvwprintw(status_window, 0, 0, "status bar");
+    wrefresh(status_window);
+
     /* display the map */
     prefresh(map_window,
             min(max(0, pos.y - LINES / 2), map.sizey - LINES),
             min(max(0, pos.x - COLS / 2), map.sizex - COLS),
-            0, 0, LINES - 1, COLS - 1);
+            0, 0, LINES - 2, COLS - 1);
 }
 
 /**
@@ -162,7 +191,6 @@ int display_get_color_pair(char ch)
 {
     switch (ch) {
         case '~':
-            return 1;
         case '+':
             return 2;
         case '`':
@@ -172,6 +200,6 @@ int display_get_color_pair(char ch)
         case '#':
             return 5;
         default:
-            return 0;
+            return 1;
     }
 }
