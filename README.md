@@ -33,8 +33,7 @@ make
 For documentation, a configuration file for Doxygen is provided. Assuming you
  have doxygen installed, issue these commands:
 ```bash
-cd doc
-doxygen config
+doxygen doc/config
 ```
 
 ## Author
