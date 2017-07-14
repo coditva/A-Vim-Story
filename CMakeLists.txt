@@ -28,6 +28,9 @@ set(CMAKE_C_FLAGS " \
     ${PROJECT_LINKER_FLAGS} \
 ")
 
+# Find and check external library
+find_library(NCURSES_LIB ncurses)
+
 # Setup list of source files
 set(PROJECT_SOURCES
     src/display.c
