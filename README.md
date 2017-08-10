@@ -37,8 +37,7 @@ doxygen doc/config
 ```
 
 ## Author
-[Utkarsh Maheshwari](https://github.com/UtkarshMe) under the guidance of
-[Dr. Ramprasad S. Joshi](http://www.bits-pilani.ac.in/goa/rsj/profile)
+[Utkarsh Maheshwari](https://github.com/UtkarshMe)
 
 ## License
 [GPL version 3](https://github.com/UtkarshMe/a-vim-story/blob/master/LICENSE)
