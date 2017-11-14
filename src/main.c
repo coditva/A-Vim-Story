@@ -2,7 +2,6 @@
 #include <ncurses.h>            /* for input key enum */
 
 
-#include "config.h"
 #include "datatypes.h"
 #include "map.h"
 #include "display.h"

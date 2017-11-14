@@ -2,7 +2,6 @@
 #include <string.h>
 #include <assert.h>             /* for assert() */
 
-#include "config.h"
 #include "datatypes.h"
 #include "display.h"
 
