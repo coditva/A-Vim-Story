@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <string.h>
+#include <assert.h>             /* for assert() */
 
 #include "config.h"
 #include "datatypes.h"
@@ -46,7 +47,7 @@ boolean display_init()
     box(menu_window, '|', '-');           /* create a box around the window */
 
     /* create map window */
-    map_window = subwin(display, 1, COLS, 0, 0);
+    map_window = subwin(display, LINES - 1, COLS, 1, 0);
     if (!map_window) return B_FALSE;
 
     return B_TRUE;
@@ -90,4 +91,34 @@ void display_menu_show(enum menu_item selected)
     }
 
     wrefresh(menu_window);
+}
+
+void display_map_show(map_t *map)
+{
+    int count = 0;
+    for (int y = 0; y < map -> size.y; ++y) {
+        for (int x = 0; x < map -> size.x; ++x) {
+            switch (map -> data[count]) {
+                case TILE_BORDER:
+                    mvwprintw(map_window, y, x, "%c", '*');
+                    break;
+                case TILE_WATER:
+                    mvwprintw(map_window, y, x, "%c", '~');
+                    break;
+                case TILE_GRASS:
+                    mvwprintw(map_window, y, x, "%c", ' ');
+                    break;
+                case TILE_BRICK:
+                    mvwprintw(map_window, y, x, "%c", '#');
+                    break;
+                default:
+                    assert(0);      /* this should never happen */
+            }
+            count++;
+        }
+    }
+
+    mvwprintw(map_window, map -> cursor.y, map -> cursor.x, "C");
+
+    wrefresh(map_window);
 }

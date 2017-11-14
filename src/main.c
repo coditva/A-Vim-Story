@@ -12,6 +12,9 @@
 /* Displays menu on top of everything and gets the user choice */
 enum menu_item get_menu_choice();
 
+/* Play the game */
+boolean game_play();
+
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +24,12 @@ int main(int argc, char *argv[])
     input_init();
 
     choice = get_menu_choice();
+
+    if (choice == MENU_NEW_GAME) {
+        /* start a new game */
+        game_play();
+    }
+    sleep(2);
 
     display_destroy();
     return 0;
@@ -58,4 +67,15 @@ enum menu_item get_menu_choice()
     }
     
     return choice;
+}
+
+boolean game_play()
+{
+    map_t *map = NULL;
+
+    map = map_load();
+    if (map == NULL) return B_FALSE;
+
+    display_map_show(map);
+    return B_TRUE;
 }
