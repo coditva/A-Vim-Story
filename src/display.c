@@ -96,20 +96,27 @@ void display_menu_show(enum menu_item selected)
 void display_map_show(map_t *map)
 {
     int count = 0;
+    point_t margin;
+
+    margin.x = ( COLS - map -> size.x ) / 2;
+    margin.y = ( LINES - map -> size.y ) / 2;
+
+    clear();
+
     for (int y = 0; y < map -> size.y; ++y) {
         for (int x = 0; x < map -> size.x; ++x) {
             switch (map -> data[count]) {
                 case TILE_BORDER:
-                    mvwprintw(map_window, y, x, "%c", '*');
+                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", '*');
                     break;
                 case TILE_WATER:
-                    mvwprintw(map_window, y, x, "%c", '~');
+                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", '~');
                     break;
                 case TILE_GRASS:
-                    mvwprintw(map_window, y, x, "%c", ' ');
+                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", ' ');
                     break;
                 case TILE_BRICK:
-                    mvwprintw(map_window, y, x, "%c", '#');
+                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", '#');
                     break;
                 default:
                     assert(0);      /* this should never happen */
@@ -118,7 +125,10 @@ void display_map_show(map_t *map)
         }
     }
 
-    mvwprintw(map_window, map -> cursor.y, map -> cursor.x, "C");
+    mvwprintw(map_window,
+            margin.y + map -> cursor.y,
+            margin.x + map -> cursor.x,
+            "C");
 
     wrefresh(map_window);
 }
