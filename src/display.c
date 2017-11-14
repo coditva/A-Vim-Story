@@ -32,7 +32,6 @@ boolean display_init()
     display = initscr();
 
     curs_set(0);                /* make cursor invisible */
-    start_color();              /* use colors */
     clear();                    /* clear the display */
 
     /* create status bar */
@@ -103,7 +102,7 @@ void display_map_show(map_t *map)
     margin.x = ( COLS - map -> size.x ) / 2;
     margin.y = ( LINES - map -> size.y ) / 2;
 
-    wclear(menu_window);
+    clear();
 
     for (int y = 0; y < map -> size.y; ++y) {
         for (int x = 0; x < map -> size.x; ++x) {

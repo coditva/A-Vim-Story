@@ -13,4 +13,10 @@ boolean map_init();
  */
 map_t * map_load();
 
+/**
+ * Check the map position and return if the position is movable
+ * @return B_TRUE is tile empty, B_FALSE otherwise
+ */
+boolean map_is_free(map_t *, point_t);
+
 #endif /* end of include guard: MAP_H_K8P4JCPW */

@@ -65,3 +65,14 @@ map_t * map_load()
 
     return map;
 }
+
+boolean map_is_free(map_t *map, point_t point)
+{
+    int pos = 0;
+
+    pos = map -> size.x * point.y + point.x;
+    if (map -> data[pos] == TILE_GRASS) {
+        return B_TRUE;
+    }
+    return B_FALSE;
+}

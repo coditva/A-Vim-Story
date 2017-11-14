@@ -23,12 +23,16 @@ int main(int argc, char *argv[])
     display_init();
     input_init();
 
-    choice = get_menu_choice();
+    while (1) {
+        choice = get_menu_choice();
 
-    if (choice == MENU_NEW_GAME) {
-        /* start a new game */
-        game_play();
-        sleep(2);
+        if (choice == MENU_NEW_GAME) {
+            game_play();        /* start a new game */
+        } else if (choice == MENU_HELP) {
+            /* display help msg */
+        } else if (choice == MENU_QUIT) {
+            break;              /* exit the controller loop */
+        }
     }
 
     display_destroy();
@@ -65,17 +69,49 @@ enum menu_item get_menu_choice()
 
         display_menu_show(choice);
     }
-    
+
     return choice;
 }
 
 boolean game_play()
 {
     map_t *map = NULL;
+    input_key_t key;
+    int loop = 1;
+    point_t point;
 
     map = map_load();
     if (map == NULL) return B_FALSE;
 
-    display_map_show(map);
+    while (loop) {
+        display_map_show(map);
+        key = input_get_key();
+        switch (key) {
+            case 'j':
+                point.x = map -> cursor.x;
+                point.y = map -> cursor.y + 1;
+                break;
+            case 'k':
+                point.x = map -> cursor.x;
+                point.y = map -> cursor.y - 1;
+                break;
+            case 'l':
+                point.x = map -> cursor.x + 1;
+                point.y = map -> cursor.y;
+                break;
+            case 'h':
+                point.x = map -> cursor.x - 1;
+                point.y = map -> cursor.y;
+                break;
+            case 'q':
+                loop = 0;
+                break;
+        }
+
+        if (map_is_free(map, point)) {
+            map -> cursor.x = point.x;
+            map -> cursor.y = point.y;
+        }
+    }
     return B_TRUE;
 }

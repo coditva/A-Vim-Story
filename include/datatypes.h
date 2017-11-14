@@ -6,7 +6,7 @@
  * A type to store boolean values:
  * B_TRUE and B_FALSE
  */
-typedef enum { B_TRUE, B_FALSE } boolean;
+typedef enum { B_FALSE, B_TRUE } boolean;
 
 
 /**
