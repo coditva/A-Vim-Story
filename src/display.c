@@ -8,6 +8,7 @@
 
 
 #define MENU_WIDTH 20
+#define MENU_PADDING 2
 
 
 WINDOW *display;                /* the main display */
@@ -38,13 +39,13 @@ boolean display_init()
     status_bar = subwin(display, 1, COLS, 0, 0);
     if (!status_bar) return B_FALSE;
 
-    /* create menu window of the smallest size possible in the center */
+    /* create menu window in the center */
     menu_window = subwin(display,
-            MENU_SIZE + 2,                  MENU_WIDTH,
-            (LINES - MENU_SIZE) / 2 - 1,    (COLS - MENU_WIDTH) / 2);
+            MENU_SIZE + 2 * MENU_PADDING,               /* size y  */
+            MENU_WIDTH + 2 * MENU_PADDING,              /* size x  */
+            (LINES - MENU_SIZE) / 2 - MENU_PADDING,     /* start y */
+            (COLS - MENU_WIDTH) / 2 - MENU_PADDING);    /* start x */
     if (!menu_window) return B_FALSE;
-
-    box(menu_window, '|', '-');           /* create a box around the window */
 
     /* create map window */
     map_window = subwin(display, LINES - 1, COLS, 1, 0);
@@ -80,13 +81,14 @@ void display_menu_show(enum menu_item selected)
     int x = 0;
     enum menu_item y = 0;
 
-    mvwprintw(menu_window, 0, 1, "Menu");
+    wclear(menu_window);
+    box(menu_window, '|', '-');           /* create a box around the window */
 
     for (; y < MENU_SIZE; ++y) {
-        x = ( MENU_WIDTH - strlen(menu_label[y]) ) / 2;
+        x = MENU_PADDING + ( MENU_WIDTH - strlen(menu_label[y]) ) / 2;
 
         if (y == selected) wstandout(menu_window);
-        mvwprintw(menu_window, y + 1, x, menu_label[y]);
+        mvwprintw(menu_window, y + 1 + MENU_PADDING - 1, x, menu_label[y]);
         if (y == selected) wstandend(menu_window);
     }
 
@@ -101,7 +103,7 @@ void display_map_show(map_t *map)
     margin.x = ( COLS - map -> size.x ) / 2;
     margin.y = ( LINES - map -> size.y ) / 2;
 
-    clear();
+    wclear(menu_window);
 
     for (int y = 0; y < map -> size.y; ++y) {
         for (int x = 0; x < map -> size.x; ++x) {

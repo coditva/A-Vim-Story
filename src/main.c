@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
     if (choice == MENU_NEW_GAME) {
         /* start a new game */
         game_play();
+        sleep(2);
     }
-    sleep(2);
 
     display_destroy();
     return 0;
