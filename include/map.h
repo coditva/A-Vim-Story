@@ -1,10 +1,22 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef MAP_H_K8P4JCPW
+#define MAP_H_K8P4JCPW
 
-#include "datatypes.h"
+/**
+ * Initialize the map and parameters
+ * @return boolean B_TRUE if success, B_FALSE otherwise
+ */
+boolean map_init();
 
-void                map_open(MAP *, POSITION *);
-POSITION            map_get_pos(POSITION, int);
-int                 map_move_valid(POSITION, MAP);
+/**
+ * Load the map into map_t structure and return it
+ * @return pointer to the loaded map
+ */
+map_t * map_load();
 
-#endif /* end of include guard: MAP_H */
+/**
+ * Check the map position and return if the position is movable
+ * @return B_TRUE is tile empty, B_FALSE otherwise
+ */
+boolean map_is_free(map_t *, point_t);
+
+#endif /* end of include guard: MAP_H_K8P4JCPW */

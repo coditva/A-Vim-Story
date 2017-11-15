@@ -1,67 +1,88 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <assert.h>
+#include <unistd.h>             /* for NULL */
+#include <stdlib.h>             /* for malloc() */
+#include <assert.h>             /* for assert() */
 
-#include "map.h"
 #include "datatypes.h"
+#include "map.h"
 
-/**
- * Open and the map and initial position. Takes a map with the filename
- * initialized.
- * @param MAP* pointer to the unloaded map
- * @param POSITION* pointer to the position
- */
-void map_open(MAP *map, POSITION *pos)
+boolean map_init()
 {
-    MAP_INIT map_init;
-
-    /* open file for reading */
-    assert(map -> filepointer != NULL);
-    map -> filepointer = fopen(map -> filename, "rb");
-    if (map -> filepointer == NULL) {
-        fprintf(stderr, "%d - %s\n", getpid(), "Unable to open map file");
-        exit(EXIT_FAILURE);
-    }
-
-    /* load initial variables */
-    fread(&map_init, sizeof(MAP_INIT), 1, map -> filepointer);
-
-    map -> sizex = map_init.sizex;
-    map -> sizey = map_init.sizey;
-    pos -> x = map_init.startx;
-    pos -> y = map_init.starty;
-
-    /* load the map from start */
-    map -> map_data = (char *) malloc((map -> sizex + 2) * map -> sizey);
-    fseek(map -> filepointer, sizeof(MAP_INIT), SEEK_SET);
-    fgets(map -> map_data, (map -> sizex + 2) * map -> sizey,
-            map -> filepointer);
-
-    /* close the file */
-    fclose(map -> filepointer);
-    map -> filepointer = NULL;
+    return B_TRUE;
 }
 
-int map_move_valid(POSITION pos, MAP map)
+map_t * map_load()
 {
-    char requested_char;
+    /* TODO: remove the hardcoded map */
 
-    /* if it exceeds map size return false */
-    if (pos.x > map.sizex - 1 || pos.y > map.sizey - 1) {
-        return 0;
+    map_t *map = NULL;
+    char buffer[20][92] = {
+        "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ############################################# ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #              #   #            #           # ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # ############ # # # ######## # # ######### # ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # #            # # # #   #  # # #   # # #   # ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # ################ # # #   ## # # # #   # # # ~~~~~~+",
+        "+~~~~~       #   #                                        # # ###### # # # ## ## # # ~~~~~~+",
+        "+~~~~~       # # # ~~~~~~~~~~~~~~~~~~~ ##################   #        # # #       # # ~~~~~~+",
+        "+~~~~~       # # # ~~~~~~~~~~~~~~~~~~~ #                  ############ # ######### # ~~~~~~+",
+        "+~~~~~         #   ~~~~~~~~~~~~~~~~~~~ # ############# ###   #   #     #           # ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # #           #   # # # #   ########## ###### ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # # ######### ### ### #  # #       #          ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # ########### #   #    # # ##### # # ######## ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #             # ### ## # # #   # # # #  #   # ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###############      #   #   #   #   ##   #   ~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
+        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
+        "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    };
+
+    map = (map_t *) malloc(sizeof(map_t));
+
+    map -> size.x = 92;
+    map -> size.y = 20;
+
+    map -> data = (map_tile_t *) malloc(sizeof(map_tile_t) 
+            * map -> size.x
+            * map -> size.y);
+
+    int count = 0;
+    for (int i = 0; i < map -> size.y; ++i) {
+        for (int j = 0; j < map -> size.x; ++j) {
+            switch (buffer[i][j]) {
+                case '~':
+                    map -> data[count] = TILE_WATER;
+                    break;
+                case '+':
+                    map -> data[count] = TILE_BORDER;
+                    break;
+                case ' ':
+                    map -> data[count] = TILE_GRASS;
+                    break;
+                case '#':
+                    map -> data[count] = TILE_BRICK;
+                    break;
+                default:
+                    assert(0);      /* this should never happen */
+            }
+            count++;
+        }
     }
 
-    requested_char = *( map.map_data + (pos.y * map.sizex) + pos.x );
+    map -> cursor.x = 8;
+    map -> cursor.y = 9;
 
-    /* define what is reachable and what is not */
-    switch (requested_char) {
-        case '~':
-        case '+':
-        case '`':
-            return 0;
-        case ' ':
-        default:
-            return 1;
+    return map;
+}
+
+boolean map_is_free(map_t *map, point_t point)
+{
+    int pos = 0;
+
+    pos = map -> size.x * point.y + point.x;
+    if (map -> data[pos] == TILE_GRASS) {
+        return B_TRUE;
     }
+    return B_FALSE;
 }

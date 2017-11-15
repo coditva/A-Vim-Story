@@ -1,53 +1,72 @@
-#ifndef DATATYPES_H
-#define DATATYPES_H
+#ifndef DATATYPES_H_PH0MEKHP
+#define DATATYPES_H_PH0MEKHP
 
-#define MAX_MAP_SIZE 500
 
 /**
- * Enumeration for menu items
+ * A type to store boolean values:
+ * B_TRUE and B_FALSE
  */
-enum MENU
-{
-    NEW_GAME,
-    LOAD_GAME,
-    SAVE_GAME,
-    SETTINGS,
-    HELP,
-    QUIT,
-    SIZE
+typedef enum { B_FALSE, B_TRUE } boolean;
+
+
+/**
+ * Enum to store the number of items in the menu
+ */
+enum menu_item {
+    MENU_NEW_GAME,
+    MENU_HELP,
+    MENU_QUIT,
+    MENU_SIZE
 };
 
-/**
- * Datatype for storing map details
- */
-typedef struct MAP_STRUCT
-{
-    int level;
-    char *filename;
-    FILE *filepointer;
-    int sizex;
-    int sizey;
-    char *map_data;
-} MAP;
 
 /**
- * Datatype for initial map variables
+ * Define the input key type
  */
-typedef struct MAP_INIT_STRUCT
-{
-    int sizex;
-    int sizey;
-    int startx;
-    int starty;
-} MAP_INIT;
+typedef int input_key_t;
+
 
 /**
- * Position of the cursor
+ * A data structure to store the 2D point pair
  */
-typedef struct POSITION_STRUCT
-{
+typedef struct {
     int x;
     int y;
-} POSITION;
+} point_t;
 
-#endif /* end of include guard: DATATYPES_H */
+
+/**
+ * Define the types of tiles in the map
+ */
+typedef enum {
+    TILE_WATER,
+    TILE_BORDER,
+    TILE_BRICK,
+    TILE_GRASS,
+    TILE_SIZE
+} map_tile_t;
+
+
+/**
+ * Define a type for storing color
+ */
+typedef enum {
+    COL_BLK_BLK,                /* read as color - black on black */
+    COL_WHI_WHI,
+    COL_RED_RED,
+    COL_GRN_GRN,
+    COL_BLU_BLU,
+} color_t;
+
+
+/**
+ * A data structure to store the map
+ */
+typedef struct {
+    point_t size;
+    point_t cursor;
+    map_tile_t *data;
+} map_t;
+
+
+#endif /* end of include guard: DATATYPES_H_PH0MEKHP */

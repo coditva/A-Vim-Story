@@ -1,113 +1,98 @@
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <unistd.h>             /* for sleep() */
+#include <ncurses.h>            /* for input key enum */
 
-#include "main.h"
-#include "display.h"
-#include "input.h"
-#include "sound.h"
-#include "score.h"
-#include "menu.h"
+
 #include "datatypes.h"
 #include "map.h"
+#include "display.h"
+#include "input.h"
+#include "action.h"
 
-/* local functions */
-void start_new_game();
-void game_loop(MAP map, POSITION pos);
+
+/* Displays menu on top of everything and gets the user choice */
+enum menu_item get_menu_choice();
+
+/* Play the game */
+boolean game_play();
 
 
 int main(int argc, char *argv[])
 {
-    enum MENU choice;
+    enum menu_item choice = -1;
 
-    /* initialize components */
-    init();
+    display_init();
+    input_init();
 
-    /* display the welcome message */
-    display_welcome_msg();
+    while (1) {
+        choice = get_menu_choice();
 
-    /* display menu and get the choice */
-    choice = menu_get_choice();
-
-    switch (choice) {
-        case NEW_GAME:
-            start_new_game();
-        case LOAD_GAME:
-        case SAVE_GAME:
-        case SETTINGS:
-        case HELP:
-        case QUIT:
-        case SIZE:
-        default:
-            break;
+        if (choice == MENU_NEW_GAME) {
+            game_play();        /* start a new game */
+        } else if (choice == MENU_HELP) {
+            /* display help msg */
+        } else if (choice == MENU_QUIT) {
+            break;              /* exit the controller loop */
+        }
     }
 
-    destroy();
+    display_destroy();
     return 0;
 }
 
-void start_new_game()
+enum menu_item get_menu_choice()
 {
-    MAP map;
-    POSITION pos;
+    input_key_t key;
+    enum menu_item choice = MENU_NEW_GAME;
 
-    /* load default score, map, position */
-    map.filename = "../data/maps/2.map";
-    map.level = 1;
-    map_open(&map, &pos);
+    display_menu_show(MENU_NEW_GAME);
 
-    game_loop(map, pos);
-}
+    while (1) {
+        key = input_get_key();
 
-/**
- * Run the game loop. This is where the magic happens!
- * @param MAP the map, fully initialized
- * @param POSITION the position on the map
- */
-void game_loop(MAP map, POSITION pos)
-{
-    int game = 1;
-    WINDOW *win;
-    POSITION new_pos;
-
-    /* need to get the map window use with the input */
-    win = display_get_map_window();
-
-    while (game) {
-
-        /* display the updated map */
-        display_map(map, pos);
-
-        /* get position */
-        new_pos = input_get_new_pos(win, pos);
-
-        /* check if user requested quiting */
-        if (new_pos.x == 0 && new_pos.y == 0) {
-            game = 0;
+        if (key == 10) {
+            break;
         }
 
-        /* check if move feasable and update position */
-        if (map_move_valid(new_pos, map)) {
-            pos.x = new_pos.x;
-            pos.y = new_pos.y;
+        switch (key) {
+            case 'j':
+                choice++;
+                break;
+            case 'k':
+                choice--;
+                break;
+            default:
+                continue;
         }
+
+        if (choice == MENU_SIZE) choice = 0;
+        if (choice == -1) choice = MENU_SIZE - 1;
+
+        display_menu_show(choice);
     }
+
+    return choice;
 }
 
-/**
- * Initialize the main process as well as the submodules
- */
-void init()
+boolean game_play()
 {
-    display_init();
-    input_init();
-    sound_init();
-}
+    map_t *map = NULL;
+    input_key_t key;
+    int loop = 1;
 
-/**
- * Destroy the main process as well as the submodules
- */
-void destroy()
-{
-    display_destroy();
+    map = map_load();
+    if (map == NULL) return B_FALSE;
+
+    while (loop) {
+        display_map_show(map);
+        key = input_get_key();
+
+        /* keep quit as the exit key for now.
+         * TODO: delete when commands are implemented */
+        if (key == 'q') {
+            break;
+        }
+
+        action_make_move(map, key);
+    }
+    return B_TRUE;
 }

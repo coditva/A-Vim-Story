@@ -1,9 +1,15 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef INPUT_H_D4GRHNZB
+#define INPUT_H_D4GRHNZB
 
-#include "datatypes.h"
+/**
+ * Initialize and configure the input
+ */
+boolean input_init();
 
-void                input_init();
-POSITION            input_get_new_pos(WINDOW *, POSITION);
+/**
+ * Wait for a key press and return it
+ * @return The key pressed
+ */
+input_key_t input_get_key();
 
-#endif /* end of include guard: INPUT_H */
+#endif /* end of include guard: INPUT_H_D4GRHNZB */

@@ -33,14 +33,11 @@ find_library(NCURSES_LIB ncurses)
 
 # Setup list of source files
 set(PROJECT_SOURCES
+    src/main.c
     src/display.c
     src/input.c
-    src/main.c
-    src/score.c
-    src/sound.c
-    src/menu.c
     src/map.c
-    src/util.c
+    src/action.c
 )
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
