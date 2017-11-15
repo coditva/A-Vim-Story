@@ -37,6 +37,7 @@ set(PROJECT_SOURCES
     src/display.c
     src/input.c
     src/map.c
+    src/action.c
 )
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})

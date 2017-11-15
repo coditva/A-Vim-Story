@@ -6,6 +6,7 @@
 #include "map.h"
 #include "display.h"
 #include "input.h"
+#include "action.h"
 
 
 /* Displays menu on top of everything and gets the user choice */
@@ -77,7 +78,6 @@ boolean game_play()
     map_t *map = NULL;
     input_key_t key;
     int loop = 1;
-    point_t point;
 
     map = map_load();
     if (map == NULL) return B_FALSE;
@@ -85,32 +85,14 @@ boolean game_play()
     while (loop) {
         display_map_show(map);
         key = input_get_key();
-        switch (key) {
-            case 'j':
-                point.x = map -> cursor.x;
-                point.y = map -> cursor.y + 1;
-                break;
-            case 'k':
-                point.x = map -> cursor.x;
-                point.y = map -> cursor.y - 1;
-                break;
-            case 'l':
-                point.x = map -> cursor.x + 1;
-                point.y = map -> cursor.y;
-                break;
-            case 'h':
-                point.x = map -> cursor.x - 1;
-                point.y = map -> cursor.y;
-                break;
-            case 'q':
-                loop = 0;
-                break;
+
+        /* keep quit as the exit key for now.
+         * TODO: delete when commands are implemented */
+        if (key == 'q') {
+            break;
         }
 
-        if (map_is_free(map, point)) {
-            map -> cursor.x = point.x;
-            map -> cursor.y = point.y;
-        }
+        action_make_move(map, key);
     }
     return B_TRUE;
 }
