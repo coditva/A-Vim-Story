@@ -26,12 +26,41 @@ char *menu_label[] = {
 };
 
 
+/**
+ * The properties for various tiles
+ */
+struct {
+    color_t color;
+    char value;
+} map_tile_props[TILE_SIZE];
+
+
+
 boolean display_init()
 {
     display = initscr();
 
     curs_set(0);                /* make cursor invisible */
+    start_color();              /* use colors in the game */
     clear();                    /* clear the display */
+
+    /* fill in tile properties */
+    map_tile_props[TILE_BORDER].color = COL_WHI_WHI;
+    map_tile_props[TILE_BORDER].value = '*';
+    map_tile_props[TILE_GRASS].color = COL_GRN_GRN;
+    map_tile_props[TILE_GRASS].value = ' ';
+    map_tile_props[TILE_BRICK].color = COL_RED_RED;
+    map_tile_props[TILE_BRICK].value = '#';
+    map_tile_props[TILE_WATER].color = COL_BLU_BLU;
+    map_tile_props[TILE_WATER].value = '~';
+
+    /* initialize color pairs */
+    init_pair(COL_BLK_BLK,  COLOR_BLACK,    COLOR_BLACK);
+    init_pair(COL_WHI_WHI,  COLOR_WHITE,    COLOR_WHITE);
+    init_pair(COL_RED_RED,  COLOR_RED,      COLOR_RED);
+    init_pair(COL_GRN_GRN,  COLOR_GREEN,    COLOR_GREEN);
+    init_pair(COL_BLU_BLU,  COLOR_BLUE,     COLOR_BLUE);
+
 
     /* create status bar */
     status_bar = subwin(display, 1, COLS, 0, 0);
@@ -105,30 +134,24 @@ void display_map_show(map_t *map)
 
     for (int y = 0; y < map -> size.y; ++y) {
         for (int x = 0; x < map -> size.x; ++x) {
-            switch (map -> data[count]) {
-                case TILE_BORDER:
-                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", '*');
-                    break;
-                case TILE_WATER:
-                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", '~');
-                    break;
-                case TILE_GRASS:
-                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", ' ');
-                    break;
-                case TILE_BRICK:
-                    mvwprintw(map_window, margin.y + y, margin.x + x, "%c", '#');
-                    break;
-                default:
-                    assert(0);      /* this should never happen */
-            }
+            wattron(map_window, COLOR_PAIR(
+                        map_tile_props[map -> data[count]].color));
+
+            mvwprintw(map_window, margin.y + y, margin.x + x, "%c",
+                    map_tile_props[map -> data[count]].value);
+
+            wattroff(map_window, COLOR_PAIR(
+                        map_tile_props[map -> data[count]].color));
             count++;
         }
     }
 
+    wattron(map_window, COLOR_PAIR(COL_BLK_BLK));
     mvwprintw(map_window,
             margin.y + map -> cursor.y,
             margin.x + map -> cursor.x,
-            "C");
+            " ");
+    wattroff(map_window, COLOR_PAIR(COL_BLK_BLK));
 
     wrefresh(map_window);
 }

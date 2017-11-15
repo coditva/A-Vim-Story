@@ -43,7 +43,20 @@ typedef enum {
     TILE_BORDER,
     TILE_BRICK,
     TILE_GRASS,
+    TILE_SIZE
 } map_tile_t;
+
+
+/**
+ * Define a type for storing color
+ */
+typedef enum {
+    COL_BLK_BLK,                /* read as color - black on black */
+    COL_WHI_WHI,
+    COL_RED_RED,
+    COL_GRN_GRN,
+    COL_BLU_BLU,
+} color_t;
 
 
 /**
