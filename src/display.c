@@ -9,6 +9,10 @@
 #define MENU_WIDTH 20
 #define MENU_PADDING 2
 
+/* TODO: remove this */
+#define MAPMAXX 900
+#define MAPMAXY 900
+
 
 WINDOW *display;                /* the main display */
 WINDOW *map_window;             /* the map subwindow */
@@ -75,7 +79,7 @@ boolean display_init()
     if (!menu_window) return B_FALSE;
 
     /* create map window */
-    map_window = subwin(display, LINES - 1, COLS, 1, 0);
+    map_window = newpad(MAPMAXY, MAPMAXX);
     if (!map_window) return B_FALSE;
 
     return B_TRUE;
@@ -159,5 +163,13 @@ void display_map_show(map_t *map)
             "  ");
     wattroff(map_window, COLOR_PAIR(COL_WHI_WHI));
 
-    wrefresh(map_window);
+    /* TODO: WHY DO WE NEED TO REFRESH? */
+    refresh();
+
+    /* scaled cursor position minus half the width gives the screen
+     * start position */
+    prefresh(map_window,
+            scale.y * map -> cursor.y - (LINES / 2),
+            scale.x * map -> cursor.x - (COLS  / 2),
+            2, 1, LINES - 4, COLS - 2);
 }

@@ -1,5 +1,4 @@
 #include <unistd.h>             /* for sleep() */
-#include <ncurses.h>            /* for input key enum */
 
 
 #include "datatypes.h"
