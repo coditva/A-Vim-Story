@@ -4,6 +4,7 @@
 
 #include "datatypes.h"
 #include "display.h"
+#include "util.h"
 
 
 #define MENU_WIDTH 20
@@ -132,11 +133,11 @@ void display_map_show(map_t *map)
     point_t margin;
     point_t scale;
 
-    margin.x = ( COLS - map -> size.x ) / 2;
-    margin.y = ( LINES - map -> size.y ) / 2;
+    margin.y = MAX(0, ( LINES - map -> size.y ) / 2);
+    margin.x = MAX(0, ( COLS  - map -> size.x ) / 2);
 
-    scale.x = 2;
     scale.y = 1;
+    scale.x = 2;
 
     clear();
 
@@ -146,8 +147,8 @@ void display_map_show(map_t *map)
                         map_tile_props[map -> data[count]].color));
 
             mvwprintw(map_window,
-                    scale.y * (margin.y + y),
-                    scale.x * (margin.x + x),
+                    margin.y + scale.y * y,
+                    margin.x + scale.x * x,
                     "%c ", map_tile_props[map -> data[count]].value);
 
             wattroff(map_window, COLOR_PAIR(
@@ -158,8 +159,8 @@ void display_map_show(map_t *map)
 
     wattron(map_window, COLOR_PAIR(COL_WHI_WHI));
     mvwprintw(map_window,
-            scale.y * (margin.y + map -> cursor.y),
-            scale.x * (margin.x + map -> cursor.x),
+            margin.y + scale.y * map -> cursor.y,
+            margin.x + scale.x * map -> cursor.x,
             "  ");
     wattroff(map_window, COLOR_PAIR(COL_WHI_WHI));
 
@@ -171,5 +172,5 @@ void display_map_show(map_t *map)
     prefresh(map_window,
             scale.y * map -> cursor.y - (LINES / 2),
             scale.x * map -> cursor.x - (COLS  / 2),
-            2, 1, LINES - 4, COLS - 2);
+            0, 0, LINES - 1, COLS - 2);
 }
