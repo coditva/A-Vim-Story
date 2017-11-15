@@ -44,22 +44,22 @@ boolean display_init()
     start_color();              /* use colors in the game */
     clear();                    /* clear the display */
 
-    /* fill in tile properties */
-    map_tile_props[TILE_BORDER].color = COL_WHI_WHI;
-    map_tile_props[TILE_BORDER].value = '*';
-    map_tile_props[TILE_GRASS].color = COL_GRN_GRN;
-    map_tile_props[TILE_GRASS].value = ' ';
-    map_tile_props[TILE_BRICK].color = COL_RED_RED;
-    map_tile_props[TILE_BRICK].value = '#';
-    map_tile_props[TILE_WATER].color = COL_BLU_BLU;
-    map_tile_props[TILE_WATER].value = '~';
-
     /* initialize color pairs */
     init_pair(COL_BLK_BLK,  COLOR_BLACK,    COLOR_BLACK);
     init_pair(COL_WHI_WHI,  COLOR_WHITE,    COLOR_WHITE);
     init_pair(COL_RED_RED,  COLOR_RED,      COLOR_RED);
     init_pair(COL_GRN_GRN,  COLOR_GREEN,    COLOR_GREEN);
     init_pair(COL_BLU_BLU,  COLOR_BLUE,     COLOR_BLUE);
+
+    /* fill in tile properties */
+    map_tile_props[TILE_BORDER].color = COL_BLK_BLK;
+    map_tile_props[TILE_BORDER].value = ' ';
+    map_tile_props[TILE_GRASS].color = COL_GRN_GRN;
+    map_tile_props[TILE_GRASS].value = ' ';
+    map_tile_props[TILE_BRICK].color = COL_BLK_BLK;
+    map_tile_props[TILE_BRICK].value = ' ';
+    map_tile_props[TILE_WATER].color = COL_BLK_BLK;
+    map_tile_props[TILE_WATER].value = ' ';
 
 
     /* create status bar */
@@ -126,9 +126,13 @@ void display_map_show(map_t *map)
 {
     int count = 0;
     point_t margin;
+    point_t scale;
 
     margin.x = ( COLS - map -> size.x ) / 2;
     margin.y = ( LINES - map -> size.y ) / 2;
+
+    scale.x = 2;
+    scale.y = 1;
 
     clear();
 
@@ -137,8 +141,10 @@ void display_map_show(map_t *map)
             wattron(map_window, COLOR_PAIR(
                         map_tile_props[map -> data[count]].color));
 
-            mvwprintw(map_window, margin.y + y, margin.x + x, "%c",
-                    map_tile_props[map -> data[count]].value);
+            mvwprintw(map_window,
+                    scale.y * (margin.y + y),
+                    scale.x * (margin.x + x),
+                    "%c ", map_tile_props[map -> data[count]].value);
 
             wattroff(map_window, COLOR_PAIR(
                         map_tile_props[map -> data[count]].color));
@@ -146,12 +152,12 @@ void display_map_show(map_t *map)
         }
     }
 
-    wattron(map_window, COLOR_PAIR(COL_BLK_BLK));
+    wattron(map_window, COLOR_PAIR(COL_WHI_WHI));
     mvwprintw(map_window,
-            margin.y + map -> cursor.y,
-            margin.x + map -> cursor.x,
-            " ");
-    wattroff(map_window, COLOR_PAIR(COL_BLK_BLK));
+            scale.y * (margin.y + map -> cursor.y),
+            scale.x * (margin.x + map -> cursor.x),
+            "  ");
+    wattroff(map_window, COLOR_PAIR(COL_WHI_WHI));
 
     wrefresh(map_window);
 }
