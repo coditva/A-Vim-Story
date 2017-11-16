@@ -38,7 +38,6 @@ char *menu_label[] = {
  */
 struct {
     color_t color;
-    char value;
 } map_tile_props[TILE_SIZE];
 
 
@@ -59,6 +58,7 @@ boolean display_init()
     init_pair(COL_BLU_BLU,  COLOR_BLUE,     COLOR_BLUE);
     init_pair(COL_BLK_WHI,  COLOR_BLACK,    COLOR_WHITE);
     init_pair(COL_BLK_BLU,  COLOR_BLACK,    COLOR_BLUE);
+    init_pair(COL_YEL_YEL,  COLOR_YELLOW,    COLOR_YELLOW);
 
     /* fill in tile properties */
     map_tile_props[TILE_BORDER].color = COL_BLK_BLK;
@@ -66,6 +66,8 @@ boolean display_init()
     map_tile_props[TILE_BRICK].color = COL_BLK_BLK;
     map_tile_props[TILE_WATER].color = COL_BLK_BLK;
     map_tile_props[TILE_LETTER].color = COL_BLK_WHI;
+    map_tile_props[TILE_DOOR].color = COL_YEL_YEL;
+    map_tile_props[TILE_GEM].color = COL_RED_RED;
 
 
     /* create status bar */
@@ -145,16 +147,15 @@ void display_map_show(map_t *map)
 
     for (int y = 0; y < map -> size.y; ++y) {
         for (int x = 0; x < map -> size.x; ++x) {
-            wattron(map_window, COLOR_PAIR(
-                        map_tile_props[map -> data[count].type].color));
+            tile = map -> data[count];
 
+            wattron(map_window, COLOR_PAIR(map_tile_props[tile.type].color));
             mvwprintw(map_window,
-                    margin.y + scale.y * y,
-                    margin.x + scale.x * x,
-                    "%c ", map -> data[count].value);
+                    margin.y + scale.y * y, margin.x + scale.x * x,
+                    "%c ", tile.value);
 
-            wattroff(map_window, COLOR_PAIR(
-                        map_tile_props[map -> data[count].type].color));
+            wattroff(map_window, COLOR_PAIR(map_tile_props[tile.type].color));
+
             count++;
         }
     }

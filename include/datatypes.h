@@ -45,6 +45,8 @@ enum map_tile_type {
     TILE_BRICK,
     TILE_GRASS,
     TILE_LETTER,
+    TILE_DOOR,
+    TILE_GEM,
     TILE_SIZE
 };
 
@@ -65,6 +67,7 @@ typedef enum {
     COL_BLU_BLU,
     COL_BLK_WHI,
     COL_BLK_BLU,
+    COL_YEL_YEL,
 } color_t;
 
 
