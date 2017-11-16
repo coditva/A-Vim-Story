@@ -21,7 +21,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 # Add compiler flags
 set(PROJECT_DEBUG_FLAGS "-g")
 set(PROJECT_LINKER_FLAGS "-lncurses -ltinfo -ldl")
-set(PROJECT_SOURCE_FLAGS "-ansi -std=c99 -pedantic -Wall")
+set(PROJECT_SOURCE_FLAGS "-ansi -std=c99 -Wall")
 set(CMAKE_C_FLAGS " \
     ${PROJECT_DEBUG_FLAGS} \
     ${PROJECT_SOURCE_FLAGS} \
