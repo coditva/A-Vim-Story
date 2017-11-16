@@ -75,23 +75,14 @@ enum menu_item get_menu_choice()
 boolean game_play()
 {
     map_t *map = NULL;
-    input_key_t key;
-    int loop = 1;
 
     map = map_load();
     if (map == NULL) return B_FALSE;
 
-    while (loop) {
+    while (1) {
         display_map_show(map);
-        key = input_get_key();
-
-        /* keep quit as the exit key for now.
-         * TODO: delete when commands are implemented */
-        if (key == 'q') {
+        if (!action_make_move(map))
             break;
-        }
-
-        action_make_move(map, key);
     }
     return B_TRUE;
 }

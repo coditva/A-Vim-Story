@@ -5,11 +5,15 @@
 #include "map.h"
 #include "input.h"
 
-void action_make_move(map_t *map, input_key_t key)
+int action_make_move(map_t *map)
 {
     point_t point;
     int loop = 1;
     int multiplier = 0;
+    input_key_t key;
+
+    /* get the key */
+    key = input_get_key();
 
     /* check if key's available */
 
@@ -49,6 +53,8 @@ void action_make_move(map_t *map, input_key_t key)
                 /* update the key */
                 key = input_get_key();
                 break;
+            case 'q':
+                return 0;
         }
 
         if (!map_is_free(map, point)) {
@@ -58,4 +64,6 @@ void action_make_move(map_t *map, input_key_t key)
             map -> cursor.y = point.y;
         }
     }
+
+    return 1;
 }
