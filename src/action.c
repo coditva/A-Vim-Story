@@ -4,6 +4,7 @@
 #include "action.h"
 #include "map.h"
 #include "input.h"
+#include "key.h"
 
 int action_make_move(map_t *map)
 {
@@ -12,16 +13,22 @@ int action_make_move(map_t *map)
     int multiplier = 0;
     input_key_t key;
 
-    /* get the key */
-    key = input_get_key();
-
-    /* check if key's available */
-
     /* calculate the update */
     point.x = map -> cursor.x;
     point.y = map -> cursor.y;
 
-    while (loop--) {
+    /* get key and check if it's unlocked */
+    key = input_get_key();
+
+    while (loop) {
+
+        if (!key_unlocked(key)) {
+            key = input_get_key();
+            continue;
+        } else {
+            loop--;
+        }
+
         switch (key) {
             case 'j':
                 point.y += 1;
@@ -49,8 +56,6 @@ int action_make_move(map_t *map)
 
                 /* loop it multiplier number of times */
                 loop = multiplier;
-
-                /* update the key */
                 key = input_get_key();
                 break;
             case 'q':

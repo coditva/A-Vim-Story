@@ -6,6 +6,7 @@
 #include "display.h"
 #include "input.h"
 #include "action.h"
+#include "key.h"
 
 
 /* Displays menu on top of everything and gets the user choice */
@@ -78,6 +79,14 @@ boolean game_play()
 
     map = map_load();
     if (map == NULL) return B_FALSE;
+
+    /* unlock some keys */
+    key_unlock('j');
+    key_unlock('k');
+    key_unlock('h');
+    key_unlock('l');
+    key_unlock('q');
+    key_unlock('9');
 
     while (1) {
         display_map_show(map);
