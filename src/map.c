@@ -120,6 +120,7 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
     map -> data[pos].type = TILE_DOOR;
 
     /* add gems */
+    map -> gems_left = buffer -> gems.count;
     for (int i = 0; i < buffer -> gems.count; ++i) {
         pos = convert_point_to_linear(map, buffer -> gems.data[i]);
         map -> data[pos].type = TILE_GEM;

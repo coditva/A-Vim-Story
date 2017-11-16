@@ -14,13 +14,7 @@ mapfile_data_t map = {
         .x = 10,
     },
     .gems = {
-        .count = 1,
-        .data = {
-            {
-                .y = 5,
-                .x = 27,
-            },
-        },
+        .count = 0,
     },
     .data = {
         "+++++++++++++++++++++++++++++++++++++++++++++",
@@ -28,7 +22,7 @@ mapfile_data_t map = {
         "+ You-are---.                               +",
         "+                                           +",
         "+ The-objective-is-to-reach-a-yellow-'door' +",
-        "+ after-collecting-all-the---.              +",
+        "+ after-collecting-all-the-gems.            +",
         "+                                           +",
         "+ Unlock-'keys'-(by-going-over-them)-to-use +",
         "+ them-for-moving-around.                   +",

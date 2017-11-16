@@ -64,15 +64,22 @@ int play()
             /* update the old tile to grass */
             tile.type = TILE_GRASS;
             map_set_tile(map, map -> cursor, tile);
+            map -> gems_left--;
 
             /* display a msg */
             display_msg_show("You got a gem!");
 
         } else if (tile.type == TILE_DOOR) {
-            /* add score and update status bar */
-            game.status.score += 20;
-            display_status_show(game.status);
-            break;
+
+            /* check if all gems are collected */
+            if (map -> gems_left) {
+                display_msg_show("There are some gems left to collect!");
+            } else {
+                /* add score and update status bar */
+                game.status.score += 20;
+                display_status_show(game.status);
+                break;
+            }
         }
 
         if (!action_make_move(map))

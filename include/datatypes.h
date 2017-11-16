@@ -87,6 +87,7 @@ typedef struct {
     point_t size;
     point_t cursor;
     map_tile_t *data;
+    int gems_left;
 } map_t;
 
 
