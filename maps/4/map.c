@@ -3,17 +3,12 @@
 #include "datatypes.h"
 
 /* The map! */
-#define X 3
-#define Y 8
+#define X 8
+#define Y 3
 char buffer[Y][X] = {
-    "~~~",
-    "~%~",
-    "~ ~",
-    "~ ~",
-    "~ ~",
-    "~ ~",
-    "~k~",
-    "~~~"
+    "~~~~~~~~",
+    "~%    h~",
+    "~~~~~~~~",
 };
 
 map_t * get_map()
@@ -24,8 +19,8 @@ map_t * get_map()
 
     map -> size.y = Y;
     map -> size.x = X;
-    map -> cursor.y = 6;
-    map -> cursor.x = 1;
+    map -> cursor.y = 1;
+    map -> cursor.x = 6;
 
     map -> data = (map_tile_t *) malloc(sizeof(map_tile_t) * X * Y);
     assert(map -> data);

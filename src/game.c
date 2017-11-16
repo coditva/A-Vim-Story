@@ -34,12 +34,8 @@ int game_play()
     if (!(map = map_load(map_name[game.level]))) return B_FALSE;
     assert(map);
 
-    /* unlock the basic keys */
+    /* unlock the quit key */
     key_unlock('q');
-    key_unlock('h');
-    key_unlock('j');
-    key_unlock('k');
-    key_unlock('l');
 
     while (1) {
         display_map_show(map);
@@ -81,7 +77,7 @@ int game_play()
     map_free(map);
 
     /* prompt user to procede */
-    display_msg_show("You reached a door and won the game! Press any key to continue");
+    display_msg_show("You reached a door! Press any key to go to next level");
     game.level++;
     action_prompt();
 

@@ -46,6 +46,9 @@ set(PROJECT_SOURCES
 
 add_subdirectory(maps/1)
 add_subdirectory(maps/2)
+add_subdirectory(maps/3)
+add_subdirectory(maps/4)
+add_subdirectory(maps/5)
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_LINKER_FLAGS})

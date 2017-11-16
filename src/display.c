@@ -103,14 +103,6 @@ boolean display_destroy()
     return B_TRUE;
 }
 
-boolean display_refresh()
-{
-    if (wrefresh(map_window) == ERR) return B_FALSE;
-    if (wrefresh(status_bar) == ERR) return B_FALSE;
-
-    return B_TRUE;
-}
-
 void display_menu_show(enum menu_item selected)
 {
     int x = 0;
@@ -143,7 +135,7 @@ void display_map_show(map_t *map)
     scale.y = 1;
     scale.x = 2;
 
-    clear();
+    wclear(map_window);
 
     for (int y = 0; y < map -> size.y; ++y) {
         for (int x = 0; x < map -> size.x; ++x) {
@@ -170,9 +162,6 @@ void display_map_show(map_t *map)
             margin.x + scale.x * map -> cursor.x,
             "%c ", tile.value);
     wattroff(map_window, COLOR_PAIR(COL_BLK_BLU));
-
-    /* TODO: WHY DO WE NEED TO REFRESH? */
-    refresh();
 
     /* scaled cursor position minus half the width gives the screen
      * start position */
