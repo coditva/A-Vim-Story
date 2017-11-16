@@ -7,7 +7,7 @@
                                                              __/ |
                                                             |___/
 
-#### A ncurses based game for learning Vim
+#### A _ncurses_ based game for learning Vim
 
 ## Overview
 There are a lot of problems faced by beginners to [Vim](http://www.vim.org/)
@@ -16,13 +16,13 @@ lot of resources for learning Vim, they can get tedious and time consuming.
 
 The project aims to make a game played by using the shortcuts and key mappings
 in Vim to ease into the famous learning curve of Vim. The idea is to make a
-retro console game (like bomberman and the likes) which is controlled solely
+retro console game (like bomber-man and the likes) which is controlled solely
 by Vim key mappings and shortcuts.  
 
 Inspired by [Vim Adventures](https://vim-adventures.com/) and open sourced.
 
 ## Compiling
-Assuming you have libncurses, CMake and Make installed,
+Assuming you have _libncurses_, _CMake_ and _Make_ installed,
 ```bash
 mkdir build && cd build
 cmake ..
@@ -30,10 +30,10 @@ make
 ```
 
 ## Documentation
-For documentation, a configuration file for Doxygen is provided. Assuming you
- have doxygen installed, issue these commands:
+For documentation, a configuration file for _Doxygen_ is provided. Assuming you
+ have _doxygen_ installed, issue these commands:
 ```bash
-doxygen doc/config
+doxygen doxygen.conf
 ```
 
 ## Author
