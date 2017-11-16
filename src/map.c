@@ -100,6 +100,10 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
                 case '+':
                     map -> data[pos].type = TILE_WATER;
                     break;
+                case '-':
+                    map -> data[pos].type = TILE_LETTER;
+                    map -> data[pos].value = ' ';
+                    break;
                 case ' ':
                     map -> data[pos].type = TILE_GRASS;
                     break;

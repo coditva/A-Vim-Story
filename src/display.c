@@ -174,7 +174,7 @@ void display_msg_close()
 
 void display_msg_show(char *message)
 {
-    WINDOW *msg_win = subwin(display, 4, COLS - 4, 2, 2);
+    WINDOW *msg_win = subwin(display, 3, COLS - 4, 2, 2);
     assert(msg_win != NULL);
 
     mvwprintw(msg_win, 0, 0, "%s", message);

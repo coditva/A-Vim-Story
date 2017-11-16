@@ -13,14 +13,14 @@
 /* Keep the game detail */
 game_t game;
 char map_name[][3] = {
-    "\0", "1", "2", "3", "4", "5", "6", "7",
+    "0", "1", "2", "3", "4", "5", "6", "7",
 };
 
 int play();
 
 void game_play()
 {
-    game.level = 1;
+    game.level = 0;
     game.status.score = 0;
     while (play()) {
         game.level++;

@@ -44,6 +44,7 @@ set(PROJECT_SOURCES
     src/menu.c
 )
 
+add_subdirectory(maps/0)
 add_subdirectory(maps/1)
 add_subdirectory(maps/2)
 add_subdirectory(maps/3)
