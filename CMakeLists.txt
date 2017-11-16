@@ -44,12 +44,12 @@ set(PROJECT_SOURCES
     src/menu.c
 )
 
-add_subdirectory(maps/0)
-add_subdirectory(maps/1)
-add_subdirectory(maps/2)
-add_subdirectory(maps/3)
-add_subdirectory(maps/4)
-add_subdirectory(maps/5)
+# Add all maps
+
+
+foreach(i RANGE 6)
+    add_subdirectory(maps/${i})
+endforeach()
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_LINKER_FLAGS})
