@@ -8,6 +8,7 @@
 #include "action.h"
 #include "key.h"
 #include "msg.h"
+#include "score.h"
 
 
 /* Displays menu on top of everything and gets the user choice */
@@ -78,6 +79,7 @@ enum menu_item get_menu_choice()
 boolean game_play()
 {
     map_t *map = NULL;
+    map_tile_t tile;
 
     map = map_load();
     if (map == NULL) return B_FALSE;
@@ -92,11 +94,33 @@ boolean game_play()
     while (1) {
         display_map_show(map);
 
+        /* get tile details for the map */
+        tile = map_get_tile(map, map -> cursor);
+
         /* if the cursor got onto a letter tile, unlock it */
-        map_tile_t tile = map_get_tile(map, map -> cursor);
         if (tile.type == TILE_LETTER) {
             key_unlock(tile.value);
+
+            /* display a msg */
             display_msg_show(msg_get_keymsg(tile.value));
+            display_msg_close();
+
+        } else if (tile.type == TILE_GEM) {
+            score_add(10);
+
+            /* update the old tile to grass */
+            tile.type = TILE_GRASS;
+            map_set_tile(map, map -> cursor, tile);
+
+            /* display a msg */
+            display_msg_show("You got a gem!");
+            display_msg_close();
+
+        } else if (tile.type == TILE_DOOR) {
+            score_add(20);
+
+            /* display a msg */
+            display_msg_show("You reached a door and won the game!");
             display_msg_close();
         }
 

@@ -104,6 +104,11 @@ map_tile_t map_get_tile(map_t *map, point_t point)
     return map -> data[convert_point_to_linear(map, point)];
 }
 
+void map_set_tile(map_t *map, point_t point, map_tile_t tile)
+{
+    map -> data[convert_point_to_linear(map, point)] = tile;
+}
+
 int convert_point_to_linear(map_t *map, point_t point)
 {
     return map -> size.x * point.y + point.x;

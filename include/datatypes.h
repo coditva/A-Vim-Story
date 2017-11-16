@@ -80,5 +80,8 @@ typedef struct {
     map_tile_t *data;
 } map_t;
 
+/**
+ * Define the type to store score */
+typedef int score_t;
 
 #endif /* end of include guard: DATATYPES_H_PH0MEKHP */

@@ -40,6 +40,7 @@ set(PROJECT_SOURCES
     src/action.c
     src/key.c
     src/msg.c
+    src/score.c
 )
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})

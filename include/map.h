@@ -27,4 +27,12 @@ boolean map_is_free(map_t *, point_t);
  */
 map_tile_t map_get_tile(map_t *, point_t);
 
+/**
+ * Update the current tile to a new given tile at the given point
+ * @param The pointer to the map
+ * @param The point on the map
+ * @param The new tile
+ */
+void map_set_tile(map_t *, point_t, map_tile_t);
+
 #endif /* end of include guard: MAP_H_K8P4JCPW */
