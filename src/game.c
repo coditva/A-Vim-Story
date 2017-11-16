@@ -26,7 +26,7 @@ void game_play()
         game.level++;
 
         /* prompt user to procede */
-        display_msg_show("You reached a door! Press any key to go to next level");
+        display_msg_show("Press any key to go to next level...");
         action_prompt();
     }
 }
