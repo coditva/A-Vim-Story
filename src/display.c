@@ -125,11 +125,11 @@ void display_map_show(map_t *map)
     point_t scale;
     map_tile_t tile;
 
-    margin.y = MAX(0, ( LINES - map -> size.y ) / 2);
-    margin.x = MAX(0, ( COLS  - map -> size.x ) / 2);
-
     scale.y = 1;
     scale.x = 2;
+
+    margin.y = MAX(0, ( LINES - scale.y * map -> size.y ) / 2);
+    margin.x = MAX(0, ( COLS  - scale.x * map -> size.x ) / 2);
 
     wclear(map_window);
 
