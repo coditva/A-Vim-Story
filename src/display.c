@@ -162,8 +162,8 @@ void display_map_show(map_t *map)
     /* scaled cursor position minus half the width gives the screen
      * start position */
     prefresh(map_window,
-            scale.y * map -> cursor.y - (LINES / 2),
-            scale.x * map -> cursor.x - (COLS  / 2),
+            MIN(scale.y * map -> cursor.y - (LINES / 2), scale.y * map -> size.y - LINES),
+            MIN(scale.x * map -> cursor.x - (COLS  / 2), scale.x * map -> size.x - COLS),
             0, 0, LINES - 1, COLS - 2);
 }
 
