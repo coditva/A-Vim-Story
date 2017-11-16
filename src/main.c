@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     enum menu_item choice = -1;
     game_t game;
 
+    /* initialize everything */
     display_init();
     input_init();
     msg_init();
@@ -29,6 +30,9 @@ int main(int argc, char *argv[])
         }
     }
 
+    /* cleanup everything */
+    msg_destroy();
     display_destroy();
+
     return 0;
 }

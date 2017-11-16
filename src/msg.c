@@ -19,10 +19,11 @@ boolean msg_init()
 
 char * msg_get_keymsg(input_key_t key)
 {
-    char *msg = NULL;
+    return message[key];
+}
 
-    msg = (char *) malloc(strlen(message[key]) + 1);
-    strcpy(msg, message[key]);
-
-    return msg;
+boolean msg_destroy()
+{
+    /* clear all the messages */
+    return B_TRUE;
 }

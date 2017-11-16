@@ -50,6 +50,9 @@ enum map_tile_type {
     TILE_SIZE
 };
 
+/**
+ * A structure to represent a tile on the map
+ */
 typedef struct {
     enum map_tile_type type;
     char value;
