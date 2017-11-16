@@ -191,6 +191,7 @@ void display_msg_show(char *message)
     mvwprintw(msg_win, 0, 0, "%s", message);
 
     wrefresh(msg_win);
+    display_msg_close();
 }
 
 void display_msg_close()

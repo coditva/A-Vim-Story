@@ -104,10 +104,11 @@ boolean game_play()
 
             /* display a msg */
             display_msg_show(msg_get_keymsg(tile.value));
-            display_msg_close();
 
         } else if (tile.type == TILE_GEM) {
+            /* add score and update status bar */
             score_add(10);
+            display_status_show();
 
             /* update the old tile to grass */
             tile.type = TILE_GRASS;
@@ -115,14 +116,14 @@ boolean game_play()
 
             /* display a msg */
             display_msg_show("You got a gem!");
-            display_msg_close();
 
         } else if (tile.type == TILE_DOOR) {
+            /* add score and update status bar */
             score_add(20);
+            display_status_show();
 
             /* display a msg */
             display_msg_show("You reached a door and won the game!");
-            display_msg_close();
         }
 
         if (!action_make_move(map))
