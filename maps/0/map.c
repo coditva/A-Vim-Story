@@ -7,11 +7,11 @@ mapfile_data_t map = {
     },
     .cursor = {
         .y = 2,
-        .x = 22,
+        .x = 10,
     },
     .exit = {
         .y = 2,
-        .x = 22,
+        .x = 10,
     },
     .gems = {
         .count = 1,
@@ -25,7 +25,7 @@ mapfile_data_t map = {
     .data = {
         "+++++++++++++++++++++++++++++++++++++++++++++",
         "+                                           +",
-        "+            You-are:                       +",
+        "+ You-are---.                               +",
         "+                                           +",
         "+ The-objective-is-to-reach-a-yellow-'door' +",
         "+ after-collecting-all-the---.              +",
