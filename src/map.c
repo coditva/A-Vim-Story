@@ -5,6 +5,10 @@
 #include "datatypes.h"
 #include "map.h"
 
+
+int convert_point_to_linear(map_t *, point_t);
+
+
 boolean map_init()
 {
     return B_TRUE;
@@ -23,10 +27,10 @@ map_t * map_load()
         "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# ############ # # # ######## # # ######### #~+",
         "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# #            # # # #   #  # # #   # # #   #~+",
         "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# ################ # # #   ## # # # #   # # #~+",
-        "+~       #   #                                        # # ###### # # # ## ## # #~+",
+        "+~ l  j  #   #                                        # # ###### # # # ## ## # #~+",
         "+~       # # # ~~~~~~~~~~~~~~~~~~~~##################   #        # # #       # #~+",
         "+~       # # # ~~~~~~~~~~~~~~~~~~~~#                  ############ # ######### #~+",
-        "+~         #   ~~~~~~~~~~~~~~~~~~~~# ############# ###   #   #     #           #~+",
+        "+~ k  h    #   ~~~~~~~~~~~~~~~~~~~~# ############# ###   #   #     #           #~+",
         "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# #           #   # # # #   ########## ######~+",
         "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# # ######### ### ### #  # #       #         ~+",
         "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# ########### #   #    # # ##### # # ########~+",
@@ -48,28 +52,30 @@ map_t * map_load()
     int count = 0;
     for (int i = 0; i < map -> size.y; ++i) {
         for (int j = 0; j < map -> size.x; ++j) {
+            map -> data[count].value = ' ';
             switch (buffer[i][j]) {
                 case '~':
-                    map -> data[count] = TILE_WATER;
+                    map -> data[count].type = TILE_WATER;
                     break;
                 case '+':
-                    map -> data[count] = TILE_BORDER;
+                    map -> data[count].type = TILE_BORDER;
                     break;
                 case ' ':
-                    map -> data[count] = TILE_GRASS;
+                    map -> data[count].type = TILE_GRASS;
                     break;
                 case '#':
-                    map -> data[count] = TILE_BRICK;
+                    map -> data[count].type = TILE_BRICK;
                     break;
                 default:
-                    assert(0);      /* this should never happen */
+                    map -> data[count].type = TILE_LETTER;
+                    map -> data[count].value = buffer[i][j];
             }
             count++;
         }
     }
 
-    map -> cursor.x = 4;
-    map -> cursor.y = 8;
+    map -> cursor.x = 3;
+    map -> cursor.y = 7;
 
     return map;
 }
@@ -78,9 +84,21 @@ boolean map_is_free(map_t *map, point_t point)
 {
     int pos = 0;
 
-    pos = map -> size.x * point.y + point.x;
-    if (map -> data[pos] == TILE_GRASS) {
+    pos = convert_point_to_linear(map, point);
+
+    if (map -> data[pos].type == TILE_GRASS
+            || map -> data[pos].type == TILE_LETTER) {
         return B_TRUE;
     }
     return B_FALSE;
+}
+
+map_tile_t map_get_tile(map_t *map, point_t point)
+{
+    return map -> data[convert_point_to_linear(map, point)];
+}
+
+int convert_point_to_linear(map_t *map, point_t point)
+{
+    return map -> size.x * point.y + point.x;
 }

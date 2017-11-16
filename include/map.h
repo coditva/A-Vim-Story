@@ -19,4 +19,12 @@ map_t * map_load();
  */
 boolean map_is_free(map_t *, point_t);
 
+/**
+ * Return the tile on the map at the given position
+ * @param The pointer to the map
+ * @param The point on the map
+ * @return The tile on the map
+ */
+map_tile_t map_get_tile(map_t *, point_t);
+
 #endif /* end of include guard: MAP_H_K8P4JCPW */

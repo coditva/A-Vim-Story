@@ -38,12 +38,18 @@ typedef struct {
 /**
  * Define the types of tiles in the map
  */
-typedef enum {
+enum map_tile_type {
     TILE_WATER,
     TILE_BORDER,
     TILE_BRICK,
     TILE_GRASS,
+    TILE_LETTER,
     TILE_SIZE
+};
+
+typedef struct {
+    enum map_tile_type type;
+    char value;
 } map_tile_t;
 
 
@@ -56,6 +62,8 @@ typedef enum {
     COL_RED_RED,
     COL_GRN_GRN,
     COL_BLU_BLU,
+    COL_BLK_WHI,
+    COL_BLK_BLU,
 } color_t;
 
 

@@ -80,16 +80,18 @@ boolean game_play()
     map = map_load();
     if (map == NULL) return B_FALSE;
 
-    /* unlock some keys */
-    key_unlock('j');
-    key_unlock('k');
-    key_unlock('h');
-    key_unlock('l');
+    /* unlock the quit key */
     key_unlock('q');
-    key_unlock('9');
 
     while (1) {
         display_map_show(map);
+
+        /* if the cursor got onto a letter tile, unlock it */
+        map_tile_t tile = map_get_tile(map, map -> cursor);
+        if (tile.type == TILE_LETTER) {
+            key_unlock(tile.value);
+        }
+
         if (!action_make_move(map))
             break;
     }

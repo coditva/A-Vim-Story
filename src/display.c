@@ -5,6 +5,7 @@
 #include "datatypes.h"
 #include "display.h"
 #include "util.h"
+#include "map.h"
 
 
 #define MENU_WIDTH 20
@@ -55,16 +56,15 @@ boolean display_init()
     init_pair(COL_RED_RED,  COLOR_RED,      COLOR_RED);
     init_pair(COL_GRN_GRN,  COLOR_GREEN,    COLOR_GREEN);
     init_pair(COL_BLU_BLU,  COLOR_BLUE,     COLOR_BLUE);
+    init_pair(COL_BLK_WHI,  COLOR_BLACK,    COLOR_WHITE);
+    init_pair(COL_BLK_BLU,  COLOR_BLACK,    COLOR_BLUE);
 
     /* fill in tile properties */
     map_tile_props[TILE_BORDER].color = COL_BLK_BLK;
-    map_tile_props[TILE_BORDER].value = ' ';
     map_tile_props[TILE_GRASS].color = COL_GRN_GRN;
-    map_tile_props[TILE_GRASS].value = ' ';
     map_tile_props[TILE_BRICK].color = COL_BLK_BLK;
-    map_tile_props[TILE_BRICK].value = ' ';
     map_tile_props[TILE_WATER].color = COL_BLK_BLK;
-    map_tile_props[TILE_WATER].value = ' ';
+    map_tile_props[TILE_LETTER].color = COL_BLK_WHI;
 
 
     /* create status bar */
@@ -132,6 +132,7 @@ void display_map_show(map_t *map)
     int count = 0;
     point_t margin;
     point_t scale;
+    map_tile_t tile;
 
     margin.y = MAX(0, ( LINES - map -> size.y ) / 2);
     margin.x = MAX(0, ( COLS  - map -> size.x ) / 2);
@@ -144,26 +145,29 @@ void display_map_show(map_t *map)
     for (int y = 0; y < map -> size.y; ++y) {
         for (int x = 0; x < map -> size.x; ++x) {
             wattron(map_window, COLOR_PAIR(
-                        map_tile_props[map -> data[count]].color));
+                        map_tile_props[map -> data[count].type].color));
 
             mvwprintw(map_window,
                     margin.y + scale.y * y,
                     margin.x + scale.x * x,
-                    "%c ", map_tile_props[map -> data[count]].value);
+                    "%c ", map -> data[count].value);
 
             wattroff(map_window, COLOR_PAIR(
-                        map_tile_props[map -> data[count]].color));
+                        map_tile_props[map -> data[count].type].color));
             count++;
         }
     }
 
     /* print the cursor */
-    wattron(map_window, COLOR_PAIR(COL_WHI_WHI));
+    wattron(map_window, COLOR_PAIR(COL_BLK_BLU));
+
+    /* get the tile under the cursor and print it's value */
+    tile = map_get_tile(map, map -> cursor);
     mvwprintw(map_window,
             margin.y + scale.y * map -> cursor.y,
             margin.x + scale.x * map -> cursor.x,
-            "  ");
-    wattroff(map_window, COLOR_PAIR(COL_WHI_WHI));
+            "%c ", tile.value);
+    wattroff(map_window, COLOR_PAIR(COL_BLK_BLU));
 
     /* TODO: WHY DO WE NEED TO REFRESH? */
     refresh();
