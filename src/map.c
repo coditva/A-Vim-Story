@@ -29,7 +29,6 @@ map_t * map_load(char *map_name)
     /* open the map */
     strcat(map_path, map_name);
     handle = dlopen(map_path, RTLD_NOW);
-    assert(handle);
     if (!handle) return NULL;
 
     /* get the function */

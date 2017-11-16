@@ -12,10 +12,16 @@
 
 /* Keep the game detail */
 game_t game;
+char map_name[][3] = {
+    "\0", "1", "2", "3", "4", "5", "6", "7",
+};
+
+void game_level_increment();
+
 
 boolean game_init()
 {
-    strcpy(game.level, "1");
+    game.level = 1;
     game.status.score = 0;
     return B_TRUE;
 }
@@ -25,7 +31,7 @@ int game_play()
     map_t *map = NULL;
     map_tile_t tile;
 
-    if (!(map = map_load(game.level))) return B_FALSE;
+    if (!(map = map_load(map_name[game.level]))) return B_FALSE;
     assert(map);
 
     /* unlock the basic keys */
@@ -73,10 +79,10 @@ int game_play()
     }
 
     map_free(map);
-    strcpy(game.level, "2");
 
     /* prompt user to procede */
     display_msg_show("You reached a door and won the game! Press any key to continue");
+    game.level++;
     action_prompt();
 
     return B_TRUE;

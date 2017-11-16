@@ -96,7 +96,7 @@ typedef struct {
  * A datastructure to store the game details
  */
 typedef struct {
-    char level[3];
+    int level;
     game_status_t status;
 } game_t;
 
