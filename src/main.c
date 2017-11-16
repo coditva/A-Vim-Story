@@ -7,6 +7,7 @@
 #include "input.h"
 #include "action.h"
 #include "key.h"
+#include "msg.h"
 
 
 /* Displays menu on top of everything and gets the user choice */
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 
     display_init();
     input_init();
+    msg_init();
 
     while (1) {
         choice = get_menu_choice();
@@ -80,8 +82,12 @@ boolean game_play()
     map = map_load();
     if (map == NULL) return B_FALSE;
 
-    /* unlock the quit key */
+    /* unlock the basic keys */
     key_unlock('q');
+    key_unlock('h');
+    key_unlock('j');
+    key_unlock('k');
+    key_unlock('l');
 
     while (1) {
         display_map_show(map);
@@ -90,6 +96,8 @@ boolean game_play()
         map_tile_t tile = map_get_tile(map, map -> cursor);
         if (tile.type == TILE_LETTER) {
             key_unlock(tile.value);
+            display_msg_show(msg_get_keymsg(tile.value));
+            display_msg_close();
         }
 
         if (!action_make_move(map))

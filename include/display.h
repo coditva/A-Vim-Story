@@ -36,4 +36,12 @@ void display_menu_show(enum menu_item);
  */
 void display_map_show(map_t *);
 
+
+/**
+ * Show the given message in a popup msg window
+ * @param The message to show
+ */
+void display_msg_show(char *);
+void display_msg_close();
+
 #endif /* end of include guard: DISPLAY_H_ZEJHMS7R */

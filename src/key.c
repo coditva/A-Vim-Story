@@ -1,7 +1,6 @@
 #include "datatypes.h"
 #include "key.h"
 
-#define KEY_MAX_SIZE 255
 boolean unlocked[KEY_MAX_SIZE];
 
 boolean key_unlocked(input_key_t key)

@@ -39,6 +39,7 @@ set(PROJECT_SOURCES
     src/map.c
     src/action.c
     src/key.c
+    src/msg.c
 )
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})

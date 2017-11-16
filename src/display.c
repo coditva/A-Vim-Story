@@ -20,6 +20,7 @@ WINDOW *display;                /* the main display */
 WINDOW *map_window;             /* the map subwindow */
 WINDOW *status_bar;             /* the status bar subwindow */
 WINDOW *menu_window;            /* the menu subwindow */
+WINDOW *msg_win;                /* the window for messages */
 
 
 /**
@@ -178,4 +179,19 @@ void display_map_show(map_t *map)
             scale.y * map -> cursor.y - (LINES / 2),
             scale.x * map -> cursor.x - (COLS  / 2),
             0, 0, LINES - 1, COLS - 2);
+}
+
+void display_msg_show(char *message)
+{
+    WINDOW *msg_win = subwin(display, 4, COLS - 4, 2, 2);
+    assert(msg_win != NULL);
+
+    mvwprintw(msg_win, 0, 0, "%s", message);
+
+    wrefresh(msg_win);
+}
+
+void display_msg_close()
+{
+    delwin(msg_win);
 }

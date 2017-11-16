@@ -23,6 +23,7 @@ enum menu_item {
 /**
  * Define the input key type
  */
+#define KEY_MAX_SIZE 255
 typedef int input_key_t;
 
 
