@@ -6,6 +6,7 @@
 #include "display.h"
 #include "util.h"
 #include "map.h"
+#include "score.h"
 
 
 #define MENU_WIDTH 20
@@ -195,4 +196,11 @@ void display_msg_show(char *message)
 void display_msg_close()
 {
     delwin(msg_win);
+}
+
+void display_status_show()
+{
+    wbkgd(status_bar, COLOR_PAIR(COL_BLK_WHI));
+    mvwprintw(status_bar, 0, 1, "Score: %d", score_get());
+    wrefresh(status_bar);
 }

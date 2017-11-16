@@ -93,6 +93,7 @@ boolean game_play()
 
     while (1) {
         display_map_show(map);
+        display_status_show();
 
         /* get tile details for the map */
         tile = map_get_tile(map, map -> cursor);

@@ -44,4 +44,10 @@ void display_map_show(map_t *);
 void display_msg_show(char *);
 void display_msg_close();
 
+
+/**
+ * Show the status bar
+ */
+void display_status_show();
+
 #endif /* end of include guard: DISPLAY_H_ZEJHMS7R */
