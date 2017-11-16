@@ -5,6 +5,7 @@
 /* max map size */
 #define MAPMAXX 900
 #define MAPMAXY 900
+#define MAXGEMS 10
 
 /**
  * A type to store boolean values:
@@ -96,6 +97,10 @@ typedef struct {
     point_t size;
     point_t cursor;
     point_t exit;
+    struct {
+        int count;
+        point_t data[MAXGEMS];
+    } gems;
     char data[MAPMAXY][MAPMAXX];
 } mapfile_data_t;
 

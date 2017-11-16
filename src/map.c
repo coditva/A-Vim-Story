@@ -81,7 +81,7 @@ int convert_point_to_linear(map_t *map, point_t point)
 map_t * parse_mapfile(mapfile_data_t *buffer)
 {
     map_t *map = NULL;
-    int count = 0;
+    int pos = 0;
 
     map = (map_t *) malloc(sizeof(map_t));
 
@@ -95,32 +95,31 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
 
     for (int i = 0; i < map -> size.y; ++i) {
         for (int j = 0; j < map -> size.x; ++j) {
-
-            map -> data[count].value = ' ';
+            map -> data[pos].value = ' ';
             switch (buffer -> data[i][j]) {
-                case '~':
-                    map -> data[count].type = TILE_WATER;
+                case '+':
+                    map -> data[pos].type = TILE_WATER;
                     break;
                 case ' ':
-                    map -> data[count].type = TILE_GRASS;
-                    break;
-                case '#':
-                    map -> data[count].type = TILE_BRICK;
-                    break;
-                case '@':
-                    map -> data[count].type = TILE_GEM;
+                    map -> data[pos].type = TILE_GRASS;
                     break;
                 default:
-                    map -> data[count].type = TILE_LETTER;
-                    map -> data[count].value = buffer -> data[i][j];
+                    map -> data[pos].type = TILE_LETTER;
+                    map -> data[pos].value = buffer -> data[i][j];
             }
-
-            count++;
+            pos++;
         }
     }
 
-    /* put door */
-    map -> data[convert_point_to_linear(map, buffer -> exit)].type = TILE_DOOR;
+    /* add door */
+    pos = convert_point_to_linear(map, buffer -> exit);
+    map -> data[pos].type = TILE_DOOR;
+
+    /* add gems */
+    for (int i = 0; i < buffer -> gems.count; ++i) {
+        pos = convert_point_to_linear(map, buffer -> gems.data[i]);
+        map -> data[pos].type = TILE_GEM;
+    }
 
     return map;
 }
