@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
         if (choice == MENU_NEW_GAME) {
             if (!(game.map = map_load("1"))) return 1;
             game_play(game);
+            map_free(game.map);
         } else if (choice == MENU_HELP) {
             /* display help msg */
         } else if (choice == MENU_QUIT) {

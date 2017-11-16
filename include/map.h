@@ -15,6 +15,12 @@ boolean map_init();
 map_t * map_load(char *);
 
 /**
+ * Unload the map
+ * @param Pointer to the map
+ */
+void map_free(map_t *);
+
+/**
  * Check the map position and return if the position is movable
  * @return B_TRUE is tile empty, B_FALSE otherwise
  */

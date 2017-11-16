@@ -7,10 +7,7 @@
 #include "map.h"
 
 /* Define the type for map pointer */
-typedef map_t * (*map_func_t)(void);
-
-/* Store the handle of the opened map */
-void *handle;
+typedef void * (*map_func_t)(void);
 
 
 /* Convert the point to a linear index and return */
@@ -27,6 +24,7 @@ map_t * map_load(char *map_name)
     map_t *map = NULL;
     char map_path[100] = "maps/map";
     map_func_t get_map;
+    void *handle;
 
     /* open the map */
     strcat(map_path, map_name);
@@ -43,14 +41,15 @@ map_t * map_load(char *map_name)
     map = (*get_map)();
 
     /* destroy the function, map */
-    /*free(get_map);*/
-    /*free(handle);*/
+    get_map = NULL;
+    dlclose(handle);
 
     return map;
 }
 
-void map_destroy()
+void map_free(map_t *map)
 {
+    free(map);
 }
 
 boolean map_is_free(map_t *map, point_t point)
