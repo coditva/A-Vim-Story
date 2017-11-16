@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         choice = menu_display();
 
         if (choice == MENU_NEW_GAME) {
-            if (!(game.map = map_load())) return 1;
+            if (!(game.map = map_load("1"))) return 1;
             game_play(game);
         } else if (choice == MENU_HELP) {
             /* display help msg */

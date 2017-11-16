@@ -9,9 +9,10 @@ boolean map_init();
 
 /**
  * Load the map into map_t structure and return it
+ * @param Name of the map
  * @return pointer to the loaded map
  */
-map_t * map_load();
+map_t * map_load(char *);
 
 /**
  * Check the map position and return if the position is movable

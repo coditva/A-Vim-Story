@@ -1,11 +1,19 @@
-#include <unistd.h>             /* for NULL */
-#include <stdlib.h>             /* for malloc() */
-#include <assert.h>             /* for assert() */
+#include <stdlib.h>             /* for free(), NULL */
+#include <string.h>             /* for strcpy() */
+#include <dlfcn.h>              /* for dlopen(), etc */
+#include <assert.h>
 
 #include "datatypes.h"
 #include "map.h"
 
+/* Define the type for map pointer */
+typedef map_t * (*map_func_t)(void);
 
+/* Store the handle of the opened map */
+void *handle;
+
+
+/* Convert the point to a linear index and return */
 int convert_point_to_linear(map_t *, point_t);
 
 
@@ -14,76 +22,35 @@ boolean map_init()
     return B_TRUE;
 }
 
-map_t * map_load()
+map_t * map_load(char *map_name)
 {
-    /* TODO: remove the hardcoded map */
-
     map_t *map = NULL;
-    char buffer[18][63] = {
-        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
-        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
-        "+~~~~~~~~~~~~~~~#############################################~+",
-        "+~~~~~~~~~~~~~~~#              #   #            #           #~+",
-        "+~~~~~~~~~~~~~~~# ############ # # # ######## # # ######### #~+",
-        "+~~~~~~~~~~~~~~~# #@           #@# # #   # @# # #   #@# #   #~+",
-        "+~~~~~~~~~~~~~~~# ################ # # #   ## # # # #   # # #~+",
-        "+~ k    #   #                      # # ###### # # # ## ## # #~+",
-        "+~h l   # # # ~~##################   #        # # #       # #~+",
-        "+~ j      #   ~~#                  ############ # ######### #~+",
-        "+~~~~~~~~~~~~~~~# ############# ###   #   #     #           #~+",
-        "+~~~~~~~~~~~~~~~# #           #   #@# # #   ########## ######~+",
-        "+~~~~~~~~~~~~~~~# #@######### ### ### #  # #       #         ~+",
-        "+~~~~~~~~~~~~~~~# ########### #   #    # # ##### # # ########~+",
-        "+~~~~~~~~~~~~~~~#             # ### ## # # #   # # #    #   #~+",
-        "+~~~~~~~~~~~~~~~###############      #   #   #   #   ##   # %~+",
-        "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
-        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    };
+    char map_path[100] = "maps/map";
+    map_func_t get_map;
 
-    map = (map_t *) malloc(sizeof(map_t));
+    /* open the map */
+    strcat(map_path, map_name);
+    handle = dlopen(map_path, RTLD_NOW);
+    assert(handle);
+    if (!handle) return NULL;
 
-    map -> size.x = 63;
-    map -> size.y = 18;
+    /* get the function */
+    get_map = (map_func_t) dlsym(handle, "get_map");
+    assert(get_map);
+    if (!get_map) return NULL;
 
-    map -> data = (map_tile_t *) malloc(sizeof(map_tile_t) 
-            * map -> size.x
-            * map -> size.y);
+    /* run the function to get the map */
+    map = (*get_map)();
 
-    int count = 0;
-    for (int i = 0; i < map -> size.y; ++i) {
-        for (int j = 0; j < map -> size.x; ++j) {
-            map -> data[count].value = ' ';
-            switch (buffer[i][j]) {
-                case '~':
-                    map -> data[count].type = TILE_WATER;
-                    break;
-                case '+':
-                    map -> data[count].type = TILE_BORDER;
-                    break;
-                case ' ':
-                    map -> data[count].type = TILE_GRASS;
-                    break;
-                case '#':
-                    map -> data[count].type = TILE_BRICK;
-                    break;
-                case '%':
-                    map -> data[count].type = TILE_DOOR;
-                    break;
-                case '@':
-                    map -> data[count].type = TILE_GEM;
-                    break;
-                default:
-                    map -> data[count].type = TILE_LETTER;
-                    map -> data[count].value = buffer[i][j];
-            }
-            count++;
-        }
-    }
-
-    map -> cursor.y = 8;
-    map -> cursor.x = 3;
+    /* destroy the function, map */
+    /*free(get_map);*/
+    /*free(handle);*/
 
     return map;
+}
+
+void map_destroy()
+{
 }
 
 boolean map_is_free(map_t *map, point_t point)

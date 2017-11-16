@@ -20,7 +20,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 
 # Add compiler flags
 set(PROJECT_DEBUG_FLAGS "-g")
-set(PROJECT_LINKER_FLAGS "-lncurses -ltinfo")
+set(PROJECT_LINKER_FLAGS "-lncurses -ltinfo -ldl")
 set(PROJECT_SOURCE_FLAGS "-ansi -std=c99 -pedantic -Wall")
 set(CMAKE_C_FLAGS " \
     ${PROJECT_DEBUG_FLAGS} \
@@ -44,6 +44,8 @@ set(PROJECT_SOURCES
     src/game.c
     src/menu.c
 )
+
+add_subdirectory(maps)
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_LINKER_FLAGS})

@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "datatypes.h"
 #include "game.h"
 #include "action.h"
@@ -14,6 +16,8 @@ int game_play(game_t game)
 
     /* init game vars */
     score_update(0);
+
+    assert(map);
 
     /* unlock the basic keys */
     key_unlock('q');
