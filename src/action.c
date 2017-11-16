@@ -9,6 +9,7 @@ void action_make_move(map_t *map, input_key_t key)
 {
     point_t point;
     int loop = 1;
+    int multiplier = 0;
 
     /* check if key's available */
 
@@ -40,7 +41,12 @@ void action_make_move(map_t *map, input_key_t key)
             case '7':
             case '8':
             case '9':
-                loop = key - '0';
+                multiplier = (multiplier) * 10 + key - '0';
+
+                /* loop it multiplier number of times */
+                loop = multiplier;
+
+                /* update the key */
                 key = input_get_key();
                 break;
         }

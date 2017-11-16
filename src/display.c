@@ -157,6 +157,7 @@ void display_map_show(map_t *map)
         }
     }
 
+    /* print the cursor */
     wattron(map_window, COLOR_PAIR(COL_WHI_WHI));
     mvwprintw(map_window,
             margin.y + scale.y * map -> cursor.y,
