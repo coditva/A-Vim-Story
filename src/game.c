@@ -16,22 +16,27 @@ char map_name[][3] = {
     "\0", "1", "2", "3", "4", "5", "6", "7",
 };
 
-void game_level_increment();
+int play();
 
-
-boolean game_init()
+void game_play()
 {
     game.level = 1;
     game.status.score = 0;
-    return B_TRUE;
+    while (play()) {
+        game.level++;
+
+        /* prompt user to procede */
+        display_msg_show("You reached a door! Press any key to go to next level");
+        action_prompt();
+    }
 }
 
-int game_play()
+int play()
 {
     map_t *map = NULL;
     map_tile_t tile;
 
-    if (!(map = map_load(map_name[game.level]))) return B_FALSE;
+    if (!(map = map_load(map_name[game.level]))) return 0;
     assert(map);
 
     /* unlock the quit key */
@@ -71,15 +76,10 @@ int game_play()
         }
 
         if (!action_make_move(map))
-            return B_FALSE;
+            return 0;
     }
 
     map_free(map);
 
-    /* prompt user to procede */
-    display_msg_show("You reached a door! Press any key to go to next level");
-    game.level++;
-    action_prompt();
-
-    return B_TRUE;
+    return 1;
 }
