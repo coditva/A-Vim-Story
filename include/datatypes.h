@@ -76,6 +76,7 @@ typedef enum {
     COL_BLK_WHI,
     COL_BLK_BLU,
     COL_YEL_YEL,
+    COL_WHI_BLU,
 } color_t;
 
 

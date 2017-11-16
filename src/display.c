@@ -54,7 +54,8 @@ boolean display_init()
     init_pair(COL_BLU_BLU,  COLOR_BLUE,     COLOR_BLUE);
     init_pair(COL_BLK_WHI,  COLOR_BLACK,    COLOR_WHITE);
     init_pair(COL_BLK_BLU,  COLOR_BLACK,    COLOR_BLUE);
-    init_pair(COL_YEL_YEL,  COLOR_YELLOW,    COLOR_YELLOW);
+    init_pair(COL_YEL_YEL,  COLOR_YELLOW,   COLOR_YELLOW);
+    init_pair(COL_WHI_BLU,  COLOR_WHITE,    COLOR_BLUE);
 
     /* fill in tile properties */
     map_tile_props[TILE_BORDER].color = COL_BLK_BLK;
@@ -178,6 +179,7 @@ void display_msg_show(char *message)
     assert(msg_win != NULL);
 
     wclear(msg_win);
+    wbkgd(msg_win, COLOR_PAIR(COL_WHI_BLU));
     mvwprintw(msg_win, 0, 0, "%s", message);
 
     wrefresh(msg_win);
