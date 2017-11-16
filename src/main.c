@@ -1,18 +1,19 @@
+#include <stdlib.h>             /* for malloc() */
+#include <string.h>             /* for strcpy() */
+
 #include "datatypes.h"
-#include "map.h"
+#include "game.h"
 #include "display.h"
 #include "input.h"
-#include "msg.h"
-#include "game.h"
 #include "menu.h"
-
+#include "msg.h"
+#include "display.h"
+#include "game.h"
 
 int main(int argc, char *argv[])
 {
     enum menu_item choice = -1;
-    game_t game;
 
-    /* initialize everything */
     display_init();
     input_init();
     msg_init();
@@ -21,9 +22,9 @@ int main(int argc, char *argv[])
         choice = menu_display();
 
         if (choice == MENU_NEW_GAME) {
-            if (!(game.map = map_load("1"))) return 1;
-            game_play(game);
-            map_free(game.map);
+            /* play the game till the user does not exit */
+            game_init();
+            while (game_play());
         } else if (choice == MENU_HELP) {
             /* display help msg */
         } else if (choice == MENU_QUIT) {

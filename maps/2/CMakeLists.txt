@@ -1,4 +1,4 @@
-set (PLUGIN_NAME map1)
+set (PLUGIN_NAME map2)
 
 set(PROJECT_DEBUG_FLAGS "-g")
 set(PROJECT_LINKER_FLAGS "-shared")
@@ -12,4 +12,4 @@ set(CMAKE_C_FLAGS " \
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/maps)
 
 # The plugin should always export a single binary with a .so extension
-add_executable (${PLUGIN_NAME} map1.c)
+add_executable (${PLUGIN_NAME} map.c)

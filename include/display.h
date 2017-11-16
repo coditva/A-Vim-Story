@@ -42,12 +42,11 @@ void display_map_show(map_t *);
  * @param The message to show
  */
 void display_msg_show(char *);
-void display_msg_close();
 
 
 /**
  * Show the status bar
  */
-void display_status_show();
+void display_status_show(game_status_t);
 
 #endif /* end of include guard: DISPLAY_H_ZEJHMS7R */

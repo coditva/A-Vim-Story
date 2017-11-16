@@ -1,22 +1,31 @@
 #include <assert.h>
+#include <stdlib.h>             /* for NULL */
+#include <string.h>             /* for strcpy() */
 
 #include "datatypes.h"
 #include "game.h"
 #include "action.h"
-#include "score.h"
 #include "key.h"
 #include "display.h"
 #include "map.h"
 #include "msg.h"
 
-int game_play(game_t game)
+/* Keep the game detail */
+game_t game;
+
+boolean game_init()
 {
-    map_t *map = game.map;
+    strcpy(game.level, "1");
+    game.status.score = 0;
+    return B_TRUE;
+}
+
+int game_play()
+{
+    map_t *map = NULL;
     map_tile_t tile;
 
-    /* init game vars */
-    score_update(0);
-
+    if (!(map = map_load(game.level))) return B_FALSE;
     assert(map);
 
     /* unlock the basic keys */
@@ -28,7 +37,7 @@ int game_play(game_t game)
 
     while (1) {
         display_map_show(map);
-        display_status_show();
+        display_status_show(game.status);
 
         /* get tile details for the map */
         tile = map_get_tile(map, map -> cursor);
@@ -42,8 +51,8 @@ int game_play(game_t game)
 
         } else if (tile.type == TILE_GEM) {
             /* add score and update status bar */
-            score_add(10);
-            display_status_show();
+            game.status.score += 10;
+            display_status_show(game.status);
 
             /* update the old tile to grass */
             tile.type = TILE_GRASS;
@@ -54,15 +63,21 @@ int game_play(game_t game)
 
         } else if (tile.type == TILE_DOOR) {
             /* add score and update status bar */
-            score_add(20);
-            display_status_show();
-
-            /* display a msg */
-            display_msg_show("You reached a door and won the game!");
+            game.status.score += 20;
+            display_status_show(game.status);
+            break;
         }
 
         if (!action_make_move(map))
-            break;
+            return B_FALSE;
     }
+
+    map_free(map);
+    strcpy(game.level, "2");
+
+    /* prompt user to procede */
+    display_msg_show("You reached a door and won the game! Press any key to continue");
+    action_prompt();
+
     return B_TRUE;
 }

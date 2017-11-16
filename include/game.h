@@ -2,10 +2,16 @@
 #define GAME_H_VAPGITSI
 
 /**
+ * Intialize the game
+ * @return B_TRUE if success, B_FALSE otherwise
+ */
+boolean game_init();
+
+
+/**
  * Create, play and destroy the game
- * @param All the needed details for the game
  * @return The status for the game
  */
-int game_play(game_t);
+int game_play();
 
 #endif /* end of include guard: GAME_H_VAPGITSI */

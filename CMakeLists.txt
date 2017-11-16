@@ -40,12 +40,12 @@ set(PROJECT_SOURCES
     src/action.c
     src/key.c
     src/msg.c
-    src/score.c
     src/game.c
     src/menu.c
 )
 
-add_subdirectory(maps)
+add_subdirectory(maps/1)
+add_subdirectory(maps/2)
 
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_LINKER_FLAGS})

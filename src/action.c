@@ -72,3 +72,8 @@ int action_make_move(map_t *map)
 
     return 1;
 }
+
+void action_prompt()
+{
+    input_get_key();
+}

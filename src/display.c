@@ -6,7 +6,6 @@
 #include "display.h"
 #include "util.h"
 #include "map.h"
-#include "score.h"
 
 
 #define MENU_WIDTH 20
@@ -183,6 +182,11 @@ void display_map_show(map_t *map)
             0, 0, LINES - 1, COLS - 2);
 }
 
+void display_msg_close()
+{
+    delwin(msg_win);
+}
+
 void display_msg_show(char *message)
 {
     WINDOW *msg_win = subwin(display, 4, COLS - 4, 2, 2);
@@ -194,14 +198,9 @@ void display_msg_show(char *message)
     display_msg_close();
 }
 
-void display_msg_close()
-{
-    delwin(msg_win);
-}
-
-void display_status_show()
+void display_status_show(game_status_t status)
 {
     wbkgd(status_bar, COLOR_PAIR(COL_BLK_WHI));
-    mvwprintw(status_bar, 0, 1, "Score: %d", score_get());
+    mvwprintw(status_bar, 0, 1, "Score: %d", status.score);
     wrefresh(status_bar);
 }

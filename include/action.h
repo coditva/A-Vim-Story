@@ -9,4 +9,11 @@
  */
 int action_make_move(map_t *map);
 
+
+/**
+ * Prompt the user to press a key to continue
+ * @param The message to display
+ */
+void action_prompt();
+
 #endif /* end of include guard: ACTION_H_D9AS6ZWN */

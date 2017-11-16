@@ -83,15 +83,21 @@ typedef struct {
     map_tile_t *data;
 } map_t;
 
+
 /**
- * Define the type to store score */
-typedef int score_t;
+ * Store the game status
+ */
+typedef struct {
+    int score;
+} game_status_t;
+
 
 /**
  * A datastructure to store the game details
  */
 typedef struct {
-    map_t *map;
+    char level[3];
+    game_status_t status;
 } game_t;
 
 #endif /* end of include guard: DATATYPES_H_PH0MEKHP */
