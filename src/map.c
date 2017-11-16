@@ -12,6 +12,7 @@ typedef void * (*map_func_t)(void);
 
 /* Convert the point to a linear index and return */
 int convert_point_to_linear(map_t *, point_t);
+map_t * parse_mapfile(mapfile_data_t *);
 
 
 boolean map_init()
@@ -23,7 +24,7 @@ map_t * map_load(char *map_name)
 {
     map_t *map = NULL;
     char map_path[100] = "maps/map";
-    map_func_t get_map;
+    mapfile_data_t *mapfile_data;
     void *handle;
 
     /* open the map */
@@ -32,22 +33,20 @@ map_t * map_load(char *map_name)
     if (!handle) return NULL;
 
     /* get the function */
-    get_map = (map_func_t) dlsym(handle, "get_map");
-    assert(get_map);
-    if (!get_map) return NULL;
+    mapfile_data = (mapfile_data_t *) dlsym(handle, "map");
+    assert(mapfile_data);
+    if (!mapfile_data) return NULL;
 
-    /* run the function to get the map */
-    map = (*get_map)();
+    /* get the parsed map */
+    map = parse_mapfile(mapfile_data);
 
-    /* destroy the function, map */
-    get_map = NULL;
     dlclose(handle);
-
     return map;
 }
 
 void map_free(map_t *map)
 {
+    free(map -> data);
     free(map);
 }
 
@@ -77,4 +76,51 @@ void map_set_tile(map_t *map, point_t point, map_tile_t tile)
 int convert_point_to_linear(map_t *map, point_t point)
 {
     return map -> size.x * point.y + point.x;
+}
+
+map_t * parse_mapfile(mapfile_data_t *buffer)
+{
+    map_t *map = NULL;
+    int count = 0;
+
+    map = (map_t *) malloc(sizeof(map_t));
+
+    map -> size.y = buffer -> size.y;
+    map -> size.x = buffer -> size.x;
+    map -> cursor.y = buffer -> cursor.y;
+    map -> cursor.x = buffer -> cursor.x;
+
+    map -> data = (map_tile_t *) malloc(sizeof(map_tile_t)
+            * map -> size.x * map -> size.y);
+
+    for (int i = 0; i < map -> size.y; ++i) {
+        for (int j = 0; j < map -> size.x; ++j) {
+
+            map -> data[count].value = ' ';
+            switch (buffer -> data[i][j]) {
+                case '~':
+                    map -> data[count].type = TILE_WATER;
+                    break;
+                case ' ':
+                    map -> data[count].type = TILE_GRASS;
+                    break;
+                case '#':
+                    map -> data[count].type = TILE_BRICK;
+                    break;
+                case '@':
+                    map -> data[count].type = TILE_GEM;
+                    break;
+                default:
+                    map -> data[count].type = TILE_LETTER;
+                    map -> data[count].value = buffer -> data[i][j];
+            }
+
+            count++;
+        }
+    }
+
+    /* put door */
+    map -> data[convert_point_to_linear(map, buffer -> exit)].type = TILE_DOOR;
+
+    return map;
 }

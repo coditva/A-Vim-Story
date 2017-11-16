@@ -2,6 +2,10 @@
 #define DATATYPES_H_PH0MEKHP
 
 
+/* max map size */
+#define MAPMAXX 900
+#define MAPMAXY 900
+
 /**
  * A type to store boolean values:
  * B_TRUE and B_FALSE
@@ -78,10 +82,22 @@ typedef enum {
  * A data structure to store the map
  */
 typedef struct {
+    void *handle;
     point_t size;
     point_t cursor;
     map_tile_t *data;
 } map_t;
+
+
+/**
+ * Stores the all the map description. To be used in map files
+ */
+typedef struct {
+    point_t size;
+    point_t cursor;
+    point_t exit;
+    char data[MAPMAXY][MAPMAXX];
+} mapfile_data_t;
 
 
 /**

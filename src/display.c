@@ -11,10 +11,6 @@
 #define MENU_WIDTH 20
 #define MENU_PADDING 2
 
-/* TODO: remove this */
-#define MAPMAXX 900
-#define MAPMAXY 900
-
 
 WINDOW *display;                /* the main display */
 WINDOW *map_window;             /* the map subwindow */
