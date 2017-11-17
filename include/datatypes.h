@@ -1,6 +1,8 @@
 #ifndef DATATYPES_H_PH0MEKHP
 #define DATATYPES_H_PH0MEKHP
 
+/* include the generated config file */
+#include "config.h"
 
 /* max map size */
 #define MAPMAXX 900

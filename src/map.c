@@ -14,19 +14,16 @@ int convert_point_to_linear(map_t *, point_t);
 map_t * parse_mapfile(mapfile_data_t *);
 
 
-boolean map_init()
-{
-    return B_TRUE;
-}
-
 map_t * map_load(char *map_name)
 {
     map_t *map = NULL;
-    char map_path[100] = "maps/map";
     mapfile_data_t *mapfile_data;
     void *handle;
+    /* MAPS_DIR from the generated config.h header */
+    char map_path[150] = LIB_DIR;
 
     /* open the map */
+    strcat(map_path, "/maps/map");
     strcat(map_path, map_name);
     handle = dlopen(map_path, RTLD_NOW);
     if (!handle) return NULL;

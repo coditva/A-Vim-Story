@@ -1,0 +1,9 @@
+
+/* Define the project version */
+#define VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define VERSION_MINOR @PROJECT_VERSION_MINOR@
+#define VERSION_PATCH @PROJECT_VERSION_PATCH@
+
+/* Define the directories */
+#define BIN_DIR "@CMAKE_INSTALL_PREFIX@/bin"
+#define LIB_DIR "@CMAKE_INSTALL_PREFIX@/lib/@PROJECT_NAME@"
