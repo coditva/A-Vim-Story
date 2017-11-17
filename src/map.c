@@ -1,17 +1,16 @@
 #include <stdlib.h>             /* for free(), NULL */
 #include <string.h>             /* for strcpy() */
 #include <dlfcn.h>              /* for dlopen(), etc */
-#include <assert.h>
+#include <assert.h>             /* for assert() */
 
 #include "datatypes.h"
 #include "map.h"
 
-/* Define the type for map pointer */
-typedef void * (*map_func_t)(void);
 
-
-/* Convert the point to a linear index and return */
+/* convert the point to a linear index and return */
 int convert_point_to_linear(map_t *, point_t);
+
+/* parse the mapfile and return the map object */
 map_t * parse_mapfile(mapfile_data_t *);
 
 

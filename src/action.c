@@ -1,12 +1,10 @@
-#include <assert.h>
+#include <assert.h>             /* for assert() */
 
 #include "datatypes.h"
 #include "action.h"
 #include "map.h"
 #include "input.h"
 #include "key.h"
-
-point_t temp_point;
 
 int action_make_move(map_t *map)
 {

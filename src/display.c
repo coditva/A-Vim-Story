@@ -1,5 +1,5 @@
 #include <ncurses.h>
-#include <string.h>
+#include <string.h>             /* for strlen() */
 #include <assert.h>             /* for assert() */
 
 #include "datatypes.h"
@@ -18,21 +18,13 @@ WINDOW *status_bar;             /* the status bar subwindow */
 WINDOW *menu_window;            /* the menu subwindow */
 WINDOW *msg_win;                /* the window for messages */
 
-
-/**
- * The labels for menu items
- */
-char *menu_label[] = {
+char *menu_label[] = {          /* The labels for menu items */
     "New Game",
     "Help",
     "Exit"
 };
 
-
-/**
- * The properties for various tiles
- */
-struct {
+struct {                        /* The properties for various tiles */
     color_t color;
 } map_tile_props[TILE_SIZE];
 

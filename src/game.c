@@ -1,4 +1,4 @@
-#include <assert.h>
+#include <assert.h>             /* for assert() */
 #include <stdlib.h>             /* for NULL */
 #include <string.h>             /* for strcpy() */
 
@@ -10,14 +10,19 @@
 #include "map.h"
 #include "msg.h"
 
-/* Keep the game detail */
-game_t game;
-void prompt(char *message);
-char map_name[][3] = {
+
+game_t game;                    /* Keep the game detail */
+char map_name[][3] = {          /* Store the map names */
     "0", "1", "2", "3", "4", "5", "6", "7",
 };
 
+
+/* display a prompt message and wait for a key press */
+void prompt(char *message);
+
+/* play the game with the details loaded in 'game' */
 int play();
+
 
 void game_play()
 {

@@ -1,11 +1,11 @@
-#include <stdlib.h>             /* for malloc() */
-#include <string.h>             /* for strlen(), strcpy() */
-
 #include "datatypes.h"
 #include "msg.h"
 
 #define MAX_MSG_SIZE 100
 #define START 32                /* the first key character */
+
+
+/* store the unlock messages for each key */
 char message[KEY_MAX_SIZE - START][MAX_MSG_SIZE] = {
     /* start from START ie 'space' */
     "You unlocked 'space'",
