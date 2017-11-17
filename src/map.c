@@ -89,6 +89,7 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
     map -> size.x = buffer -> size.x;
     map -> cursor.y = buffer -> cursor.y;
     map -> cursor.x = buffer -> cursor.x;
+    map -> real_x = buffer -> cursor.x;
 
     map -> data = (map_tile_t *) malloc(sizeof(map_tile_t)
             * map -> size.x * map -> size.y);

@@ -47,7 +47,7 @@ set(PROJECT_SOURCES
 # Add all maps
 
 
-foreach(i RANGE 6)
+foreach(i RANGE 7)
     add_subdirectory(maps/${i})
 endforeach()
 
