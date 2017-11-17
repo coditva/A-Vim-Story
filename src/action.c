@@ -73,17 +73,21 @@ int action_make_move(map_t *map)
                 return 0;
         }
 
-        while (point.x && !map_is_free(map, point)) {
-            point.x--;
-
-            /* could not update x, thus it was not actually touched */
-            touched = 0;
+        /* if the line was not changed and the tile is not free, invalid move */
+        if (point.y == map -> cursor.y && !map_is_free(map, point)) {
+            continue;
         }
 
-        /* if point is 0, no place to put cursor */
+        /* if line was changed and we can find a point which is before the
+         * desired point, move to it */
+        while (point.x && !map_is_free(map, point)) {
+            point.x--;
+        }
+
+        /* if point is 0, no place to put cursor, invalid move */
         if (point.x == 0) continue;
 
-        /* if it was touched, update the real x */
+        /* if x was touched, this is now the real x */
         if (touched) map -> real_x = point.x;
 
         /* update cursor */
