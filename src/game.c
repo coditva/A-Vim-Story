@@ -26,10 +26,7 @@ int play();
 
 void game_play()
 {
-    game.level = 8;
-    key_unlock('h');
-    key_unlock('l');
-    key_unlock('q');
+    game.level = 1;
     game.status.score = 0;
     while (play()) {
         game.level++;
