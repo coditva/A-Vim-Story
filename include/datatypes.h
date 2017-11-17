@@ -3,9 +3,10 @@
 
 
 /* max map size */
-#define MAPMAXX 900
-#define MAPMAXY 900
+#define MAPMAXX 200
+#define MAPMAXY 200
 #define MAXGEMS 10
+#define MAXSTORYLEN 300
 
 /**
  * A type to store boolean values:
@@ -90,6 +91,7 @@ typedef struct {
     int real_x;
     map_tile_t *data;
     int gems_left;
+    char *story;
 } map_t;
 
 
@@ -100,6 +102,7 @@ typedef struct {
     point_t size;
     point_t cursor;
     point_t exit;
+    char story[MAXSTORYLEN];
     struct {
         int count;
         point_t data[MAXGEMS];

@@ -17,6 +17,12 @@ boolean display_destroy();
 
 
 /**
+ * Clear and refresh the whole display
+ */
+void display_clear();
+
+
+/**
  * Refreshes and redraws the whole window
  * @return boolean B_TRUE if success, B_FALSE otherwise
  */
@@ -42,6 +48,13 @@ void display_map_show(map_t *);
  * @param The message to show
  */
 void display_msg_show(char *);
+
+
+/**
+ * Show a prompt window with the given message
+ * @param The message to show
+ */
+void display_prompt_show(char *);
 
 
 /**

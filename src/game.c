@@ -12,6 +12,7 @@
 
 /* Keep the game detail */
 game_t game;
+void prompt(char *message);
 char map_name[][3] = {
     "0", "1", "2", "3", "4", "5", "6", "7",
 };
@@ -24,10 +25,6 @@ void game_play()
     game.status.score = 0;
     while (play()) {
         game.level++;
-
-        /* prompt user to procede */
-        display_msg_show("Press any key to go to next level...");
-        action_prompt();
     }
 }
 
@@ -41,6 +38,9 @@ int play()
 
     /* unlock the quit key */
     key_unlock('q');
+
+    /* show the story */
+    prompt(map -> story);
 
     while (1) {
         display_map_show(map);
@@ -75,9 +75,8 @@ int play()
             if (map -> gems_left) {
                 display_msg_show("There are some gems left to collect!");
             } else {
-                /* add score and update status bar */
-                game.status.score += 20;
-                display_status_show(game.status);
+                display_msg_show("Press any key to continue...");
+                action_prompt();
                 break;
             }
         }
@@ -87,6 +86,12 @@ int play()
     }
 
     map_free(map);
-
     return 1;
+}
+
+void prompt(char *message)
+{
+    display_clear();
+    display_prompt_show(message);
+    action_prompt();
 }

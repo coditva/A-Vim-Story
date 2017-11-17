@@ -100,6 +100,12 @@ boolean display_destroy()
     return B_TRUE;
 }
 
+void display_clear()
+{
+    clear();
+    refresh();
+}
+
 void display_menu_show(enum menu_item selected)
 {
     int x = 0;
@@ -168,11 +174,6 @@ void display_map_show(map_t *map)
             0, 0, LINES - 1, COLS - 2);
 }
 
-void display_msg_close()
-{
-    delwin(msg_win);
-}
-
 void display_msg_show(char *message)
 {
     WINDOW *msg_win = subwin(display, 3, COLS - 4, 2, 2);
@@ -183,11 +184,30 @@ void display_msg_show(char *message)
     mvwprintw(msg_win, 0, 0, "%s", message);
 
     wrefresh(msg_win);
-    display_msg_close();
+    /*delwin(msg_win);*/
+}
+
+void display_prompt_show(char *message)
+{
+    point_t size;
+    WINDOW *msg_win;
+
+    size.y = LINES / 3 * 2;
+    size.x = COLS / 3 * 2;
+
+    msg_win = subwin(display, size.y, size.x, LINES / 2 - size.y / 2, (COLS - size.x) / 2);
+    assert(msg_win != NULL);
+
+    wclear(msg_win);
+    mvwprintw(msg_win, 0, 0, "%s", message);
+
+    wrefresh(msg_win);
+    delwin(msg_win);
 }
 
 void display_status_show(game_status_t status)
 {
+    wclear(status_bar);
     wbkgd(status_bar, COLOR_PAIR(COL_BLK_WHI));
     mvwprintw(status_bar, 0, 1, "Score: %d", status.score);
     wrefresh(status_bar);

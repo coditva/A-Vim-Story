@@ -31,5 +31,6 @@ mapfile_data_t map = {
         "+ strokes-to-score-higher.                  +",
         "+                                           +",
         "+++++++++++++++++++++++++++++++++++++++++++++",
-    }
+    },
+    .story = "In the land of out hero, all was peaceful and quiet until the evil lord conquered everything. Now, our hero must defeat the evil lord and restore the peace!",
 };

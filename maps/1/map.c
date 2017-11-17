@@ -25,5 +25,6 @@ mapfile_data_t map = {
         "+ +",
         "+ +",
         "+++",
-    }
+    },
+    .story = "Before our hero can conquer the world, he must learn to walk! Remember, collect all the gems and reach the door.",
 };

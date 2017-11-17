@@ -127,5 +127,9 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
         map -> data[pos].type = TILE_GEM;
     }
 
+    /* add story */
+    map -> story = (char *) malloc(strlen(buffer -> story) + 1);
+    strcpy(map -> story, buffer -> story);
+
     return map;
 }
