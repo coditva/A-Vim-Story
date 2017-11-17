@@ -3,7 +3,6 @@
 #include "display.h"
 #include "input.h"
 #include "menu.h"
-#include "msg.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +10,6 @@ int main(int argc, char *argv[])
 
     display_init();
     input_init();
-    msg_init();
 
     while (1) {
         choice = menu_display();
@@ -26,7 +24,6 @@ int main(int argc, char *argv[])
     }
 
     /* cleanup everything */
-    msg_destroy();
     display_destroy();
 
     return 0;

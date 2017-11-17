@@ -3,20 +3,6 @@
 
 
 /**
- * Initialize the messages
- * @return boolean B_TRUE if success, B_FALSE otherwise
- */
-boolean msg_init();
-
-
-/**
- * Destroy the initialized messages
- * @return boolean B_TRUE if success, B_FALSE otherwise
- */
-boolean msg_destroy();
-
-
-/**
  * Get the message for a given key
  * @param The key for which to get the message
  * @return The message for the key

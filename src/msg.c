@@ -105,19 +105,7 @@ char message[KEY_MAX_SIZE - START][MAX_MSG_SIZE] = {
     "You unlocked   .",
 };
 
-
-boolean msg_init()
-{
-    return B_TRUE;
-}
-
 char * msg_get_keymsg(input_key_t key)
 {
     return message[key - START];
-}
-
-boolean msg_destroy()
-{
-    /* clear all the messages */
-    return B_TRUE;
 }
