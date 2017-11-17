@@ -45,9 +45,11 @@ set(PROJECT_SOURCES
 )
 
 # Add all maps
-foreach(i RANGE 1 8)
-    add_subdirectory(maps/${i})
-endforeach()
+add_subdirectory(maps)
 
+# Add the executable
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_LINKER_FLAGS})
+
+# Add the install target
+install (TARGETS ${PROJECT_NAME} DESTINATION bin)
