@@ -26,5 +26,5 @@ mapfile_data_t map = {
         "+ +",
         "+++",
     },
-    .story = "In the land of our hero, all was peaceful and quiet until the evil lord conquered everything. Now, our hero must defeat the evil lord and restore the peace!\n\n\nBut before our hero can conquer the world, he must learn to walk...",
+    .story = "In the land of our hero, all was peaceful and quiet until the evil lord took over everything. Now our hero must defeat him and restore the peace!\n\n\nBut before he can conquer the world, he must learn to walk...",
 };

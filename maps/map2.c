@@ -26,5 +26,5 @@ mapfile_data_t map = {
         "+k+",
         "+++",
     },
-    .story = "Go forward now...",
+    .story = "Once you know how to go down, you can go up...",
 };

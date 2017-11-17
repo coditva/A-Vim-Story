@@ -21,5 +21,5 @@ mapfile_data_t map = {
     "+l     +",
     "++++++++",
     },
-    .story = "You may want to forward but you must learn to be right and go right.",
+    .story = "You may want to go up but you must learn to be right and go right.",
 };

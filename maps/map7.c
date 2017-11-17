@@ -64,5 +64,5 @@ mapfile_data_t map = {
         "++++++++++++++++++++++++++++++      +   +   +   +   ++   +  +",
         "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
     },
-    .story = "Some things might feel intimidating when in reality they are not quite.",
+    .story = "Some things might feel intimidating when in reality they are not quite...",
 };
