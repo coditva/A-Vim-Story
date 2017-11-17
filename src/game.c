@@ -13,7 +13,7 @@
 
 game_t game;                    /* Keep the game detail */
 char map_name[][3] = {          /* Store the map names */
-    "0", "1", "2", "3", "4", "5", "6", "7",
+    "\0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 };
 
 
@@ -26,7 +26,10 @@ int play();
 
 void game_play()
 {
-    game.level = 0;
+    game.level = 8;
+    key_unlock('h');
+    key_unlock('l');
+    key_unlock('q');
     game.status.score = 0;
     while (play()) {
         game.level++;
@@ -61,6 +64,12 @@ int play()
             /* display a msg */
             display_msg_show(msg_get_keymsg(tile.value));
 
+            /* update the old tile to grass */
+            tile.type = TILE_GRASS;
+            tile.value = ' ';
+            map_set_tile(map, map -> cursor, tile);
+            map -> chars_left--;
+
         } else if (tile.type == TILE_GEM) {
             /* add score and update status bar */
             game.status.score += 10;
@@ -79,6 +88,8 @@ int play()
             /* check if all gems are collected */
             if (map -> gems_left) {
                 display_msg_show("There are some gems left to collect!");
+            } else if (map -> chars_left) {
+                display_msg_show("There are some characters you did not unlock!");
             } else {
                 display_msg_show("Press any key to continue...");
                 action_prompt();

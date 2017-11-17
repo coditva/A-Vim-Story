@@ -3,8 +3,8 @@
 
 
 /* max map size */
-#define MAPMAXX 200
-#define MAPMAXY 200
+#define MAPMAXX 900
+#define MAPMAXY 900
 #define MAXGEMS 10
 #define MAXSTORYLEN 300
 
@@ -91,6 +91,7 @@ typedef struct {
     int real_x;
     map_tile_t *data;
     int gems_left;
+    int chars_left;
     char *story;
 } map_t;
 

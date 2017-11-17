@@ -71,6 +71,11 @@ int action_make_move(map_t *map)
                 return 0;
         }
 
+        /* if the point is out of bounds, illegal move */
+        if (point.y >= map -> size.y || point.x >= map -> size.x) {
+            continue;
+        }
+
         /* if the line was not changed and the tile is not free, invalid move */
         if (point.y == map -> cursor.y && !map_is_free(map, point)) {
             continue;
