@@ -47,5 +47,5 @@ mapfile_data_t map = {
         "+   +  + +   +     +",
         "++++++++++++++++++++",
     },
-    .story = "",
+    .story = "No matter the obstacles, do what must be done...",
 };

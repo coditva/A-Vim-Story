@@ -58,5 +58,5 @@ mapfile_data_t map = {
         "+              +       +     +",
         "+ ++++++++++++++++++++++++++++",
     },
-    .story = "",
+    .story = "Sometimes, to make the right move, one must forget the logic and trust one's instincts\n\nWhen something feels absurd but the heart feels it to be true, let go of the fear and do it...",
 };

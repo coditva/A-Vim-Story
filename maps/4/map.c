@@ -21,5 +21,5 @@ mapfile_data_t map = {
     "+     h+",
     "++++++++",
     },
-    .story = "",
+    .story = "When nothing seems right, go left...",
 };
