@@ -21,16 +21,16 @@ enum menu_item menu_display()
         switch (key) {
             case 'j':
                 choice++;
+                if (choice == MENU_SIZE) choice = 0;
                 break;
             case 'k':
+                if (choice == 0) choice = MENU_SIZE;
                 choice--;
                 break;
             default:
                 continue;
         }
 
-        if (choice == MENU_SIZE) choice = 0;
-        if (choice == -1) choice = MENU_SIZE - 1;
 
         display_menu_show(choice);
     }
