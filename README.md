@@ -21,18 +21,25 @@ Inspired by [Vim Adventures](https://vim-adventures.com/) and open sourced.
 ### Compiling
 Assuming you have _libncurses_, _CMake_ and _Make_ installed.
 
-```bash
-mkdir build && cd build
+    mkdir build && cd build
 
-cmake ..
-cmake -DCMAKE_INSTALL_PREFIX=/usr ..  # to install in /usr
+    cmake ..
 
-make                # build
-make install        # to install (might want to use 'sudo')
+    make
+    make install        # to install (might want to use 'sudo')
 
-./bin/a-vim-story   # to run (while in build)
-a-vim-story         # to run (after install)
-```
+    a-vim-story         # to run
+
+
+If you want to install in another directory
+
+    cmake -DCMAKE_INSTALL_PREFIX=/usr ..  # to install in /usr
+
+Or if you want to test it in `build/` itself
+
+    cmake -DCMAKE_INSTALL_PREFIX=. ..
+    make && make install
+    ./bin/a-vim-story
 
 
 
@@ -40,9 +47,7 @@ a-vim-story         # to run (after install)
 For documentation, a configuration file for _Doxygen_ is provided. Assuming you
 have _doxygen_ installed, issue these commands:
 
-```bash
-doxygen doxygen.conf
-```
+    doxygen doxygen.conf
 
 
 
