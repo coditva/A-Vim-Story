@@ -3,7 +3,7 @@
 #include "datatypes.h"
 #include "action.h"
 #include "map.h"
-#include "input.h"
+#include "interface.h"
 #include "key.h"
 
 int action_make_move(map_t *map)
@@ -19,7 +19,7 @@ int action_make_move(map_t *map)
     point.y = map -> cursor.y;
 
     /* get key and check if it's unlocked */
-    key = input_get_key();
+    key = interface_input_key();
 
     while (loop) {
 
@@ -28,7 +28,7 @@ int action_make_move(map_t *map)
         touched = 0;
 
         if (!key_unlocked(key)) {
-            key = input_get_key();
+            key = interface_input_key();
             continue;
         } else {
             loop--;
@@ -65,7 +65,7 @@ int action_make_move(map_t *map)
 
                 /* loop it multiplier number of times */
                 loop = multiplier;
-                key = input_get_key();
+                key = interface_input_key();
                 break;
             case 'q':
                 return 0;
@@ -103,5 +103,5 @@ int action_make_move(map_t *map)
 
 void action_prompt()
 {
-    input_get_key();
+    interface_input_key();
 }

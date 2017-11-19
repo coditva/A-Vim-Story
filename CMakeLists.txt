@@ -41,8 +41,7 @@ set (LIBRARIES ${NCURSES_LIB} ${DL_LIB})
 # Setup list of source files
 set (PROJECT_SOURCES
     src/main.c
-    src/display.c
-    src/input.c
+    src/interface.c
     src/map.c
     src/action.c
     src/key.c

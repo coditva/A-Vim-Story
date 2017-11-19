@@ -3,7 +3,7 @@
 #include <assert.h>             /* for assert() */
 
 #include "datatypes.h"
-#include "display.h"
+#include "interface.h"
 #include "util.h"
 #include "map.h"
 
@@ -12,11 +12,12 @@
 #define MENU_PADDING 2
 
 
-WINDOW *display;                /* the main display */
-WINDOW *map_window;             /* the map subwindow */
-WINDOW *status_bar;             /* the status bar subwindow */
-WINDOW *menu_window;            /* the menu subwindow */
-WINDOW *msg_win;                /* the window for messages */
+WINDOW *display = NULL;         /* the main display */
+WINDOW *menu_window = NULL;     /* the menu subwindow */
+WINDOW *map_window = NULL;      /* the map subwindow */
+WINDOW *message_window = NULL;  /* the message subwindow */
+WINDOW *prompt_window = NULL;   /* the prompt subwindow */
+WINDOW *status_bar = NULL;      /* the status bar subwindow */
 
 char *menu_label[] = {          /* The labels for menu items */
     "New Game",
@@ -30,12 +31,17 @@ struct {                        /* The properties for various tiles */
 
 
 
-boolean display_init()
+boolean interface_init()
 {
+    display = NULL;
+    point_t size;
+    point_t start;
+
     display = initscr();
 
     curs_set(0);                /* make cursor invisible */
     start_color();              /* use colors in the game */
+    noecho();                   /* do not echo the characters */
     clear();                    /* clear the display */
 
     /* initialize color pairs */
@@ -59,31 +65,55 @@ boolean display_init()
     map_tile_props[TILE_GEM].color = COL_RED_RED;
 
 
-    /* create status bar */
-    status_bar = subwin(display, 1, COLS, 0, 0);
-    if (!status_bar) return B_FALSE;
-
     /* create menu window in the center */
-    menu_window = subwin(display,
-            MENU_SIZE + 2 * MENU_PADDING,               /* size y  */
-            MENU_WIDTH + 2 * MENU_PADDING,              /* size x  */
-            (LINES - MENU_SIZE) / 2 - MENU_PADDING,     /* start y */
-            (COLS - MENU_WIDTH) / 2 - MENU_PADDING);    /* start x */
-    if (!menu_window) return B_FALSE;
+    size.y = MENU_SIZE + 2 * MENU_PADDING,
+    size.x = MENU_WIDTH + 2 * MENU_PADDING,
+    start.y = (LINES - MENU_SIZE ) / 2 - MENU_PADDING;
+    start.x = (COLS  - MENU_WIDTH) / 2 - MENU_PADDING;
+    if (!(menu_window = subwin(display, size.y, size.x, start.y, start.x)))
+        return B_FALSE;
 
     /* create map window */
-    map_window = newpad(MAPMAXY, MAPMAXX);
-    if (!map_window) return B_FALSE;
+    if (!(map_window = newpad(MAPMAXY, MAPMAXX)))
+        return B_FALSE;
+
+    /* create message window at the left hand side of the display */
+    size.y = LINES / 6;
+    size.x = COLS  / 3;
+    start.y = 2;
+    start.x = 2;
+    if (!(message_window = subwin(display, size.y, size.x, start.y, start.x)))
+        return B_FALSE;
+
+    /* create prompt window */
+    size.y = LINES / 3 * 2,
+    size.x = COLS  / 3 * 2,
+    start.y = (LINES - size.y) / 2;
+    start.x = (COLS  - size.x) / 2;
+    if (!(prompt_window = subwin(display, size.y, size.x, start.y, start.x)))
+        return B_FALSE;
+
+    /* create status bar */
+    size.y = 1,
+    size.x = COLS,
+    start.y = 0;
+    start.x = 0;
+    status_bar = subwin(display, 1, COLS, 0, 0);
+    if (!(status_bar = subwin(display, size.y, size.x, start.y, start.x)))
+        return B_FALSE;
+
 
     return B_TRUE;
 }
 
-boolean display_destroy()
+boolean interface_destroy()
 {
     /* delete all windows */
+    delwin(status_bar);
+    delwin(prompt_window);
+    delwin(message_window);
     delwin(map_window);
     delwin(menu_window);
-    delwin(status_bar);
     delwin(display);
 
     /* end the display */
@@ -92,13 +122,13 @@ boolean display_destroy()
     return B_TRUE;
 }
 
-void display_clear()
+void interface_display_clear()
 {
     clear();
     refresh();
 }
 
-void display_menu_show(enum menu_item selected)
+void interface_display_menu(enum menu_item selected)
 {
     int x = 0;
     enum menu_item y = 0;
@@ -117,16 +147,15 @@ void display_menu_show(enum menu_item selected)
     wrefresh(menu_window);
 }
 
-void display_map_show(map_t *map)
+void interface_display_map(map_t *map)
 {
     int count = 0;
     point_t margin;
-    point_t scale;
     map_tile_t tile;
-
+    point_t scale;
+    
     scale.y = 1;
     scale.x = 2;
-
     margin.y = MAX(0, ( LINES - scale.y * map -> size.y ) / 2);
     margin.x = MAX(0, ( COLS  - scale.x * map -> size.x ) / 2);
 
@@ -166,41 +195,31 @@ void display_map_show(map_t *map)
             0, 0, LINES - 1, COLS - 2);
 }
 
-void display_msg_show(char *message)
+void interface_display_message(char *message)
 {
-    WINDOW *msg_win = subwin(display, 3, COLS / 3, 2, 2);
-    assert(msg_win != NULL);
-
-    wclear(msg_win);
-    wbkgd(msg_win, COLOR_PAIR(COL_WHI_BLU));
-    mvwprintw(msg_win, 0, 0, "%s", message);
-
-    wrefresh(msg_win);
-    /*delwin(msg_win);*/
+    wclear(message_window);
+    wbkgd(message_window, COLOR_PAIR(COL_WHI_BLU));
+    mvwprintw(message_window, 0, 0, "%s", message);
+    wrefresh(message_window);
 }
 
-void display_prompt_show(char *message)
+void interface_display_prompt(char *message)
 {
-    point_t size;
-    WINDOW *msg_win;
-
-    size.y = LINES / 3 * 2;
-    size.x = COLS / 3 * 2;
-
-    msg_win = subwin(display, size.y, size.x, LINES / 2 - size.y / 2, (COLS - size.x) / 2);
-    assert(msg_win != NULL);
-
-    wclear(msg_win);
-    mvwprintw(msg_win, 0, 0, "%s", message);
-
-    wrefresh(msg_win);
-    delwin(msg_win);
+    wclear(prompt_window);
+    mvwprintw(prompt_window, 0, 0, "%s", message);
+    wrefresh(prompt_window);
+    getch();
 }
 
-void display_status_show(game_status_t status)
+void interface_display_status(game_status_t status)
 {
     wclear(status_bar);
     wbkgd(status_bar, COLOR_PAIR(COL_BLK_WHI));
     mvwprintw(status_bar, 0, 1, "Score: %d", status.score);
     wrefresh(status_bar);
+}
+
+input_key_t interface_input_key()
+{
+    return getch();
 }

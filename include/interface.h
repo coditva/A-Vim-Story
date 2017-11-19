@@ -1,65 +1,66 @@
-#ifndef DISPLAY_H_ZEJHMS7R
-#define DISPLAY_H_ZEJHMS7R
+#ifndef INTERFACE_H_N7LPPW8B
+#define INTERFACE_H_N7LPPW8B
 
 
 /**
  * Initialize the display
  * @return boolean B_TRUE if success, B_FALSE otherwise
  */
-boolean display_init();
+boolean interface_init();
 
 
 /**
  * Destroy the display and clear all allocated space
  * @return boolean B_TRUE if success, B_FALSE otherwise
  */
-boolean display_destroy();
+boolean interface_destroy();
 
 
 /**
  * Clear and refresh the whole display
  */
-void display_clear();
-
-
-/**
- * Refreshes and redraws the whole window
- * @return boolean B_TRUE if success, B_FALSE otherwise
- */
-boolean display_refresh();
+void interface_display_clear();
 
 
 /**
  * Refreshes and shows the menu on top of all windows
  * @param The item to show as selected
  */
-void display_menu_show(enum menu_item);
+void interface_display_menu(enum menu_item);
 
 
 /**
  * Refreshes and shows the menu on top of all windows
  * @param The item to show as selected
  */
-void display_map_show(map_t *);
+void interface_display_map(map_t *);
 
 
 /**
  * Show the given message in a popup msg window
  * @param The message to show
  */
-void display_msg_show(char *);
+void interface_display_message(char *);
 
 
 /**
  * Show a prompt window with the given message
  * @param The message to show
  */
-void display_prompt_show(char *);
+void interface_display_prompt(char *);
 
 
 /**
  * Show the status bar
  */
-void display_status_show(game_status_t);
+void interface_display_status(game_status_t);
 
-#endif /* end of include guard: DISPLAY_H_ZEJHMS7R */
+
+/**
+ * Wait for a key press and return it
+ * @return The key pressed
+ */
+input_key_t interface_input_key();
+
+
+#endif /* end of include guard: INTERFACE_H_N7LPPW8B */

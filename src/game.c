@@ -4,9 +4,9 @@
 
 #include "datatypes.h"
 #include "game.h"
+#include "interface.h"
 #include "action.h"
 #include "key.h"
-#include "display.h"
 #include "map.h"
 #include "msg.h"
 
@@ -48,8 +48,8 @@ int play()
     prompt(map -> story);
 
     while (1) {
-        display_map_show(map);
-        display_status_show(game.status);
+        interface_display_map(map);
+        interface_display_status(game.status);
 
         /* get tile details for the map */
         tile = map_get_tile(map, map -> cursor);
@@ -59,7 +59,7 @@ int play()
             key_unlock(tile.value);
 
             /* display a msg */
-            display_msg_show(msg_get_keymsg(tile.value));
+            interface_display_message(msg_get_keymsg(tile.value));
 
             /* update the old tile to grass */
             tile.type = TILE_GRASS;
@@ -70,7 +70,7 @@ int play()
         } else if (tile.type == TILE_GEM) {
             /* add score and update status bar */
             game.status.score += 10;
-            display_status_show(game.status);
+            interface_display_status(game.status);
 
             /* update the old tile to grass */
             tile.type = TILE_GRASS;
@@ -78,17 +78,17 @@ int play()
             map -> gems_left--;
 
             /* display a msg */
-            display_msg_show("You got a gem!");
+            interface_display_message("You got a gem!");
 
         } else if (tile.type == TILE_DOOR) {
 
             /* check if all gems are collected */
             if (map -> gems_left) {
-                display_msg_show("There are some gems left to collect!");
+                interface_display_message("There are some gems left to collect!");
             } else if (map -> chars_left) {
-                display_msg_show("There are some characters you did not unlock!");
+                interface_display_message("There are some characters you did not unlock!");
             } else {
-                display_msg_show("Press any key to continue...");
+                interface_display_message("Press any key to continue...");
                 action_prompt();
                 break;
             }
@@ -104,7 +104,7 @@ int play()
 
 void prompt(char *message)
 {
-    display_clear();
-    display_prompt_show(message);
+    interface_display_clear();
+    interface_display_prompt(message);
     action_prompt();
 }
