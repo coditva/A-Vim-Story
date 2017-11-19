@@ -99,8 +99,3 @@ int action_make_move(const map_t *map)
 
     return 1;
 }
-
-void action_prompt()
-{
-    interface_input_key();
-}

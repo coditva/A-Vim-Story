@@ -20,3 +20,13 @@ void key_unlock(input_key_t key)
 {
     unlocked[key] = B_TRUE;
 }
+
+void key_lock_all()
+{
+    for (int i = 0; i < KEY_MAX_SIZE; ++i) unlocked[i] = B_FALSE;
+}
+
+void key_unlock_all()
+{
+    for (int i = 0; i < KEY_MAX_SIZE; ++i) unlocked[i] = B_TRUE;
+}

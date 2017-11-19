@@ -14,7 +14,7 @@ char map_name[][3] = {          /* Store the map names */
 
 
 /* play the game with the details loaded in 'game' */
-int play();
+int play(const map_t*);
 
 /* acquire the contents of the tile and take appropriate actions */
 boolean acquire_tile(const map_t *);
@@ -22,9 +22,17 @@ boolean acquire_tile(const map_t *);
 
 void game_play()
 {
+    int on = 1;
     game.level = 1;
     game.status.score = 0;
-    while (play()) {
+
+    while (on) {
+        const map_t *map = map_open(map_name[game.level]);
+        if (!map) return;
+
+        on = play(map);
+
+        map_close(map);
         game.level++;
     }
 }
@@ -37,11 +45,8 @@ void game_exit()
 {
 }
 
-int play()
+int play(const map_t *map)
 {
-    const map_t *map = map_open(map_name[game.level]);
-    if (!map) return 0;
-
     /* unlock the quit key */
     key_unlock('q');
 
@@ -53,14 +58,15 @@ int play()
         interface_display_map(map);
         interface_display_status(game.status);
 
+        /* acquire gems, letters etc from the tile, if a door is reached,
+         * get out of the loop */
         if (!acquire_tile(map))
-            return 1;
+            break;
 
         if (!action_make_move(map))
             return 0;
     }
 
-    map_close();
     return 1;
 }
 
@@ -101,7 +107,7 @@ boolean acquire_tile(const map_t *map)
             interface_display_message("There are some characters you did not unlock!");
         } else {
             interface_display_message("Press any key to continue...");
-            action_prompt();
+            interface_input_key();
             return B_FALSE;
         }
     }

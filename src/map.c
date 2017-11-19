@@ -1,7 +1,6 @@
 #include <stdlib.h>             /* for free(), NULL */
 #include <string.h>             /* for strcpy() */
 #include <dlfcn.h>              /* for dlopen(), etc */
-#include <assert.h>             /* for assert() */
 
 #include "datatypes.h"
 #include "map.h"
