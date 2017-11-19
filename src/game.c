@@ -24,6 +24,7 @@ void game_play()
 {
     int on = 1;
     game.level = 1;
+    key_lock_all();
     game.status.score = 0;
 
     while (on) {

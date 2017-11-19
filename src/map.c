@@ -135,7 +135,7 @@ void map_take_gem()
 {
     map_tile_t tile;
     tile.type = TILE_GRASS;
-    tile.value = TILE_GRASS;
+    tile.value = ' ';
 
     map_set_tile(map -> cursor, tile);
     map -> gems_left--;
@@ -145,7 +145,7 @@ void map_take_letter()
 {
     map_tile_t tile;
     tile.type = TILE_GRASS;
-    tile.value = TILE_GRASS;
+    tile.value = ' ';
 
     map_set_tile(map -> cursor, tile);
     map -> letters_left--;
