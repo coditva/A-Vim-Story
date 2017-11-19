@@ -7,7 +7,7 @@
  * @param Name of the map
  * @return pointer to the loaded map
  */
-map_t * map_open(char *);
+const map_t * map_open(char *);
 
 
 /**
@@ -49,5 +49,11 @@ void map_take_letter();
  * @param The new point for the cursor
  */
 void map_set_cursor(point_t);
+
+
+/**
+ * Update the real_x of cursor in the map to the cursor.x
+ */
+void map_set_real_cursor();
 
 #endif /* end of include guard: MAP_H_K8P4JCPW */

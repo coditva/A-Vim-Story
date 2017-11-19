@@ -17,7 +17,7 @@ char map_name[][3] = {          /* Store the map names */
 int play();
 
 /* acquire the contents of the tile and take appropriate actions */
-boolean acquire_tile(map_t *);
+boolean acquire_tile(const map_t *);
 
 
 void game_play()
@@ -39,9 +39,8 @@ void game_exit()
 
 int play()
 {
-    map_t *map;
-
-    if (!(map = map_open(map_name[game.level]))) return 0;
+    const map_t *map = map_open(map_name[game.level]);
+    if (!map) return 0;
 
     /* unlock the quit key */
     key_unlock('q');
@@ -65,7 +64,7 @@ int play()
     return 1;
 }
 
-boolean acquire_tile(map_t *map)
+boolean acquire_tile(const map_t *map)
 {
     map_tile_t tile;
 

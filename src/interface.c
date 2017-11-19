@@ -147,7 +147,7 @@ void interface_display_menu(enum menu_item selected)
     wrefresh(menu_window);
 }
 
-void interface_display_map(map_t *map)
+void interface_display_map(const map_t *map)
 {
     int count = 0;
     point_t margin;

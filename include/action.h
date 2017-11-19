@@ -7,7 +7,7 @@
  * @param The key to be parsed
  * @return The action code
  */
-int action_make_move(map_t *map);
+int action_make_move(const map_t *map);
 
 
 /**

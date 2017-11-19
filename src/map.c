@@ -17,7 +17,7 @@ int convert_point_to_linear(point_t);
 map_t * parse_mapfile(mapfile_data_t *);
 
 
-map_t * map_open(char *map_name)
+const map_t * map_open(char *map_name)
 {
     mapfile_data_t *mapfile_data;
     void *handle;
@@ -150,4 +150,15 @@ void map_take_letter()
 
     map_set_tile(map -> cursor, tile);
     map -> letters_left--;
+}
+
+void map_set_cursor(point_t point)
+{
+    map -> cursor.y = point.y;
+    map -> cursor.x = point.x;
+}
+
+void map_set_real_cursor()
+{
+    map -> real_x = map -> cursor.x;
 }

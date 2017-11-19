@@ -6,7 +6,7 @@
 #include "interface.h"
 #include "key.h"
 
-int action_make_move(map_t *map)
+int action_make_move(const map_t *map)
 {
     point_t point;
     int loop = 1;
@@ -90,12 +90,11 @@ int action_make_move(map_t *map)
         /* if point is 0, no place to put cursor, invalid move */
         if (point.x == 0) continue;
 
-        /* if x was touched, this is now the real x */
-        if (touched) map -> real_x = point.x;
-
         /* update cursor */
-        map -> cursor.x = point.x;
-        map -> cursor.y = point.y;
+        map_set_cursor(point);
+
+        /* if x was touched, this is now the real x */
+        if (touched) map_set_real_cursor();
     }
 
     return 1;

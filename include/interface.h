@@ -33,7 +33,7 @@ void interface_display_menu(enum menu_item);
  * Refreshes and shows the menu on top of all windows
  * @param The item to show as selected
  */
-void interface_display_map(map_t *);
+void interface_display_map(const map_t *);
 
 
 /**
