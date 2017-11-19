@@ -85,7 +85,7 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
     map -> cursor.y = buffer -> cursor.y;
     map -> cursor.x = buffer -> cursor.x;
     map -> real_x = buffer -> cursor.x;
-    map -> chars_left = 0;
+    map -> letters_left = 0;
 
     map -> data = (map_tile_t *) malloc(sizeof(map_tile_t)
             * map -> size.x * map -> size.y);
@@ -100,7 +100,7 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
                 case '-':
                     map -> data[pos].type = TILE_LETTER;
                     map -> data[pos].value = ' ';
-                    map -> chars_left++;
+                    map -> letters_left++;
                     break;
                 case ' ':
                     map -> data[pos].type = TILE_GRASS;
@@ -108,7 +108,7 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
                 default:
                     map -> data[pos].type = TILE_LETTER;
                     map -> data[pos].value = buffer -> data[i][j];
-                    map -> chars_left++;
+                    map -> letters_left++;
             }
             pos++;
         }
@@ -130,4 +130,24 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
     strcpy(map -> story, buffer -> story);
 
     return map;
+}
+
+void map_take_gem()
+{
+    map_tile_t tile;
+    tile.type = TILE_GRASS;
+    tile.value = TILE_GRASS;
+
+    map_set_tile(map -> cursor, tile);
+    map -> gems_left--;
+}
+
+void map_take_letter()
+{
+    map_tile_t tile;
+    tile.type = TILE_GRASS;
+    tile.value = TILE_GRASS;
+
+    map_set_tile(map -> cursor, tile);
+    map -> letters_left--;
 }

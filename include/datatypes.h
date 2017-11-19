@@ -93,7 +93,7 @@ typedef struct {
     int real_x;
     map_tile_t *data;
     int gems_left;
-    int chars_left;
+    int letters_left;
     char *story;
 } map_t;
 

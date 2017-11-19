@@ -33,11 +33,15 @@ map_tile_t map_get_tile(point_t);
 
 
 /**
- * Update the current tile to a new given tile at the given point
- * @param The point on the map
- * @param The new tile
+ * Grab the gem from under the cursor and update the tile to empty
  */
-void map_set_tile(point_t, map_tile_t);
+void map_take_gem();
+
+
+/**
+ * Grab the letter from under the cursor and update the tile to empty
+ */
+void map_take_letter();
 
 
 /**

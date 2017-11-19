@@ -80,30 +80,25 @@ boolean acquire_tile(map_t *map)
         interface_display_message(msg_get_keymsg(tile.value));
 
         /* update the old tile to grass */
-        tile.type = TILE_GRASS;
-        tile.value = ' ';
-        map_set_tile(map -> cursor, tile);
-        map -> chars_left--;
+        map_take_letter();
 
     } else if (tile.type == TILE_GEM) {
         /* add score and update status bar */
         game.status.score += 10;
         interface_display_status(game.status);
 
-        /* update the old tile to grass */
-        tile.type = TILE_GRASS;
-        map_set_tile(map -> cursor, tile);
-        map -> gems_left--;
-
         /* display a msg */
         interface_display_message("You got a gem!");
+
+        /* update the old tile to grass */
+        map_take_gem();
 
     } else if (tile.type == TILE_DOOR) {
 
         /* check if all gems are collected */
         if (map -> gems_left) {
             interface_display_message("There are some gems left to collect!");
-        } else if (map -> chars_left) {
+        } else if (map -> letters_left) {
             interface_display_message("There are some characters you did not unlock!");
         } else {
             interface_display_message("Press any key to continue...");
