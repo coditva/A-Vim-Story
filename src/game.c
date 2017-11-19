@@ -41,7 +41,7 @@ int play()
 {
     map_t *map;
 
-    if (!(map = map_load(map_name[game.level]))) return 0;
+    if (!(map = map_open(map_name[game.level]))) return 0;
 
     /* unlock the quit key */
     key_unlock('q');
@@ -61,7 +61,7 @@ int play()
             return 0;
     }
 
-    map_free(map);
+    map_close();
     return 1;
 }
 
@@ -70,7 +70,7 @@ boolean acquire_tile(map_t *map)
     map_tile_t tile;
 
     /* get tile details for the map */
-    tile = map_get_tile(map, map -> cursor);
+    tile = map_get_tile(map -> cursor);
 
     /* if the cursor got onto a letter tile, unlock it */
     if (tile.type == TILE_LETTER) {
@@ -82,7 +82,7 @@ boolean acquire_tile(map_t *map)
         /* update the old tile to grass */
         tile.type = TILE_GRASS;
         tile.value = ' ';
-        map_set_tile(map, map -> cursor, tile);
+        map_set_tile(map -> cursor, tile);
         map -> chars_left--;
 
     } else if (tile.type == TILE_GEM) {
@@ -92,7 +92,7 @@ boolean acquire_tile(map_t *map)
 
         /* update the old tile to grass */
         tile.type = TILE_GRASS;
-        map_set_tile(map, map -> cursor, tile);
+        map_set_tile(map -> cursor, tile);
         map -> gems_left--;
 
         /* display a msg */

@@ -7,31 +7,31 @@
 #include "map.h"
 
 
+map_t *map = NULL;              /* store the map here globally */
+
+
 /* convert the point to a linear index and return */
-int convert_point_to_linear(map_t *, point_t);
+int convert_point_to_linear(point_t);
 
 /* parse the mapfile and return the map object */
 map_t * parse_mapfile(mapfile_data_t *);
 
 
-map_t * map_load(char *map_name)
+map_t * map_open(char *map_name)
 {
-    map_t *map = NULL;
     mapfile_data_t *mapfile_data;
     void *handle;
-    /* MAPS_DIR from the generated config.h header */
+    /* LIB_DIR from the generated config.h header */
     char map_path[150] = LIB_DIR;
 
     /* open the map */
     strcat(map_path, "/maps/map");
     strcat(map_path, map_name);
-    handle = dlopen(map_path, RTLD_NOW);
-    if (!handle) return NULL;
+    if (!(handle = dlopen(map_path, RTLD_NOW)));
 
     /* get the function */
-    mapfile_data = (mapfile_data_t *) dlsym(handle, "map");
-    assert(mapfile_data);
-    if (!mapfile_data) return NULL;
+    if (!(mapfile_data = (mapfile_data_t *) dlsym(handle, "map")))
+        return NULL;
 
     /* get the parsed map */
     map = parse_mapfile(mapfile_data);
@@ -40,15 +40,15 @@ map_t * map_load(char *map_name)
     return map;
 }
 
-void map_free(map_t *map)
+void map_close()
 {
     free(map -> data);
     free(map);
 }
 
-boolean map_is_free(map_t *map, point_t point)
+boolean map_is_free(point_t point)
 {
-    int pos = convert_point_to_linear(map, point);
+    int pos = convert_point_to_linear(point);
 
     if (map -> data[pos].type == TILE_GRASS
             || map -> data[pos].type == TILE_DOOR
@@ -59,24 +59,23 @@ boolean map_is_free(map_t *map, point_t point)
     return B_FALSE;
 }
 
-map_tile_t map_get_tile(map_t *map, point_t point)
+map_tile_t map_get_tile(point_t point)
 {
-    return map -> data[convert_point_to_linear(map, point)];
+    return map -> data[convert_point_to_linear(point)];
 }
 
-void map_set_tile(map_t *map, point_t point, map_tile_t tile)
+void map_set_tile(point_t point, map_tile_t tile)
 {
-    map -> data[convert_point_to_linear(map, point)] = tile;
+    map -> data[convert_point_to_linear(point)] = tile;
 }
 
-int convert_point_to_linear(map_t *map, point_t point)
+int convert_point_to_linear(point_t point)
 {
     return map -> size.x * point.y + point.x;
 }
 
 map_t * parse_mapfile(mapfile_data_t *buffer)
 {
-    map_t *map = NULL;
     int pos = 0;
 
     map = (map_t *) malloc(sizeof(map_t));
@@ -116,13 +115,13 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
     }
 
     /* add door */
-    pos = convert_point_to_linear(map, buffer -> exit);
+    pos = convert_point_to_linear(buffer -> exit);
     map -> data[pos].type = TILE_DOOR;
 
     /* add gems */
     map -> gems_left = buffer -> gems.count;
     for (int i = 0; i < buffer -> gems.count; ++i) {
-        pos = convert_point_to_linear(map, buffer -> gems.data[i]);
+        pos = convert_point_to_linear(buffer -> gems.data[i]);
         map -> data[pos].type = TILE_GEM;
     }
 

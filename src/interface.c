@@ -180,7 +180,7 @@ void interface_display_map(map_t *map)
     wattron(map_window, COLOR_PAIR(COL_BLK_BLU));
 
     /* get the tile under the cursor and print it's value */
-    tile = map_get_tile(map, map -> cursor);
+    tile = map_get_tile(map -> cursor);
     mvwprintw(map_window,
             margin.y + scale.y * map -> cursor.y,
             margin.x + scale.x * map -> cursor.x,

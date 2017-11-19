@@ -77,13 +77,13 @@ int action_make_move(map_t *map)
         }
 
         /* if the line was not changed and the tile is not free, invalid move */
-        if (point.y == map -> cursor.y && !map_is_free(map, point)) {
+        if (point.y == map -> cursor.y && !map_is_free(point)) {
             continue;
         }
 
         /* if line was changed and we can find a point which is before the
          * desired point, move to it */
-        while (point.x && !map_is_free(map, point)) {
+        while (point.x && !map_is_free(point)) {
             point.x--;
         }
 
