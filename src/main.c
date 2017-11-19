@@ -15,8 +15,9 @@ int main(int argc, char *argv[])
         if (choice == MENU_NEW_GAME) {
             game_play();
         } else if (choice == MENU_HELP) {
-            /* display help msg */
+            game_help();        /* display help msg */
         } else if (choice == MENU_QUIT) {
+            game_exit();
             break;              /* exit the loop */
         }
     }

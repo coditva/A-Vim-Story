@@ -3,8 +3,19 @@
 
 /**
  * Create, play and destroy the game
- * @return The status for the game
  */
 void game_play();
+
+
+/**
+ * Show the help message for the game
+ */
+void game_help();
+
+
+/**
+ * Show the exit message for the game
+ */
+void game_exit();
 
 #endif /* end of include guard: GAME_H_VAPGITSI */
