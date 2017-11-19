@@ -6,13 +6,18 @@
 #include "interface.h"
 #include "key.h"
 
-int action_make_move(const map_t *map)
+
+command_t input_command();
+
+
+command_t action_make_move(const map_t *map)
 {
     point_t point;
     int loop = 1;
     int multiplier = 0;
     input_key_t key;
     int touched;
+    command_t command;
 
     /* calculate the update */
     point.x = map -> cursor.x;
@@ -38,18 +43,22 @@ int action_make_move(const map_t *map)
             case 'j':
                 point.y += 1;
                 point.x = map -> real_x;
+                command.type = COMMAND_MOTION;
                 break;
             case 'k':
                 point.y -= 1;
                 point.x = map -> real_x;
+                command.type = COMMAND_MOTION;
                 break;
             case 'l':
                 point.x += 1;
                 touched = 1;
+                command.type = COMMAND_MOTION;
                 break;
             case 'h':
                 point.x -= 1;
                 touched = 1;
+                command.type = COMMAND_MOTION;
                 break;
             case '0':
             case '1':
@@ -67,8 +76,9 @@ int action_make_move(const map_t *map)
                 loop = multiplier;
                 key = interface_input_key();
                 break;
-            case 'q':
-                return 0;
+
+            case ':':
+                return input_command();
         }
 
         /* if the point is out of bounds, illegal move */
@@ -97,5 +107,21 @@ int action_make_move(const map_t *map)
         if (touched) map_set_real_cursor();
     }
 
-    return 1;
+    return command;
+}
+
+command_t input_command()
+{
+    command_t command;
+    input_key_t key = interface_input_key();
+
+    if (key == 'q') {
+        command.type = COMMAND_QUIT;
+    } else if (key == 'h') {
+        command.type = COMMAND_HELP;
+    } else {
+        command.type = COMMAND_NOP;
+    }
+
+    return command;
 }

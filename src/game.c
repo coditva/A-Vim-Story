@@ -48,8 +48,8 @@ void game_exit()
 
 int play(const map_t *map)
 {
-    /* unlock the quit key */
-    key_unlock('q');
+    /* unlock the command mode key */
+    key_unlock(':');
 
     /* show the story */
     interface_display_clear();
@@ -64,7 +64,8 @@ int play(const map_t *map)
         if (!acquire_tile(map))
             break;
 
-        if (!action_make_move(map))
+        command_t command = action_make_move(map);
+        if (command.type == COMMAND_QUIT)
             return 0;
     }
 

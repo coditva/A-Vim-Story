@@ -130,4 +130,19 @@ typedef struct {
     game_status_t status;
 } game_t;
 
+
+/**
+ * A data structure for storing the parsed command
+ */
+typedef struct {
+    enum {
+        COMMAND_NOP,
+        COMMAND_MOTION,
+        COMMAND_HELP,
+        COMMAND_QUIT,
+    } type;
+    char value;
+} command_t;
+
+
 #endif /* end of include guard: DATATYPES_H_PH0MEKHP */

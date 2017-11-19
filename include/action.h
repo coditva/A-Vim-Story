@@ -4,9 +4,8 @@
 /**
  * Take a key as input and update the map checking if the move is valid or not
  * @param The map to update
- * @param The key to be parsed
- * @return The action code
+ * @return The command entered by the user
  */
-int action_make_move(const map_t *map);
+command_t action_make_move(const map_t *map);
 
 #endif /* end of include guard: ACTION_H_D9AS6ZWN */
