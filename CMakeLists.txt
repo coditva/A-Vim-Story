@@ -4,6 +4,9 @@ cmake_minimum_required (VERSION 2.6 FATAL_ERROR)
 # Specify project name
 project (a-vim-story C)
 
+# Enable tests
+set (tests_enabled 1)
+
 # Set version numbers
 set (PROJECT_VERSION_MAJOR 0)
 set (PROJECT_VERSION_MINOR 1)
@@ -52,6 +55,38 @@ set (PROJECT_SOURCES
 
 # Add the maps
 add_subdirectory (maps)
+
+# Add tests
+if (tests_enabled)
+
+    # Find the criterion library for tests
+    find_library (CRITERION_LIB criterion)
+
+    set (TESTS
+        test/key.c
+        src/interface.c
+        src/command.c
+        src/map.c
+        src/key.c
+        src/msg.c
+        src/game.c
+        src/menu.c
+    )
+
+    add_executable (run_test ${TESTS})
+    target_link_libraries (run_test ${LIBRARIES} ${CRITERION_LIB})
+
+    add_custom_command (
+        OUTPUT run_test
+        COMMAND run_test
+        )
+
+    add_custom_target (
+        check run_test
+        DEPENDS ${PROJECT_NAME}
+        COMMENT "Running tests"
+        )
+endif ()
 
 # Add the executable
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES})
