@@ -1,4 +1,5 @@
 #include <assert.h>             /* for assert() */
+#include <string.h>             /* for strcmp() */
 
 #include "datatypes.h"
 #include "action.h"
@@ -113,11 +114,29 @@ command_t action_make_move(const map_t *map)
 command_t input_command()
 {
     command_t command;
-    input_key_t key = interface_input_key();
+    input_key_t key;
+    char line[100];
+    int index = 0;
 
-    if (key == 'q') {
+    for (int i = 0; i < 100; ++i) {
+        line[i] = '\0';
+    }
+    
+    while (1) {
+        interface_display_message(line);
+        key = interface_input_key();
+
+        if (key == 10) {
+            line[index] = '\0';
+            break;
+        }
+        line[index] = key;
+        index++;
+    }
+
+    if (strcmp(line, "quit") == 0) {
         command.type = COMMAND_QUIT;
-    } else if (key == 'h') {
+    } else if (strcmp(line, "help") == 0) {
         command.type = COMMAND_HELP;
     } else {
         command.type = COMMAND_NOP;
