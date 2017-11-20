@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #include "datatypes.h"
 #include "menu.h"
 #include "interface.h"
@@ -19,10 +21,12 @@ enum menu_item menu_display()
 
         switch (key) {
             case 'j':
+            case KEY_DOWN:
                 choice++;
                 if (choice == MENU_SIZE) choice = 0;
                 break;
             case 'k':
+            case KEY_UP:
                 if (choice == 0) choice = MENU_SIZE;
                 choice--;
                 break;
