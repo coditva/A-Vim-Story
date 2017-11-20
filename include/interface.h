@@ -70,4 +70,11 @@ void interface_display_status(game_status_t);
 input_key_t interface_input_key();
 
 
+/**
+ * Keep taking input till the user presses enter
+ * @return The line terminated by '\0'
+ */
+char * interface_input_line();
+
+
 #endif /* end of include guard: INTERFACE_H_N7LPPW8B */

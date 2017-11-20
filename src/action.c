@@ -1,5 +1,6 @@
 #include <assert.h>             /* for assert() */
 #include <string.h>             /* for strcmp(), strcat() */
+#include <stdlib.h>             /* for free() */
 
 #include "datatypes.h"
 #include "action.h"
@@ -114,36 +115,23 @@ command_t action_make_move(const map_t *map)
 command_t input_command()
 {
     command_t command;
-    input_key_t key;
-    char line[100];
-    char msg[100];
-    int index = 0;
+    char *line;
 
-    for (int i = 0; i < 100; ++i) {
-        line[i] = '\0';
-    }
-    
-    while (1) {
-        strcpy(msg, ":");
-        strcat(msg, line);
-        interface_display_command(msg);
-        key = interface_input_key();
-
-        if (key == 10) {
-            line[index] = '\0';
-            break;
-        }
-        line[index] = key;
-        index++;
-    }
+    line = interface_input_line();
 
     if (!strcmp(line, "quit") || !strcmp(line, "q")) {
         command.type = COMMAND_QUIT;
+        interface_display_command("quit");
+
     } else if (!strcmp(line, "help") || !strcmp(line, "h")) {
         command.type = COMMAND_HELP;
+        interface_display_command("help");
+
     } else {
         command.type = COMMAND_NOP;
+        interface_display_command("command not found");
     }
 
+    free(line);
     return command;
 }

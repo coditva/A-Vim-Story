@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>             /* for strlen() */
 #include <assert.h>             /* for assert() */
+#include <stdlib.h>
 
 #include "datatypes.h"
 #include "interface.h"
@@ -44,6 +45,7 @@ boolean interface_init()
     start_color();              /* use colors in the game */
     noecho();                   /* do not echo the characters */
     clear();                    /* clear the display */
+    keypad(display, 1);
 
     /* initialize color pairs */
     init_pair(COL_BLK_BLK,  COLOR_BLACK,    COLOR_BLACK);
@@ -202,7 +204,7 @@ void interface_display_map(const map_t *map)
     prefresh(map_window,
             MIN(scale.y * map -> cursor.y - (LINES / 2), scale.y * map -> size.y - LINES),
             MIN(scale.x * map -> cursor.x - (COLS  / 2), scale.x * map -> size.x - COLS),
-            0, 0, LINES - 1, COLS - 2);
+            0, 0, LINES - 2, COLS - 2);
 }
 
 void interface_display_message(char *message)
@@ -226,7 +228,6 @@ void interface_display_command(char *message)
     wclear(command_window);
     wbkgd(status_bar, COLOR_PAIR(COL_BLK_WHI));
     mvwprintw(command_window, 0, 0, "%s", message);
-    wprintw(command_window, "_");
     wrefresh(command_window);
 }
 
@@ -241,4 +242,54 @@ void interface_display_status(game_status_t status)
 input_key_t interface_input_key()
 {
     return getch();
+}
+
+char * interface_input_line()
+{
+    char *line;
+    int line_size = 100;
+    int key;
+    int loop = 1;
+    int i = 0;
+
+    line = (char *) malloc(line_size);
+
+    curs_set(1);                /* make cursor visible */
+    echo();
+
+    wclear(command_window);
+    mvwprintw(command_window, 0, 0, ":");
+
+    while (loop) {
+        key = mvwgetch(command_window, 0, i + 1);
+        switch (key) {
+
+            /* backspace */
+            case KEY_BACKSPACE:
+            case KEY_DC:
+            case 127:
+                if (i) {
+                    mvwprintw(command_window, 0, i, "   ");
+                    line[--i] = '\0';
+                }
+                mvwprintw(command_window, 0, i + 1, "   ");
+                break;
+
+            /* line break */
+            case KEY_ENTER:
+            case KEY_BREAK:
+            case 10:
+                line[i++] = '\0';
+                loop = 0;
+                break;
+
+            default:
+                line[i++] = key;
+        }
+    }
+
+    noecho();
+    curs_set(0);                /* make cursor invisible */
+
+    return line;
 }
