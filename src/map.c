@@ -26,7 +26,8 @@ const map_t * map_open(char *map_name)
     /* open the map */
     strcat(map_path, "/maps/map");
     strcat(map_path, map_name);
-    if (!(handle = dlopen(map_path, RTLD_NOW)));
+    if (!(handle = dlopen(map_path, RTLD_NOW)))
+        return NULL;
 
     /* get the function */
     if (!(mapfile_data = (mapfile_data_t *) dlsym(handle, "map")))
