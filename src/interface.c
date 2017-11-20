@@ -226,6 +226,7 @@ void interface_display_command(char *message)
     wclear(command_window);
     wbkgd(status_bar, COLOR_PAIR(COL_BLK_WHI));
     mvwprintw(command_window, 0, 0, "%s", message);
+    wprintw(command_window, "_");
     wrefresh(command_window);
 }
 

@@ -137,9 +137,9 @@ command_t input_command()
         index++;
     }
 
-    if (strcmp(line, "quit") == 0) {
+    if (!strcmp(line, "quit") || !strcmp(line, "q")) {
         command.type = COMMAND_QUIT;
-    } else if (strcmp(line, "help") == 0) {
+    } else if (!strcmp(line, "help") || !strcmp(line, "h")) {
         command.type = COMMAND_HELP;
     } else {
         command.type = COMMAND_NOP;
