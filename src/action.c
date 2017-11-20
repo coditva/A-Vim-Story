@@ -117,7 +117,7 @@ command_t input_command()
     command_t command;
     char *line;
 
-    line = interface_input_line();
+    line = interface_input_command();
 
     if (!strcmp(line, "quit") || !strcmp(line, "q")) {
         command.type = COMMAND_QUIT;

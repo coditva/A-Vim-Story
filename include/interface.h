@@ -74,7 +74,7 @@ input_key_t interface_input_key();
  * Keep taking input till the user presses enter
  * @return The line terminated by '\0'
  */
-char * interface_input_line();
+char * interface_input_command();
 
 
 #endif /* end of include guard: INTERFACE_H_N7LPPW8B */

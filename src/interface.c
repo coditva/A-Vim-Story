@@ -244,7 +244,7 @@ input_key_t interface_input_key()
     return getch();
 }
 
-char * interface_input_line()
+char * interface_input_command()
 {
     char *line;
     int line_size = 100;
