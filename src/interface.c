@@ -1,7 +1,7 @@
 #include <ncurses.h>
 #include <string.h>             /* for strlen() */
 #include <assert.h>             /* for assert() */
-#include <stdlib.h>
+#include <stdlib.h>             /* for malloc() */
 
 #include "datatypes.h"
 #include "interface.h"

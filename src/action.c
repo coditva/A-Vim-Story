@@ -1,4 +1,3 @@
-#include <assert.h>             /* for assert() */
 #include <string.h>             /* for strcmp(), strcat() */
 #include <stdlib.h>             /* for free() */
 

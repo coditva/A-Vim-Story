@@ -1,5 +1,5 @@
 #include <signal.h>             /* for signal() */
-#include <stdlib.h>
+#include <stdlib.h>             /* for exit() */
 
 #include "datatypes.h"
 #include "game.h"

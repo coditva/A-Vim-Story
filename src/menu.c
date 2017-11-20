@@ -1,4 +1,4 @@
-#include <ncurses.h>
+#include <ncurses.h>            /* for key names */
 
 #include "datatypes.h"
 #include "menu.h"
