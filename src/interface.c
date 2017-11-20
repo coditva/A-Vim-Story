@@ -17,6 +17,7 @@ WINDOW *menu_window = NULL;     /* the menu subwindow */
 WINDOW *map_window = NULL;      /* the map subwindow */
 WINDOW *message_window = NULL;  /* the message subwindow */
 WINDOW *prompt_window = NULL;   /* the prompt subwindow */
+WINDOW *command_window = NULL;  /* the prompt subwindow */
 WINDOW *status_bar = NULL;      /* the status bar subwindow */
 
 char *menu_label[] = {          /* The labels for menu items */
@@ -66,8 +67,8 @@ boolean interface_init()
 
 
     /* create menu window in the center */
-    size.y = MENU_SIZE + 2 * MENU_PADDING,
-    size.x = MENU_WIDTH + 2 * MENU_PADDING,
+    size.y = MENU_SIZE + 2 * MENU_PADDING;
+    size.x = MENU_WIDTH + 2 * MENU_PADDING;
     start.y = (LINES - MENU_SIZE ) / 2 - MENU_PADDING;
     start.x = (COLS  - MENU_WIDTH) / 2 - MENU_PADDING;
     if (!(menu_window = subwin(display, size.y, size.x, start.y, start.x)))
@@ -86,20 +87,29 @@ boolean interface_init()
         return B_FALSE;
 
     /* create prompt window */
-    size.y = LINES / 3 * 2,
-    size.x = COLS  / 3 * 2,
+    size.y = LINES / 3 * 2;
+    size.x = COLS  / 3 * 2;
     start.y = (LINES - size.y) / 2;
     start.x = (COLS  - size.x) / 2;
     if (!(prompt_window = subwin(display, size.y, size.x, start.y, start.x)))
         return B_FALSE;
 
     /* create status bar */
-    size.y = 1,
-    size.x = COLS,
+    size.y = 1;
+    size.x = COLS;
     start.y = 0;
     start.x = 0;
     status_bar = subwin(display, 1, COLS, 0, 0);
     if (!(status_bar = subwin(display, size.y, size.x, start.y, start.x)))
+        return B_FALSE;
+
+    /* create command bar */
+    size.y = 1;
+    size.x = COLS;
+    start.y = LINES - 1;
+    start.x = 0;
+    command_window = subwin(display, 1, COLS, 0, 0);
+    if (!(command_window = subwin(display, size.y, size.x, start.y, start.x)))
         return B_FALSE;
 
 
@@ -209,6 +219,14 @@ void interface_display_prompt(char *message)
     mvwprintw(prompt_window, 0, 0, "%s", message);
     wrefresh(prompt_window);
     getch();
+}
+
+void interface_display_command(char *message)
+{
+    wclear(command_window);
+    wbkgd(status_bar, COLOR_PAIR(COL_BLK_WHI));
+    mvwprintw(command_window, 0, 0, "%s", message);
+    wrefresh(command_window);
 }
 
 void interface_display_status(game_status_t status)

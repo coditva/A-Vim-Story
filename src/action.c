@@ -1,5 +1,5 @@
 #include <assert.h>             /* for assert() */
-#include <string.h>             /* for strcmp() */
+#include <string.h>             /* for strcmp(), strcat() */
 
 #include "datatypes.h"
 #include "action.h"
@@ -116,6 +116,7 @@ command_t input_command()
     command_t command;
     input_key_t key;
     char line[100];
+    char msg[100];
     int index = 0;
 
     for (int i = 0; i < 100; ++i) {
@@ -123,7 +124,9 @@ command_t input_command()
     }
     
     while (1) {
-        interface_display_message(line);
+        strcpy(msg, ":");
+        strcat(msg, line);
+        interface_display_command(msg);
         key = interface_input_key();
 
         if (key == 10) {

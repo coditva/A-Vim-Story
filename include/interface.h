@@ -37,6 +37,13 @@ void interface_display_map(const map_t *);
 
 
 /**
+ * Show the given message in a status bar at the bottom
+ * @param The message to show
+ */
+void interface_display_command(char *command);
+
+
+/**
  * Show the given message in a popup msg window
  * @param The message to show
  */
