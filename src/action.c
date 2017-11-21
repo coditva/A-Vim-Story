@@ -37,7 +37,6 @@ command_t action_make_move(const map_t *map)
     int loop = 1;
     int multiplier = 0;
     input_key_t key;
-    int touched;
     command_t command;
 
     /* calculate the update */
@@ -51,7 +50,7 @@ command_t action_make_move(const map_t *map)
 
         /* 1 if the real x of cursor is touched and thus has to be changed.
          * a successful change of x by a key can do that */
-        touched = 0;
+        int touched = 0;
 
         if (!key_unlocked(key)) {
             key = interface_input_key();

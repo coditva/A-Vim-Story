@@ -1,6 +1,8 @@
 # A Vim Story
 _A ncurses based game for learning Vim_
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/053e7aa12d05484fbe77a521bb2d4f34)](https://www.codacy.com/app/UtkarshMe/A-Vim-Story?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=UtkarshMe/A-Vim-Story&amp;utm_campaign=Badge_Grade)
+
 
 
 ### Overview

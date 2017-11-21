@@ -162,14 +162,11 @@ void interface_display_clear()
 
 void interface_display_menu(enum menu_item selected)
 {
-    int x = 0;
-    enum menu_item y = 0;
-
     wclear(menu_window);
     box(menu_window, '|', '-');           /* create a box around the window */
 
-    for (; y < MENU_SIZE; ++y) {
-        x = MENU_PADDING + ( MENU_WIDTH - strlen(menu_label[y]) ) / 2;
+    for (enum menu_item y = 0; y < MENU_SIZE; ++y) {
+        int x = MENU_PADDING + ( MENU_WIDTH - strlen(menu_label[y]) ) / 2;
 
         if (y == selected) wstandout(menu_window);
         mvwprintw(menu_window, y + 1 + MENU_PADDING - 1, x, menu_label[y]);
@@ -266,9 +263,8 @@ input_key_t interface_input_key()
 
 char * interface_input_command()
 {
-    char *line;
+    char *line = NULL;
     int line_size = 100;
-    int key;
     int loop = 1;
     int i = 0;
 
@@ -281,7 +277,7 @@ char * interface_input_command()
     mvwprintw(command_window, 0, 0, ":");
 
     while (loop) {
-        key = mvwgetch(command_window, 0, i + 1);
+        int key = mvwgetch(command_window, 0, i + 1);
         switch (key) {
 
             /* backspace */
