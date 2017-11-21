@@ -63,6 +63,7 @@ const map_t * map_open(char *map_name)
 void map_close()
 {
     free(map -> data);
+    free(map -> story);
     free(map);
 }
 
