@@ -76,4 +76,13 @@ void map_set_cursor(point_t);
  */
 void map_set_real_cursor();
 
+
+/**
+ * Search the map for the given tile in the given direction from the cursor
+ * @param The tile to search for
+ * @param The step for increment
+ * @return The pointer to the tile
+ */
+point_t * map_search_tile(map_tile_t, int);
+
 #endif /* end of include guard: MAP_H_K8P4JCPW */
