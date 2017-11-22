@@ -18,11 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdlib.h>             /* for free() */
 
 #include "datatypes.h"
 #include "game.h"
 #include "interface.h"
-#include "action.h"
+#include "command.h"
 #include "key.h"
 #include "map.h"
 #include "msg.h"
@@ -85,9 +86,15 @@ int play(const map_t *map)
         if (!acquire_tile(map))
             break;
 
-        command_t command = action_make_move(map);
-        if (command.type == COMMAND_QUIT)
+        command_t *command = command_get(map);
+
+        if (command -> type == COMMAND_QUIT) {
+            free(command);
             return 0;
+        }
+
+        command_exec(map, command);
+        free(command);
     }
 
     return 1;

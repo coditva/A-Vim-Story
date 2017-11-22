@@ -1,6 +1,6 @@
 /*
- * include/action.h
- * Declare the interface to handle user input
+ * include/command.c
+ * Declare the interface for taking and executing commands
  *
  * Copyright (C) 2017 Utkarsh Mahshwari <utkarshme96@gmail.com>
  *
@@ -18,14 +18,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTION_H_D9AS6ZWN
-#define ACTION_H_D9AS6ZWN
+#ifndef COMMAND_H_0TNF49V3
+#define COMMAND_H_0TNF49V3
+
 
 /**
- * Take a key as input and update the map checking if the move is valid or not
- * @param The map to update
- * @return The command entered by the user
+ * Ask user for input and build the command
+ * @return The pointer to the command
  */
-command_t action_make_move(const map_t *map);
+command_t * command_get();
 
-#endif /* end of include guard: ACTION_H_D9AS6ZWN */
+
+/**
+ * Execute the command on the given map
+ * @param The pointer to the map
+ * @patam The pointer to the command
+ */
+void command_exec(const map_t *, const command_t *);
+
+
+#endif /* end of include guard: COMMAND_H_0TNF49V3 */
