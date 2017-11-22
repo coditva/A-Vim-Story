@@ -1,3 +1,23 @@
+/*
+ * src/command.c
+ * Defile the module for taking and executing commands
+ *
+ * Copyright (C) 2017 Utkarsh Mahshwari <utkarshme96@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stdlib.h>             /* for malloc(), NULL */
 #include <string.h>             /* for strcmp() */
 
@@ -5,6 +25,7 @@
 #include "command.h"
 #include "interface.h"
 #include "map.h"
+
 
 int get_count()
 {
@@ -101,7 +122,7 @@ command_t * get_command_line()
         return NULL;
     }
 
-    command = (command_t *) malloc(sizeof(command));
+    command = (command_t *) malloc(sizeof(command_t));
     line = interface_input_command();
 
     if (!strcmp(line, "quit") || !strcmp(line, "q")) {
@@ -130,7 +151,7 @@ command_t * command_get()
         return command;
 
     /* else build the command */
-    command = (command_t *) malloc(sizeof(command));
+    command = (command_t *) malloc(sizeof(command_t));
     command -> type         = COMMAND_OTHER;
     command -> count        = get_count();
     command -> oper         = get_oper();
