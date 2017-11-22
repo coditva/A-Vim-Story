@@ -46,6 +46,74 @@ mapfile_data_t map = {
             },
         },
     },
+    .letters = {
+        .count = 9,
+        .data = {
+            {
+                .point = {
+                    .y = 1,
+                    .x = 3,
+                },
+                .value = '1',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 10,
+                },
+                .value = '2',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 16,
+                },
+                .value = '3',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 21,
+                },
+                .value = '4',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 27,
+                },
+                .value = '5',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 36,
+                },
+                .value = '6',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 46,
+                },
+                .value = '7',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 55,
+                },
+                .value = '8',
+            },
+            {
+                .point = {
+                    .y = 1,
+                    .x = 65,
+                },
+                .value = '9',
+            },
+        },
+    },
 
     /* the map data which describes the paths in the map
      * the available characters for the same are:

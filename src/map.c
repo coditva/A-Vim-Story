@@ -116,20 +116,18 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
             map -> data[pos].value = ' ';
             switch (buffer -> data[i][j]) {
                 case '+':
-                    map -> data[pos].type = TILE_WATER;
+                    map -> data[pos].type = TILE_BORDER;
                     break;
                 case '-':
-                    map -> data[pos].type = TILE_LETTER;
+                    map -> data[pos].type = TILE_TEXT;
                     map -> data[pos].value = ' ';
-                    map -> letters_left++;
                     break;
                 case ' ':
                     map -> data[pos].type = TILE_GRASS;
                     break;
                 default:
-                    map -> data[pos].type = TILE_LETTER;
+                    map -> data[pos].type = TILE_TEXT;
                     map -> data[pos].value = buffer -> data[i][j];
-                    map -> letters_left++;
             }
             pos++;
         }
@@ -149,6 +147,14 @@ map_t * parse_mapfile(mapfile_data_t *buffer)
     /* add story */
     map -> story = (char *) malloc(strlen(buffer -> story) + 1);
     strcpy(map -> story, buffer -> story);
+
+    /* add letters */
+    map -> letters_left = buffer -> letters.count;
+    for (int i = 0; i < buffer -> letters.count; ++i) {
+        pos = convert_point_to_linear(buffer -> letters.data[i].point);
+        map -> data[pos].type = TILE_LETTER;
+        map -> data[pos].value = buffer -> letters.data[i].value;
+    }
 
     return map;
 }

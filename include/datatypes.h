@@ -28,6 +28,7 @@
 #define MAPMAXX 900
 #define MAPMAXY 900
 #define MAXGEMS 10
+#define MAXLETTERS 10
 #define MAXSTORYLEN 300
 
 /**
@@ -68,13 +69,12 @@ typedef struct {
  * Define the types of tiles in the map
  */
 enum map_tile_type {
-    TILE_WATER,
     TILE_BORDER,
-    TILE_BRICK,
     TILE_GRASS,
     TILE_LETTER,
     TILE_DOOR,
     TILE_GEM,
+    TILE_TEXT,
     TILE_SIZE
 };
 
@@ -100,6 +100,7 @@ typedef enum {
     COL_BLK_BLU,
     COL_YEL_YEL,
     COL_WHI_BLU,
+    COL_BLK_GRN,
 } color_t;
 
 
@@ -130,6 +131,13 @@ typedef struct {
         int count;
         point_t data[MAXGEMS];
     } gems;
+    struct {
+        int count;
+        struct {
+            point_t point;
+            int value;
+        } data[MAXLETTERS];
+    } letters;
     char data[MAPMAXY][MAPMAXX];
 } mapfile_data_t;
 

@@ -35,6 +35,27 @@ mapfile_data_t map = {
         },
     },
 
+    /* the number of letters in the map and their location, value */
+    .letters = {
+
+        /* the number of letters */
+        .count = 1,
+
+        /* the metadata about the lettes */
+        .data = {
+            {
+                /* indexed from 0 */
+                .point = {
+                    .y = 0,
+                    .x = 0,
+                },
+
+                /* the value of the letter */
+                .value = 'a',
+            },
+        },
+    },
+
     /* the map data which describes the paths in the map
      * the available characters for the same are:
      * '+' : to denote an obstacle or boundary tile

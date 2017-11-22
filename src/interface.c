@@ -77,15 +77,15 @@ boolean interface_init()
     init_pair(COL_BLK_BLU,  COLOR_BLACK,    COLOR_BLUE);
     init_pair(COL_YEL_YEL,  COLOR_YELLOW,   COLOR_YELLOW);
     init_pair(COL_WHI_BLU,  COLOR_WHITE,    COLOR_BLUE);
+    init_pair(COL_BLK_GRN,  COLOR_BLACK,    COLOR_GREEN);
 
     /* fill in tile properties */
     map_tile_props[TILE_BORDER].color = COL_BLK_BLK;
     map_tile_props[TILE_GRASS].color = COL_GRN_GRN;
-    map_tile_props[TILE_BRICK].color = COL_BLK_BLK;
-    map_tile_props[TILE_WATER].color = COL_BLK_BLK;
     map_tile_props[TILE_LETTER].color = COL_BLK_WHI;
     map_tile_props[TILE_DOOR].color = COL_YEL_YEL;
     map_tile_props[TILE_GEM].color = COL_RED_RED;
+    map_tile_props[TILE_TEXT].color = COL_BLK_GRN;
 
 
     /* create menu window in the center */

@@ -16,6 +16,18 @@ mapfile_data_t map = {
     .gems = {
         .count = 0,
     },
+    .letters = {
+        .count = 1,
+        .data = {
+            {
+                .point = {
+                    .y = 6,
+                    .x = 1,
+                },
+                .value = 'k',
+            },
+        },
+    },
     .data = {
         "+++",
         "+ +",
