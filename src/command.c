@@ -124,6 +124,9 @@ command_t * get_command_line()
 
     command = (command_t *) malloc(sizeof(command_t));
     line = interface_input_command();
+    if (line == NULL) {
+        return 0;
+    }
 
     if (!strcmp(line, "quit") || !strcmp(line, "q")) {
         command -> type = COMMAND_QUIT;

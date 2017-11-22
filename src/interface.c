@@ -289,10 +289,16 @@ char * interface_input_command()
             case KEY_BACKSPACE:
             case KEY_DC:
             case 127:
-                if (i) {
-                    mvwprintw(command_window, 0, i, "   ");
-                    line[--i] = '\0';
+                if (!i) {       /* exit out of command-line command */
+                    free(line);
+                    curs_set(0);
+                    noecho();
+                    wclear(command_window);
+                    wrefresh(command_window);
+                    return NULL;
                 }
+
+                line[--i] = '\0';
                 mvwprintw(command_window, 0, i + 1, "   ");
                 break;
 
