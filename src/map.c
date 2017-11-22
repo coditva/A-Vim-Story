@@ -74,6 +74,7 @@ boolean map_is_free(point_t point)
     if (map -> data[pos].type == TILE_GRASS
             || map -> data[pos].type == TILE_DOOR
             || map -> data[pos].type == TILE_GEM
+            || map -> data[pos].type == TILE_TEXT
             || map -> data[pos].type == TILE_LETTER) {
         return B_TRUE;
     }
