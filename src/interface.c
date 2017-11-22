@@ -261,6 +261,11 @@ input_key_t interface_input_key()
     return getch();
 }
 
+void interface_input_key_undo(input_key_t key)
+{
+    ungetch(key);
+}
+
 char * interface_input_command()
 {
     char *line = NULL;

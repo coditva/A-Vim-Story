@@ -91,6 +91,13 @@ input_key_t interface_input_key();
 
 
 /**
+ * Put the key back to the input queue
+ * @param The key to put back
+ */
+void interface_input_key_undo(input_key_t);
+
+
+/**
  * Keep taking input till the user presses enter
  * @return The line terminated by '\0'
  */

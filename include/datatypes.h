@@ -165,11 +165,16 @@ typedef struct {
 typedef struct {
     enum {
         COMMAND_NOP,
-        COMMAND_MOTION,
         COMMAND_HELP,
         COMMAND_QUIT,
+        COMMAND_OTHER,
     } type;
-    char value;
+    int count;
+    struct {
+        int count;
+        int value;
+    } motion;
+    int oper;
 } command_t;
 
 

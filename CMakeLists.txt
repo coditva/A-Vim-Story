@@ -43,7 +43,7 @@ set (PROJECT_SOURCES
     src/main.c
     src/interface.c
     src/map.c
-    src/action.c
+    src/command.c
     src/key.c
     src/msg.c
     src/game.c

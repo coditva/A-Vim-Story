@@ -70,6 +70,7 @@ void map_close()
 boolean map_is_free(point_t point)
 {
     int pos = convert_point_to_linear(point);
+    if (pos == -1) return B_FALSE;
 
     if (map -> data[pos].type == TILE_GRASS
             || map -> data[pos].type == TILE_DOOR
