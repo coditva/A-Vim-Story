@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <assert.h>
 #include <string.h>             /* for strcmp(), strcat() */
 #include <stdlib.h>             /* for free() */
 
@@ -51,6 +52,8 @@ command_t action_make_move(const map_t *map)
         /* 1 if the real x of cursor is touched and thus has to be changed.
          * a successful change of x by a key can do that */
         int touched = 0;
+        map_tile_t tile;
+        point_t *temp_point;
 
         if (!key_unlocked(key)) {
             key = interface_input_key();
@@ -80,6 +83,7 @@ command_t action_make_move(const map_t *map)
                 touched = 1;
                 command.type = COMMAND_MOTION;
                 break;
+
             case '0':
             case '1':
             case '2':
@@ -91,10 +95,21 @@ command_t action_make_move(const map_t *map)
             case '8':
             case '9':
                 multiplier = (multiplier) * 10 + key - '0';
-
                 /* loop it multiplier number of times */
                 loop = multiplier;
                 key = interface_input_key();
+                break;
+
+            case 'w':
+                tile = map_get_tile(map -> cursor);
+                if (tile.type != TILE_TEXT) break;
+                tile.type = TILE_TEXT;
+                tile.value = ' ';
+                if ((temp_point = map_search_tile(tile, 1)) != NULL) {
+                    point.x = temp_point -> x + 1;
+                    point.y = temp_point -> y;
+                    free(temp_point);
+                }
                 break;
 
             case ':':

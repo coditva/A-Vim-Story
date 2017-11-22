@@ -190,3 +190,25 @@ void map_set_real_cursor()
 {
     map -> real_x = map -> cursor.x;
 }
+
+point_t * map_search_tile(map_tile_t searchtile, int step)
+{
+    map_tile_t tile;
+    point_t *point = (point_t *) malloc(sizeof(point_t));
+
+    point -> x = map -> cursor.x;
+    point -> y = map -> cursor.y;
+
+    while (point -> x < map -> size.x || point -> y < map -> size.y) {
+        tile = map_get_tile(*point);
+        if (tile.type == searchtile.type && tile.value == searchtile.value) {
+            return point;
+        }
+        point -> x += step;
+        if (point -> x > map -> size.x) {
+            point -> x = 0;
+            point -> y += (step > 0) ? 1 : -1;
+        }
+    }
+    return NULL;
+}
