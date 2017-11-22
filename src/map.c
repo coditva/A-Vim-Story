@@ -83,17 +83,22 @@ boolean map_is_free(point_t point)
 
 map_tile_t map_get_tile(point_t point)
 {
-    return map -> data[convert_point_to_linear(point)];
+    if (point.x <= map -> size.x && point.y <= map -> size.y)
+        return map -> data[convert_point_to_linear(point)];
+    return map -> data[0];
 }
 
 void map_set_tile(point_t point, map_tile_t tile)
 {
-    map -> data[convert_point_to_linear(point)] = tile;
+    if (point.x <= map -> size.x && point.y <= map -> size.y)
+        map -> data[convert_point_to_linear(point)] = tile;
 }
 
 int convert_point_to_linear(point_t point)
 {
-    return map -> size.x * point.y + point.x;
+    if (point.x <= map -> size.x && point.y <= map -> size.y)
+        return map -> size.x * point.y + point.x;
+    return -1;
 }
 
 map_t * parse_mapfile(mapfile_data_t *buffer)
