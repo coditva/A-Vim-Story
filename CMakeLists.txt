@@ -67,6 +67,7 @@ if (tests_enabled)
         src/key.c
         test/msg.c
         src/msg.c
+        test/interface.c
         src/interface.c
         src/command.c
         src/map.c
