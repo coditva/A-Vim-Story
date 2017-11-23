@@ -86,7 +86,7 @@ map_tile_t map_get_tile(point_t point)
 {
     if (point.x <= map -> size.x && point.y <= map -> size.y)
         return map -> data[convert_point_to_linear(point)];
-    return map -> data[0];
+    return map -> data[0];      /* TODO: RETURN ERROR */
 }
 
 void map_set_tile(point_t point, map_tile_t tile)
@@ -97,7 +97,7 @@ void map_set_tile(point_t point, map_tile_t tile)
 
 int convert_point_to_linear(point_t point)
 {
-    if (point.x <= map -> size.x && point.y <= map -> size.y)
+    if (point.x <  map -> size.x && point.y <  map -> size.y)
         return map -> size.x * point.y + point.x;
     return -1;
 }
@@ -195,26 +195,4 @@ void map_set_cursor(point_t point)
 void map_set_real_cursor()
 {
     map -> real_x = map -> cursor.x;
-}
-
-point_t * map_search_tile(map_tile_t searchtile, int step)
-{
-    map_tile_t tile;
-    point_t *point = (point_t *) malloc(sizeof(point_t));
-
-    point -> x = map -> cursor.x;
-    point -> y = map -> cursor.y;
-
-    while (point -> x < map -> size.x || point -> y < map -> size.y) {
-        tile = map_get_tile(*point);
-        if (tile.type == searchtile.type && tile.value == searchtile.value) {
-            return point;
-        }
-        point -> x += step;
-        if (point -> x > map -> size.x) {
-            point -> x = 0;
-            point -> y += (step > 0) ? 1 : -1;
-        }
-    }
-    return NULL;
 }
