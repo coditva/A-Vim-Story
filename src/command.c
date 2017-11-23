@@ -36,7 +36,8 @@ void increment_cursor(const map_t *map, point_t *point)
         point -> y++;
     }
     if (point -> y >= map -> size.y) {
-        point = NULL;
+        point -> x = 0;
+        point -> y = 0;
     }
 }
 
@@ -124,8 +125,8 @@ point_t * exec_motion(const map_t *map, const command_t *command)
                     break;
 
                 increment_cursor(map, &temp);
-                /* &temp becomes NULL if end of map */
-                if (!&temp) break;
+                /* temp becomes (0, 0) if end of map */
+                if (temp.x == 0 && temp.y == 0) break;
                 tile = map_get_tile(temp);
 
                 if (tile.value == ' ') flag2 = 1;
