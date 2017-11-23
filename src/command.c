@@ -26,6 +26,7 @@
 #include "command.h"
 #include "interface.h"
 #include "map.h"
+#include "key.h"
 
 
 void increment_cursor(const map_t *map, point_t *point)
@@ -71,11 +72,13 @@ int get_count()
 int get_oper()
 {
     input_key_t key = interface_input_key();
+
     switch (key) {
         case 'd':
         case 'c':
         case 'y':
-            return key;
+            if (key_unlocked(key)) return key;
+            else return 0;
         default:
             interface_input_key_undo(key);
             return 0;
@@ -85,6 +88,10 @@ int get_oper()
 int get_motion()
 {
     input_key_t key = interface_input_key();
+
+    while (!key_unlocked(key)) {
+        return 0;
+    }
     return key;
 }
 
@@ -190,22 +197,29 @@ command_t * command_get()
 {
     command_t *command;
 
-    /* check if it's a command line */
-    if ((command = get_command_line()) != NULL)
-        return command;
+    while (1) {
+        /* check if it's a command line */
+        if ((command = get_command_line()) != NULL)
+            return command;
 
-    /* else build the command */
-    command = (command_t *) malloc(sizeof(command_t));
-    command -> type         = COMMAND_OTHER;
-    command -> count        = get_count();
-    command -> oper         = get_oper();
-    if (command -> oper == 0) {
-        command -> motion.count = command -> count;
-        command -> count = 1;
-    } else {
-        command -> motion.count = get_count();
+        /* else build the command */
+        command = (command_t *) malloc(sizeof(command_t));
+        command -> type         = COMMAND_OTHER;
+        command -> count        = get_count();
+        command -> oper         = get_oper();
+        if (command -> oper == 0) {
+            command -> motion.count = command -> count;
+            command -> count = 1;
+        } else {
+            command -> motion.count = get_count();
+        }
+        command -> motion.value = get_motion();
+
+        /* we could not form any command */
+        if (command -> motion.value == 0) {
+            continue;
+        }
     }
-    command -> motion.value = get_motion();
 
     return command;
 }
