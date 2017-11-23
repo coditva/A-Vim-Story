@@ -20,12 +20,25 @@
 
 #include <stdlib.h>             /* for malloc(), NULL */
 #include <string.h>             /* for strcmp() */
+#include <ctype.h>              /* for isalnum() */
 
 #include "datatypes.h"
 #include "command.h"
 #include "interface.h"
 #include "map.h"
 
+
+void increment_cursor(const map_t *map, point_t *point)
+{
+    point -> x++;
+    if (point -> x >= map -> size.x) {
+        point -> x = 1;
+        point -> y++;
+    }
+    if (point -> y >= map -> size.y) {
+        point = NULL;
+    }
+}
 
 int get_count()
 {
@@ -77,6 +90,9 @@ int get_motion()
 point_t * exec_motion(const map_t *map, const command_t *command)
 {
     point_t temp = { .y = map -> cursor.y, .x = map -> real_x };
+    map_tile_t tile;
+    int flag1 = 0;
+    int flag2 = 1;
 
     switch (command -> motion.value) {
         case 'j':
@@ -90,6 +106,30 @@ point_t * exec_motion(const map_t *map, const command_t *command)
             break;
         case 'h':
             temp.x = map -> cursor.x - 1;
+            break;
+
+        case 'w':
+            tile = map_get_tile(temp);
+            if (tile.type != TILE_TEXT) break;
+
+            /* how: at the start, flag is the 1 if the current tile is
+             * alphanumeric. we keep incrementing cursor till an opposite
+             * value is found. but if we encounter space between incrementing
+             * any non-space value is the stop point */
+            flag1 = isalnum(tile.value);
+            flag2 = 0;          /* when any non-space works, it's 1 */
+            while (1) {
+                if ((flag1 != isalnum(tile.value) || flag2)
+                        && tile.value != ' ')
+                    break;
+
+                increment_cursor(map, &temp);
+                /* &temp becomes NULL if end of map */
+                if (!&temp) break;
+                tile = map_get_tile(temp);
+
+                if (tile.value == ' ') flag2 = 1;
+            }
             break;
     }
 
@@ -158,7 +198,12 @@ command_t * command_get()
     command -> type         = COMMAND_OTHER;
     command -> count        = get_count();
     command -> oper         = get_oper();
-    command -> motion.count = get_count();
+    if (command -> oper == 0) {
+        command -> motion.count = command -> count;
+        command -> count = 1;
+    } else {
+        command -> motion.count = get_count();
+    }
     command -> motion.value = get_motion();
 
     return command;
@@ -179,8 +224,9 @@ void command_exec(const map_t *map, const command_t *command)
 
             point_t *end = exec_motion(map, command);
             if (end) {
-                if (end -> y == map -> cursor.y
-                        && end -> x != map -> cursor.x) {
+                /* the real x value is not updated on using the j & k keys */
+                if (command -> motion.value != 'j'
+                        && command -> motion.value != 'k') {
                     map_set_cursor(*end);
                     map_set_real_cursor();
                 }
