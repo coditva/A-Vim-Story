@@ -64,11 +64,12 @@ if (tests_enabled)
 
     set (TESTS
         test/key.c
+        src/key.c
+        test/msg.c
+        src/msg.c
         src/interface.c
         src/command.c
         src/map.c
-        src/key.c
-        src/msg.c
         src/game.c
         src/menu.c
     )
