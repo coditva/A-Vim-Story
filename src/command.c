@@ -139,6 +139,23 @@ point_t * exec_motion(const map_t *map, const command_t *command)
                 if (tile.value == ' ') flag2 = 1;
             }
             break;
+
+        case 'W':
+            tile = map_get_tile(temp);
+            if (tile.type != TILE_TEXT) break;
+
+            increment_cursor(map, &temp);
+            flag1 = 0;
+            while (1) {
+                tile = map_get_tile(temp);
+                if (flag1 && tile.value != ' ') {
+                    break;
+                } else if (tile.value == ' ') {
+                    flag1 = 1;
+                }
+                increment_cursor(map, &temp);
+            }
+            break;
     }
 
     if (temp.y == map -> cursor.y && !map_is_free(temp)) {
