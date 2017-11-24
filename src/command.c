@@ -89,7 +89,7 @@ int get_motion()
 {
     input_key_t key = interface_input_key();
 
-    while (!key_unlocked(key)) {
+    if (!key_unlocked(key)) {
         return 0;
     }
     return key;
@@ -197,7 +197,7 @@ command_t * command_get()
 {
     command_t *command;
 
-    while (1) {
+    do {
         /* check if it's a command line */
         if ((command = get_command_line()) != NULL)
             return command;
@@ -215,23 +215,21 @@ command_t * command_get()
         }
         command -> motion.value = get_motion();
 
-        /* we could not form any command */
-        if (command -> motion.value == 0) {
-            continue;
-        }
-    }
+    /* we could not form any command */
+    } while (command -> motion.value == 0);
 
     return command;
 }
 
 void command_exec(const map_t *map, const command_t *command)
 {
-    int count = command -> count;
+    int count;
 
-    if (command -> type == COMMAND_NOP) {
+    if (command == NULL || command -> type == COMMAND_NOP) {
         return;
     }
 
+    count = command -> count;
     while (count--) {
 
         int count2 = command -> motion.count;
