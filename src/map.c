@@ -97,7 +97,8 @@ void map_set_tile(point_t point, map_tile_t tile)
 
 int convert_point_to_linear(point_t point)
 {
-    if (point.x <  map -> size.x && point.y <  map -> size.y)
+    if (point.x <  map -> size.x && point.y <  map -> size.y
+            && point.x > -1 && point.y > -1)
         return map -> size.x * point.y + point.x;
     return -1;
 }
