@@ -116,13 +116,14 @@ point_t * exec_motion(const map_t *map, const command_t *command)
             temp.x = map -> cursor.x - 1;
             break;
 
+
         case 'w':
             tile = map_get_tile(temp);
             if (tile.type != TILE_TEXT) break;
 
-            /* how: at the start, flag is the 1 if the current tile is
+            /* how: at the start, flag is 1 if the current tile is
              * alphanumeric. we keep incrementing cursor till an opposite
-             * value is found. but if we encounter space between incrementing
+             * value is found. but if we encounter space between incrementing,
              * any non-space value is the stop point */
             flag1 = isalnum(tile.value);
             flag2 = 0;          /* when any non-space works, it's 1 */
@@ -140,10 +141,14 @@ point_t * exec_motion(const map_t *map, const command_t *command)
             }
             break;
 
+
         case 'W':
             tile = map_get_tile(temp);
             if (tile.type != TILE_TEXT) break;
 
+            /* how: keep incrementing the cursor till we don't encounter a
+             * space. Once that is done, flag1 is made 1 and we break out of
+             * incrementing when we encounter a non-space character */
             increment_cursor(map, &temp);
             flag1 = 0;
             while (1) {
@@ -156,13 +161,29 @@ point_t * exec_motion(const map_t *map, const command_t *command)
                 increment_cursor(map, &temp);
             }
             break;
+
+
+        case 'E':
+            tile = map_get_tile(temp);
+            if (tile.type != TILE_TEXT) break;
+
+            flag1 = 0;
+            increment_cursor(map, &temp);
+            while (1) {
+                tile = map_get_tile(temp);
+                if (flag1 && tile.value == ' ') break;
+                else if (tile.value != ' ') flag1 = 1;
+                increment_cursor(map, &temp);
+            }
+            temp.x--;
+            break;
     }
 
     if (temp.y == map -> cursor.y && !map_is_free(temp)) {
         return NULL;
     }
 
-    while (temp.y != map -> cursor.y && temp.x && !map_is_free(temp))
+    while (temp.y != map -> cursor.y && temp.x >= 1 && !map_is_free(temp))
         temp.x--;
 
     if (map_is_free(temp)) {
