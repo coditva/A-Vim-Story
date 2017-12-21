@@ -45,8 +45,14 @@ boolean acquire_tile(const map_t *);
 void game_play()
 {
     int on = 1;
-    game.level = 1;
-    key_lock_all();
+    game.level = 8;
+    key_unlock_all();
+    key_unlock(':');
+    key_unlock('W');
+    key_unlock('l');
+    key_unlock('e');
+    key_unlock('E');
+
     game.status.score = 0;
 
     while (on) {
@@ -55,6 +61,7 @@ void game_play()
 
         on = play(map);
 
+        /* TODO: it's map_close() not map_close(map) */
         map_close(map);
         game.level++;
     }
@@ -70,9 +77,6 @@ void game_exit()
 
 int play(const map_t *map)
 {
-    /* unlock the command mode key */
-    key_unlock(':');
-
     /* show the story */
     interface_display_clear();
     interface_display_prompt(map -> story);

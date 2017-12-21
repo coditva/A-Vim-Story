@@ -11,7 +11,7 @@ set (CMAKE_EXE_LINKER_FLAGS ${PROJECT_LINKER_FLAGS})
 set (EXECUTABLE_OUTPUT_PATH ${LIBRARY_OUTPUT_PATH}/maps)
 
 # Add each map
-foreach (i RANGE 1 8)
+foreach (i RANGE 1 9)
 
     # The plugin should always export a single binary with a .so extension
     add_executable (map${i} map${i}.c)
