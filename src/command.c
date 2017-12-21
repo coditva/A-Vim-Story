@@ -101,82 +101,94 @@ point_t * exec_motion(const map_t *map, const command_t *command)
     map_tile_t tile;
     int flag1 = 0;
     int flag2 = 1;
+    int count = command -> motion.count;
 
-    switch (command -> motion.value) {
-        case 'j':
-            temp.y += 1;
-            break;
-        case 'k':
-            temp.y -= 1;
-            break;
-        case 'l':
-            temp.x = map -> cursor.x + 1;
-            break;
-        case 'h':
-            temp.x = map -> cursor.x - 1;
-            break;
+    while (count--) {
+
+        switch (command -> motion.value) {
+            case 'j':
+                temp.y += 1;
+                break;
+            case 'k':
+                temp.y -= 1;
+                break;
+            case 'l':
+                temp.x += 1;
+                break;
+            case 'h':
+                temp.x -= 1;
+                break;
 
 
-        case 'w':
-            tile = map_get_tile(temp);
-            if (tile.type != TILE_TEXT) break;
-
-            /* how: at the start, flag is 1 if the current tile is
-             * alphanumeric. we keep incrementing cursor till an opposite
-             * value is found. but if we encounter space between incrementing,
-             * any non-space value is the stop point */
-            flag1 = isalnum(tile.value);
-            flag2 = 0;          /* when any non-space works, it's 1 */
-            while (1) {
-                if ((flag1 != isalnum(tile.value) || flag2)
-                        && tile.value != ' ')
-                    break;
-
-                increment_cursor(map, &temp);
-                /* temp becomes (0, 0) if end of map */
-                if (temp.x == 0 && temp.y == 0) break;
+            case 'w':
                 tile = map_get_tile(temp);
+                if (tile.type != TILE_TEXT) break;
 
-                if (tile.value == ' ') flag2 = 1;
-            }
-            break;
+                /* how: at the start, flag is 1 if the current tile is
+                 * alphanumeric. we keep incrementing cursor till an opposite
+                 * value is found. but if we encounter space between incrementing,
+                 * any non-space value is the stop point */
+                flag1 = isalnum(tile.value);
+                flag2 = 0;          /* when any non-space works, it's 1 */
+                while (1) {
+                    if ((flag1 != isalnum(tile.value) || flag2)
+                            && tile.value != ' ')
+                        break;
 
+                    increment_cursor(map, &temp);
+                    /* temp becomes (0, 0) if end of map */
+                    if (temp.x == 0 && temp.y == 0) break;
+                    tile = map_get_tile(temp);
 
-        case 'W':
-            tile = map_get_tile(temp);
-            if (tile.type != TILE_TEXT) break;
-
-            /* how: keep incrementing the cursor till we don't encounter a
-             * space. Once that is done, flag1 is made 1 and we break out of
-             * incrementing when we encounter a non-space character */
-            increment_cursor(map, &temp);
-            flag1 = 0;
-            while (1) {
-                tile = map_get_tile(temp);
-                if (flag1 && tile.value != ' ') {
-                    break;
-                } else if (tile.value == ' ') {
-                    flag1 = 1;
+                    if (tile.value == ' ') flag2 = 1;
                 }
-                increment_cursor(map, &temp);
-            }
-            break;
+                break;
 
 
-        case 'E':
-            tile = map_get_tile(temp);
-            if (tile.type != TILE_TEXT) break;
-
-            flag1 = 0;
-            increment_cursor(map, &temp);
-            while (1) {
+            case 'W':
                 tile = map_get_tile(temp);
-                if (flag1 && tile.value == ' ') break;
-                else if (tile.value != ' ') flag1 = 1;
+                if (tile.type != TILE_TEXT) break;
+
+                /* how: keep incrementing the cursor till we don't encounter a
+                 * space. Once that is done, flag1 is made 1 and we break out of
+                 * incrementing when we encounter a non-space character */
                 increment_cursor(map, &temp);
-            }
-            temp.x--;
-            break;
+                flag1 = 0;
+                while (1) {
+                    tile = map_get_tile(temp);
+                    if (flag1 && tile.value != ' ') {
+                        break;
+                    } else if (tile.value == ' ') {
+                        flag1 = 1;
+                    }
+                    increment_cursor(map, &temp);
+                }
+                break;
+
+
+            case 'e':
+
+                tile = map_get_tile(temp);
+                if (tile.type != TILE_TEXT) break;
+
+                break;
+
+
+            case 'E':
+                tile = map_get_tile(temp);
+                if (tile.type != TILE_TEXT) break;
+
+                flag1 = 0;
+                increment_cursor(map, &temp);
+                while (1) {
+                    tile = map_get_tile(temp);
+                    if (flag1 && tile.value == ' ') break;
+                    else if (tile.value != ' ') flag1 = 1;
+                    increment_cursor(map, &temp);
+                }
+                temp.x--;
+                break;
+        }
     }
 
     if (temp.y == map -> cursor.y && !map_is_free(temp)) {
@@ -253,7 +265,7 @@ command_t * command_get()
         }
         command -> motion.value = get_motion();
 
-    /* we could not form any command */
+        /* we could not form any command */
     } while (command -> motion.value == 0);
 
     return command;
@@ -269,21 +281,16 @@ void command_exec(const map_t *map, const command_t *command)
 
     count = command -> count;
     while (count--) {
-
-        int count2 = command -> motion.count;
-        while (count2--) {
-
-            point_t *end = exec_motion(map, command);
-            if (end) {
-                /* the real x value is not updated on using the j & k keys */
-                if (command -> motion.value != 'j'
-                        && command -> motion.value != 'k') {
-                    map_set_cursor(*end);
-                    map_set_real_cursor();
-                }
+        point_t *end = exec_motion(map, command);
+        if (end) {
+            /* the real x value is not updated on using the j & k keys */
+            if (command -> motion.value != 'j'
+                    && command -> motion.value != 'k') {
                 map_set_cursor(*end);
-                free(end);
+                map_set_real_cursor();
             }
+            map_set_cursor(*end);
+            free(end);
         }
     }
 }
