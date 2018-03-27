@@ -30,8 +30,8 @@ set (PROJECT_SOURCE_FLAGS "-ansi -std=c99 -Wall")
 set (CMAKE_C_FLAGS " \
     ${PROJECT_DEBUG_FLAGS} \
     ${PROJECT_SOURCE_FLAGS} \
-    ${PROJECT_LINKER_FLAGS} \
 ")
+set (CMAKE_EXE_LINKER_FLAGS ${PROJECT_LINKER_FLAGS})
 
 # Find and add external libraries
 find_library (NCURSES_LIB ncurses)
