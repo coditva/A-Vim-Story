@@ -1,11 +1,11 @@
 set (PROJECT_DEBUG_FLAGS "-g")
 set (PROJECT_LINKER_FLAGS "-shared")
-set (PROJECT_SOURCE_FLAGS "-fPIC -ansi -std=c99 -pedantic -Wall")
+set (PROJECT_SOURCE_FLAGS "-fPIC -std=c99 -pedantic -Wall")
 set (CMAKE_C_FLAGS " \
     ${PROJECT_DEBUG_FLAGS} \
     ${PROJECT_SOURCE_FLAGS} \
-    ${PROJECT_LINKER_FLAGS} \
 ")
+set (CMAKE_EXE_LINKER_FLAGS ${PROJECT_LINKER_FLAGS})
 
 # Set the output path
 set (EXECUTABLE_OUTPUT_PATH ${LIBRARY_OUTPUT_PATH}/maps)
