@@ -43,6 +43,7 @@ Or if you want to test it in `build/` itself
     make && make install
     ./bin/a-vim-story
 
+**You can even use the Dockerfile now.**
 
 
 ### Documentation
