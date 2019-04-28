@@ -23,12 +23,17 @@ Inspired by [Vim Adventures](https://vim-adventures.com/) and open sourced.
 ### Compiling
 Assuming you have _libncurses_, _CMake_ and _Make_ installed.
 
+Optionally, you'd require [_Criterion_](https://github.com/Snaipe/Criterion)
+for testing. If you don't want that, set `enable_testing` to `0` in
+`CMakeLists.txt` in the root directory.
+
     mkdir build && cd build
 
     cmake ..
 
     make
     make install        # to install (might want to use 'sudo')
+    make check          # to run tests
 
     a-vim-story         # to run
 

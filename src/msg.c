@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdlib.h>             /* for NULL */
 
 #include "datatypes.h"
 #include "msg.h"
@@ -127,5 +128,8 @@ char message[KEY_MAX_SIZE - START][MAX_MSG_SIZE] = {
 
 char * msg_get_keymsg(input_key_t key)
 {
+    if (key - START < 0 || key > KEY_MAX_SIZE) {
+        return NULL;
+    }
     return message[key - START];
 }
