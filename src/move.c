@@ -1,8 +1,9 @@
 /*
- * include/command.c
- * Declare the interface for taking and executing commands
+ * src/move.c
+ * Define the module for the handling game, help, settings and other
+ * options in the menu
  *
- * Copyright (C) 2017 Utkarsh Mahshwari <utkarshme96@gmail.com>
+ * Copyright (C) 2017 Utkarsh Maheshwari <utkarshme96@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +19,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COMMAND_H_0TNF49V3
-#define COMMAND_H_0TNF49V3
-
-
-/**
- * Execute the command on the given map
- * @param The pointer to the map
- * @return The result of the command
- */
-int command_exec(const map_t *);
-
-
-#endif /* end of include guard: COMMAND_H_0TNF49V3 */
+#include "datatypes.h"
+#include "move.h"

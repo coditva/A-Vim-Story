@@ -78,6 +78,8 @@ int play(const map_t *map)
     interface_display_prompt(map -> story);
 
     while (1) {
+        int result = 0;
+
         interface_display_map(map);
         interface_display_status(game.status);
 
@@ -86,15 +88,10 @@ int play(const map_t *map)
         if (!acquire_tile(map))
             break;
 
-        command_t *command = command_get(map);
-
-        if (command -> type == COMMAND_QUIT) {
-            free(command);
-            return 0;
+        result = command_exec(map);
+        if (result == 2) {
+            break;
         }
-
-        command_exec(map, command);
-        free(command);
     }
 
     return 1;

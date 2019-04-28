@@ -29,62 +29,6 @@
 #include "key.h"
 
 
-void increment_cursor(const map_t *map, point_t *point)
-{
-    point -> x++;
-    if (point -> x >= map -> size.x) {
-        point -> x = 1;
-        point -> y++;
-    }
-    if (point -> y >= map -> size.y) {
-        point -> x = 0;
-        point -> y = 0;
-    }
-}
-
-int get_count()
-{
-    int count = 0;
-
-    while (1) {
-        input_key_t key = interface_input_key();
-
-        /* if first key for count is zero, then it is be the '0' motion key */
-        if (count == 0 && key == '0') {
-            interface_input_key_undo(key);
-            return 1;
-
-        /* if key is a number add it */
-        } else if (key >= '0' && key <= '9') {
-            count = count * 10 + (key - '0');
-
-        /* if key is not a number, it is a command */
-        } else {
-            interface_input_key_undo(key);
-            if (!count) count = 1;
-            break;
-        }
-    }
-
-    return count;
-}
-
-int get_oper()
-{
-    input_key_t key = interface_input_key();
-
-    switch (key) {
-        case 'd':
-        case 'c':
-        case 'y':
-            if (key_unlocked(key)) return key;
-            else return 0;
-        default:
-            interface_input_key_undo(key);
-            return 0;
-    }
-}
-
 int get_motion()
 {
     input_key_t key = interface_input_key();
@@ -95,202 +39,24 @@ int get_motion()
     return key;
 }
 
-point_t * exec_motion(const map_t *map, const command_t *command)
+
+int command_exec(const map_t *map)
 {
-    point_t temp = { .y = map -> cursor.y, .x = map -> real_x };
-    map_tile_t tile;
-    int flag1 = 0;
-    int flag2 = 1;
-    int count = command -> motion.count;
-
-    while (count--) {
-
-        switch (command -> motion.value) {
-            case 'j':
-                temp.y += 1;
-                break;
-            case 'k':
-                temp.y -= 1;
-                break;
-            case 'l':
-                temp.x += 1;
-                break;
-            case 'h':
-                temp.x -= 1;
-                break;
-
-
-            case 'w':
-                tile = map_get_tile(temp);
-                if (tile.type != TILE_TEXT) break;
-
-                /* how: at the start, flag is 1 if the current tile is
-                 * alphanumeric. we keep incrementing cursor till an opposite
-                 * value is found. but if we encounter space between incrementing,
-                 * any non-space value is the stop point */
-                flag1 = isalnum(tile.value);
-                flag2 = 0;          /* when any non-space works, it's 1 */
-                while (1) {
-                    if ((flag1 != isalnum(tile.value) || flag2)
-                            && tile.value != ' ')
-                        break;
-
-                    increment_cursor(map, &temp);
-                    /* temp becomes (0, 0) if end of map */
-                    if (temp.x == 0 && temp.y == 0) break;
-                    tile = map_get_tile(temp);
-
-                    if (tile.value == ' ') flag2 = 1;
-                }
-                break;
-
-
-            case 'W':
-                tile = map_get_tile(temp);
-                if (tile.type != TILE_TEXT) break;
-
-                /* how: keep incrementing the cursor till we don't encounter a
-                 * space. Once that is done, flag1 is made 1 and we break out of
-                 * incrementing when we encounter a non-space character */
-                increment_cursor(map, &temp);
-                flag1 = 0;
-                while (1) {
-                    tile = map_get_tile(temp);
-                    if (flag1 && tile.value != ' ') {
-                        break;
-                    } else if (tile.value == ' ') {
-                        flag1 = 1;
-                    }
-                    increment_cursor(map, &temp);
-                }
-                break;
-
-
-            case 'e':
-
-                tile = map_get_tile(temp);
-                if (tile.type != TILE_TEXT) break;
-
-                break;
-
-
-            case 'E':
-                tile = map_get_tile(temp);
-                if (tile.type != TILE_TEXT) break;
-
-                flag1 = 0;
-                increment_cursor(map, &temp);
-                while (1) {
-                    tile = map_get_tile(temp);
-                    if (flag1 && tile.value == ' ') break;
-                    else if (tile.value != ' ') flag1 = 1;
-                    increment_cursor(map, &temp);
-                }
-                temp.x--;
-                break;
+    input_key_t key;
+    while (1) {
+        key = interface_input_key();
+        if (key_unlocked(key)) {
+            break;
         }
     }
 
-    if (temp.y == map -> cursor.y && !map_is_free(temp)) {
-        return NULL;
-    }
+    /* send key to neovim */
 
-    while (temp.y != map -> cursor.y && temp.x >= 1 && !map_is_free(temp))
-        temp.x--;
+    /* get screen state */
 
-    if (map_is_free(temp)) {
-        point_t *point = (point_t *) malloc(sizeof(point_t));
-        point -> y = temp.y;
-        point -> x = temp.x;
-        return point;
+    /* parse screen state */
 
-    } else {
-        return NULL;
-    }
-}
+    /* update map */
 
-command_t * get_command_line()
-{
-    command_t *command = NULL;
-    char *line;
-
-    input_key_t key = interface_input_key();
-    if (key != ':') {
-        interface_input_key_undo(key);
-        return NULL;
-    }
-
-    command = (command_t *) malloc(sizeof(command_t));
-    line = interface_input_command();
-    if (line == NULL) {
-        return 0;
-    }
-
-    if (!strcmp(line, "quit") || !strcmp(line, "q")) {
-        command -> type = COMMAND_QUIT;
-        interface_display_command("quit");
-
-    } else if (!strcmp(line, "help") || !strcmp(line, "h")) {
-        command -> type = COMMAND_HELP;
-        interface_display_command("help");
-
-    } else {
-        command -> type = COMMAND_NOP;
-        interface_display_command("command not found");
-    }
-
-    free(line);
-    return command;
-}
-
-command_t * command_get()
-{
-    command_t *command;
-
-    do {
-        /* check if it's a command line */
-        if ((command = get_command_line()) != NULL)
-            return command;
-
-        /* else build the command */
-        command = (command_t *) malloc(sizeof(command_t));
-        command -> type         = COMMAND_OTHER;
-        command -> count        = get_count();
-        command -> oper         = get_oper();
-        if (command -> oper == 0) {
-            command -> motion.count = command -> count;
-            command -> count = 1;
-        } else {
-            command -> motion.count = get_count();
-        }
-        command -> motion.value = get_motion();
-
-        /* we could not form any command */
-    } while (command -> motion.value == 0);
-
-    return command;
-}
-
-void command_exec(const map_t *map, const command_t *command)
-{
-    int count;
-
-    if (command == NULL || command -> type == COMMAND_NOP) {
-        return;
-    }
-
-    count = command -> count;
-    while (count--) {
-        point_t *end = exec_motion(map, command);
-        if (end) {
-            /* the real x value is not updated on using the j & k keys */
-            if (command -> motion.value != 'j'
-                    && command -> motion.value != 'k') {
-                map_set_cursor(*end);
-                map_set_real_cursor();
-            }
-            map_set_cursor(*end);
-            free(end);
-        }
-    }
+    return 1;
 }

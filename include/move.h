@@ -1,8 +1,8 @@
 /*
- * include/command.c
+ * include/move.h
  * Declare the interface for taking and executing commands
  *
- * Copyright (C) 2017 Utkarsh Mahshwari <utkarshme96@gmail.com>
+ * Copyright (C) 2017 Utkarsh Maheshwari <utkarshme96@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COMMAND_H_0TNF49V3
-#define COMMAND_H_0TNF49V3
-
+#ifndef MOVE_H_XH2VNQWQ
+#define MOVE_H_XH2VNQWQ
 
 /**
- * Execute the command on the given map
- * @param The pointer to the map
- * @return The result of the command
+ * Inputs a key, and move the cursor according to neovim
  */
-int command_exec(const map_t *);
+int move_make();
 
-
-#endif /* end of include guard: COMMAND_H_0TNF49V3 */
+#endif /* end of include guard: MOVE_H_XH2VNQWQ */
